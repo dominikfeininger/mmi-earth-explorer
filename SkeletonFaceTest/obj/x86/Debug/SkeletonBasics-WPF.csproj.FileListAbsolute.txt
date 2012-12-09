@@ -1,0 +1,13 @@
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\bin\x86\Debug\SkeletonBasics-WPF.exe
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\bin\x86\Debug\SkeletonBasics-WPF.pdb
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\bin\x86\Debug\Microsoft.Kinect.Toolkit.dll
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\bin\x86\Debug\Microsoft.Kinect.Toolkit.FaceTracking.dll
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\MainWindow.baml
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\MainWindow.g.cs
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\App.g.cs
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\SkeletonBasics-WPF_MarkupCompile.cache
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\SkeletonBasics-WPF.g.resources
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\Microsoft.Samples.Kinect.SkeletonBasics.Properties.Resources.resources
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\SkeletonBasics-WPF.csproj.GenerateResource.Cache
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\SkeletonBasics-WPF.exe
+F:\VisualStudio12\ProjektVorlagen\Visual C#\SkeletonBasics-WPF\obj\x86\Debug\SkeletonBasics-WPF.pdb
