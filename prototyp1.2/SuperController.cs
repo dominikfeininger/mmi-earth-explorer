@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
+using WindowsInput;
 
 namespace Microsoft.mmi.Kinect.Explorer
 {
@@ -66,6 +67,12 @@ namespace Microsoft.mmi.Kinect.Explorer
             //check seated Mode
         }
 
+        private void detectHandMoveUp(Skeleton skeleton)
+        {
+            //TODO:
+            InputSimulator.SimulateKeyUp(VirtualKeyCode.UP);
+        }
+
         //for test purpose
         private void detectHead(Joint head)
         {
@@ -77,6 +84,8 @@ namespace Microsoft.mmi.Kinect.Explorer
             this.printHeadAngel(xAngle, yAngle, zAngle);
 
         }
+
+
 
         //print method
         private void printHeadAngel(double xAngle, double yAngle, double zAngle)
