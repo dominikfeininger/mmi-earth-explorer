@@ -1,0 +1,44 @@
+
+<html>
+<head>
+   <title>Earth Explorer</title>
+
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   <script type="text/javascript">
+     var ge;
+
+	 //loads the javascript from google
+     google.load("earth", "1");
+
+	 //init function for earth
+     function init() {
+		google.earth.createInstance('map3d', initCB, failureCB);
+     }
+
+     
+     function initCB(instance) {
+
+		 /* Basic initialization as per the Google Earth API documentation */
+		 ge = instance;			
+		 // Specific instance of the Google Earth (you can have more than one)
+		 ge.getWindow().setVisibility(true);
+	 
+     }
+
+     function failureCB(errorCode) {
+		alert("Google Earth ist nicht Installiert, bitte installieren Sie das Google Earth Plugin!");
+     }
+
+	 // Calls specified once all HTML, requested APIs are loaded (google)
+     google.setOnLoadCallback(init); 
+
+   </script>
+
+</head>
+<body><!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
+	
+	<!--contains container for google earth-->
+   <div id="map3d" style="height: 700px; width: 1100px;"></div>
+
+</body>
+</html>
