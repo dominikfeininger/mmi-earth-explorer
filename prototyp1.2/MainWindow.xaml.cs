@@ -96,9 +96,9 @@ namespace Microsoft.mmi.Kinect.Explorer
             InitializeComponent();
             //Make sure to change this path to your index2.html file
             //Dominik
-            Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
+            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
             //Roy
-            //Browser.Navigate(new Uri("C:/Users/n00b/Downloads/cs247-prototype/index2.html"));
+            Browser.Navigate(new Uri("E:/Kinect/EarthExplorer/googleEarthComponent/index2.html"));
             //CN
             //Browser.Navigate(new Uri("C:/Users/n00b/Downloads/cs247-prototype/index2.html"));
             
@@ -258,6 +258,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
+                            gestureController.processSkeletonFrame(skel);
+
                         }
                         else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
                         {
@@ -271,9 +273,12 @@ namespace Microsoft.mmi.Kinect.Explorer
                     }
                 }
 
+               
                 // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
+
             }
+
         }
 
         /// <summary>
@@ -311,6 +316,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             this.DrawBone(skeleton, drawingContext, JointType.HipRight, JointType.KneeRight);
             this.DrawBone(skeleton, drawingContext, JointType.KneeRight, JointType.AnkleRight);
             this.DrawBone(skeleton, drawingContext, JointType.AnkleRight, JointType.FootRight);
+
 
             // Render Joints
             foreach (Joint joint in skeleton.Joints)
@@ -402,6 +408,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                     gestureController.setSeatedMode(false);
                 }
             }
+            this.Browser.InvokeScript("moveUp");
+
         }
     }
 }
