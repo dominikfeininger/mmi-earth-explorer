@@ -6,12 +6,16 @@
 
 namespace Microsoft.mmi.Kinect.Explorer
 {
+    using System;
     using System.IO;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
     using Microsoft.Kinect;
-    using System;
+    using Microsoft.Speech.Recognition;
+    using Microsoft.Speech.AudioFormat;
+    using System.Windows.Documents;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -82,11 +86,18 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// Drawing image that we will display
         /// </summary>
         private DrawingImage imageSource;
-
+   
         /// <summary>
-        /// saves the skeletons, just use first
+        /// Speech recognition engine using audio data from Kinect.
         /// </summary>
-        private Skeleton[] skeletonData;
+        private SpeechRecognitionEngine speechEngine;
+      
+        // Create a new SpeechRecognitionEngine instance.
+        SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("de-DE"));
+        
+
+        //gesture controller
+        SuperController gestureController;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -107,10 +118,32 @@ namespace Microsoft.mmi.Kinect.Explorer
             Keyboard.Focus(Browser);
         }
 
-        //gesture controller
-        SuperController gestureController;
+        //Speech!!
+        /// <summary>
+        /// Gets the metadata for the speech recognizer (acoustic model) most suitable to
+        /// process audio from Kinect device.
+        /// </summary>
+        /// <returns>
+        /// RecognizerInfo if found, <code>null</code> otherwise.
+        /// </returns>
+        private static RecognizerInfo GetKinectRecognizer()
+        {
+            foreach (RecognizerInfo recognizer in SpeechRecognitionEngine.InstalledRecognizers())
+            {
+                string value;
+                recognizer.AdditionalInfo.TryGetValue("Kinect", out value);
+                if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) && "de-DE".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return recognizer;
+                }
+            }
+
+            return null;
+        }
 
 
+
+        //wozu den kram??!?!?!
         /// <summary>
         /// Draws indicators to show which edges are clipping skeleton data
         /// </summary>
@@ -158,9 +191,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// <param name="e">event arguments</param>
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            //test
-            System.Console.WriteLine("start");
-
+            
             // Create the drawing group we'll use for drawing
             this.drawingGroup = new DrawingGroup();
 
@@ -187,15 +218,12 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 // Turn on the skeleton stream to receive skeleton frames
                 this.sensor.SkeletonStream.Enable();
-
                 // Add an event handler to be called whenever there is new color frame data
                 this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
-
                 // Start the sensor!
                 try
                 {
                     this.sensor.Start();
-
                 }
                 catch (IOException)
                 {
@@ -210,6 +238,36 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
+            RecognizerInfo ri = GetKinectRecognizer();
+
+            if (null != ri)
+            {             
+                this.speechEngine = new SpeechRecognitionEngine(ri.Id);
+
+                //Use this code to create grammar programmatically rather than from a grammar file.                
+                var directions = new Choices();
+                directions.Add(new SemanticResultValue("los", "START"));
+                directions.Add(new SemanticResultValue("stop", "STOP"));
+                directions.Add(new SemanticResultValue("zoom an", "ZOOMAN"));
+                directions.Add(new SemanticResultValue("zoom aus", "ZOOMAUS"));
+                directions.Add(new SemanticResultValue("bewegung an", "BEWEGUNG AN"));
+                directions.Add(new SemanticResultValue("bewegungs aus", "BEWEGUNG AUS"));
+                directions.Add(new SemanticResultValue("mannheim", "MANNHEIM"));
+                directions.Add(new SemanticResultValue("new york", "NEW YORK"));
+                directions.Add(new SemanticResultValue("frankfurt", "FRANKFURT"));
+                var gb = new GrammarBuilder { Culture = ri.Culture };
+                gb.Append(directions);
+                var g = new Grammar(gb);
+                
+                speechEngine.LoadGrammar(g);
+                
+                speechEngine.SpeechRecognized += SpeechRecognized;
+                speechEngine.SpeechRecognitionRejected += SpeechRejected;
+
+                speechEngine.SetInputToAudioStream(
+                    sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
+                speechEngine.RecognizeAsync(RecognizeMode.Multiple);
+            }           
         }
 
         /// <summary>
@@ -221,8 +279,93 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             if (null != this.sensor)
             {
+                this.sensor.AudioSource.Stop();
+
                 this.sensor.Stop();
+                this.sensor = null;
             }
+
+            if (null != this.speechEngine)
+            {
+                this.speechEngine.SpeechRecognized -= SpeechRecognized;
+                this.speechEngine.SpeechRecognitionRejected -= SpeechRejected;
+                this.speechEngine.RecognizeAsyncStop();
+            }
+        }
+
+
+        //speech       
+
+        /// <summary>
+        /// Handler for recognized speech events.
+        /// </summary>
+        /// <param name="sender">object sending the event.</param>
+        /// <param name="e">event arguments.</param>
+        private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            // Speech utterance confidence below which we treat speech as if it hadn't been heard
+            const double ConfidenceThreshold = 0.3;
+
+            //ClearRecognitionHighlights();
+
+            if (e.Result.Confidence >= ConfidenceThreshold)
+            {
+                switch (e.Result.Semantics.Value.ToString())
+                {
+                    case "START":
+                        System.Console.WriteLine("START");
+                        System.Console.WriteLine("START");
+                        System.Console.WriteLine("START");
+                        gestureController.gestureRecognition(true);
+                        break;
+
+                    case "STOP":
+                        System.Console.WriteLine("STOP");
+                        System.Console.WriteLine("STOP");
+                        System.Console.WriteLine("STOP");
+                        gestureController.gestureRecognition(false);
+                        break;
+                    case "ZOOMAN":
+                        System.Console.WriteLine("ZOOM AN");
+                        gestureController.zoomRecognition(true);
+                        break;
+                    case "ZOOMAUS":
+                        System.Console.WriteLine("ZOOM AUS");
+                        gestureController.zoomRecognition(false);
+                        break;
+                    case "BEWEGUNG AN":
+                        System.Console.WriteLine("BEWEGUNG AN");
+                        gestureController.moveRecognition(true);
+                        break;
+                    case "BEWEGUNG AUS":
+                        System.Console.WriteLine("BEWEGUNG AUS");
+                        gestureController.moveRecognition(false);
+                        break;
+                    case "FRANKFURT":
+                        System.Console.WriteLine("FRANKFURT");
+                        gestureController.goTo("frankfurt");
+                        break;
+                    case "MANNHEIM":
+                        System.Console.WriteLine("MANNHEIM");
+                        gestureController.goTo("mannheim");
+                        break;
+                    case "NEW YORK":
+                        System.Console.WriteLine("NEW YORK");
+                        gestureController.goTo("new york");
+                        break;
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handler for rejected speech events.
+        /// </summary>
+        /// <param name="sender">object sending the event.</param>
+        /// <param name="e">event arguments.</param>
+        private void SpeechRejected(object sender, SpeechRecognitionRejectedEventArgs e)
+        {
+            //ClearRecognitionHighlights();
         }
 
         /// <summary>
@@ -273,7 +416,6 @@ namespace Microsoft.mmi.Kinect.Explorer
                     }
                 }
 
-               
                 // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
 
@@ -408,8 +550,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                     gestureController.setSeatedMode(false);
                 }
             }
-            this.Browser.InvokeScript("moveUp");
-
+            
         }
     }
 }
