@@ -23,7 +23,11 @@
 		 ge = instance;			
 		 // Specific instance of the Google Earth (you can have more than one)
 		 ge.getWindow().setVisibility(true);
-	 
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS , true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+		
+		
      }
 
      function failureCB(errorCode) {
@@ -36,13 +40,102 @@
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
 		// Add 25 degrees to the current latitude and longitude values.
-		//lookAt.setLatitude(lookAt.getLatitude() + 25.0);
-		lookAt.setLongitude(lookAt.getLongitude() + 25.0);
+		lookAt.setLatitude(lookAt.getLatitude() + 2.0);
+		lookAt.setLongitude(lookAt.getLongitude() + 40.0);
 
 		// Update the view in Google Earth.
 		ge.getView().setAbstractView(lookAt);
 	}
 
+	function lookAt(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Set new latitude and longitude values.
+		lookAt.setLatitude(50.637);
+		lookAt.setLongitude(8.4056);
+		lookAt.setRange(5000);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function lookAtFrankfurt(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Set new latitude and longitude values.
+		lookAt.setLatitude(50.110922);
+		lookAt.setLongitude(8.682127);
+		lookAt.setRange(35000);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function lookAtMannheim(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Set new latitude and longitude values.
+		lookAt.setLatitude(49.487459);
+		lookAt.setLongitude(8.466039);
+		lookAt.setRange(35000);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	
+	function lookAtNewYork(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Set new latitude and longitude values.
+		lookAt.setLatitude(40.714353);
+		lookAt.setLongitude(-74.005973);
+		lookAt.setRange(35000);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomIn1(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() / 2.0);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomIn2(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() / 4.0);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomOut1(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * 2.5);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomOut2(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * 4.0);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
 	 // Calls specified once all HTML, requested APIs are loaded (google)
      google.setOnLoadCallback(init); 
 
