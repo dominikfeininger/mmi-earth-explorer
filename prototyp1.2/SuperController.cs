@@ -41,6 +41,10 @@ namespace Microsoft.mmi.Kinect.Explorer
         internal void gestureRecognition(bool mode)
         {
             this.gesturesActive = mode;
+           
+            // de/activate all with once but also be able to de/activate one by one
+            this.zoomActive = mode;
+            this.moveActive = mode;
         }
 
         internal void zoomRecognition(bool mode)
@@ -63,7 +67,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         internal void goTo(string p)
         {
             if (p.Equals("frankfurt")) {
-                window.Browser.InvokeScript("lookAtFrankfurt");
+                    window.Browser.InvokeScript("lookAtFrankfurt");
             }
             if (p.Equals("mannheim"))
             {
@@ -72,6 +76,18 @@ namespace Microsoft.mmi.Kinect.Explorer
             if (p.Equals("new york"))
             {
                 window.Browser.InvokeScript("lookAtNewYork");
+            }
+            if (p.Equals("earth"))
+            {
+                window.Browser.InvokeScript("earth");
+            }
+            if (p.Equals("street"))
+            {
+                window.Browser.InvokeScript("street");
+            }
+            if (p.Equals("test"))
+            {
+                window.Browser.InvokeScript("test");
             }
         }
 
@@ -89,12 +105,23 @@ namespace Microsoft.mmi.Kinect.Explorer
             Joint shoulderRight = skeleton.Joints[JointType.ShoulderRight];
             Joint spine = skeleton.Joints[JointType.Spine];
 
+            window.Browser.InvokeScript("streetAutomatic");
+
+
             if (gesturesActive)
             {
-                detectStepForward(AnkleLeft, AnkleRight);
-                zoomInOut(wristHandL, wristHandR, KneeLeft, KneeRight);
-                moveTheMap(head, shoulderLeft, shoulderRight, spine, wristHandL, wristHandR);
-                detectSupermanGeture(head, wristHandR, wristHandL);
+                System.Console.WriteLine("_");
+
+               // detectStepForward(AnkleLeft, AnkleRight);
+                if (zoomActive)
+                {
+                    zoomInOut(wristHandL, wristHandR, KneeLeft, KneeRight);
+                }
+                if (moveActive)
+                {
+                    moveTheMap(head, shoulderLeft, shoulderRight, spine, wristHandL, wristHandR);
+                }
+               // detectSupermanGeture(head, wristHandR, wristHandL);
             }
         }
 
@@ -122,20 +149,32 @@ namespace Microsoft.mmi.Kinect.Explorer
                 //wenn mitte der hände 
                 
                 double handCenterY = leftHand.Position.Y + rightHand.Position.Y;
-                System.Console.WriteLine(" ");
 
                 //in der mitte nichts tun
 
 
                 if (handCenterY > head.Position.Y)                 //move the map down
-                {                 
-                    System.Console.WriteLine("Key - Down");
-                    InputSimulator.SimulateKeyDown(VirtualKeyCode.DOWN);
+                {     
+                     double altitude = (double)window.Browser.InvokeScript("getAltitude");
+                     //if (altitude < 10)
+                     //{ }
+                     //else
+                     //{
+                         System.Console.WriteLine("Key - Down");
+                         InputSimulator.SimulateKeyDown(VirtualKeyCode.DOWN);
+                     //}
                 }
                 else if (handCenterY < spine.Position.Y)        //move the map up
                 {
-                    System.Console.WriteLine("Key - UP");
-                    InputSimulator.SimulateKeyDown(VirtualKeyCode.UP);
+                    
+                     double altitude = (double)window.Browser.InvokeScript("getAltitude");
+                    // if (altitude < 10)
+                     //{ }
+                     //else
+                     //{
+                         System.Console.WriteLine("Key - UP");
+                         InputSimulator.SimulateKeyDown(VirtualKeyCode.UP);
+                     //}
                 }
                 else if (leftHand.Position.X < shoulderLeft.Position.X && rightHand.Position.X < spine.Position.X) //move the map the left
                 {                   
@@ -169,10 +208,11 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
 
+
+
         //pinch or spread with both hands
         private void zoomInOut(Joint leftHand, Joint rightHand, Joint KneeLeft, Joint KneeRight)
         {
-            System.Console.WriteLine(" ");
 
             if ((((leftHand.Position.X < KneeLeft.Position.X && rightHand.Position.X > KneeRight.Position.X) ||
                 (leftHand.Position.X > KneeLeft.Position.X && rightHand.Position.X < KneeRight.Position.X)) &&
@@ -185,39 +225,74 @@ namespace Microsoft.mmi.Kinect.Explorer
                 double handDistance = rightHand.Position.X - leftHand.Position.X;
                 double kneeDistance = KneeRight.Position.X - KneeLeft.Position.X;
 
-                if (handDistance >= (kneeDistance * 2))
+                //check every frame a zomm is possible if streetview is possible.
+                window.Browser.InvokeScript("streetAutomatic");
+                double altitude = (double)window.Browser.InvokeScript("getAltitude");
+
+
+                if (handDistance >= (kneeDistance * 2.5))
                 {
                     System.Console.WriteLine("Zoom - IN TWICE");
-                    window.Browser.InvokeScript("zoomIn2");
-                    //InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
 
+                    if (altitude < 10)
+                    {
+                        //InputSimulator.SimulateKeyDown(VirtualKeyCode.UP);
+                    }
+                    else {
+                        window.Browser.InvokeScript("zoomIn2");
+                        //InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
+                    }                    
                 }
                 else if (handDistance >= (kneeDistance * 1.5))
                 {
                     System.Console.WriteLine("Zoom - IN");
                    // window.Browser.InvokeScript("zoomIn1");
 
-                    InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
+                   //System.Console.WriteLine("Höhe: "+height2);
+                   if (altitude < 10)
+                   {
+                       InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
+                   }
+                   else
+                   {
+                       InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
+                   }
                 }
-                else if (handDistance < kneeDistance * 0.1)
+                else if (handDistance < kneeDistance * 0.05)
                 {
                     System.Console.WriteLine("Zoom - OUT TWICE");
-                    window.Browser.InvokeScript("zoomOut2");
 
-                    //InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                    if (altitude < 10)
+                    {
+                        InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                    }
+                    else
+                    {
+                        window.Browser.InvokeScript("zoomOut2");
+                        //InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                    }
                 }
                 else if (handDistance <= kneeDistance * 0.25)
                 {
                     System.Console.WriteLine("Zoom - OUT");
-                    //window.Browser.InvokeScript("zoomOut1");
 
-                    InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                    if (altitude < 10)
+                    {
+                        //InputSimulator.SimulateKeyDown(VirtualKeyCode.DOWN);
+                    }
+                    else
+                    {
+                        //window.Browser.InvokeScript("zoomOut1");
+                        InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                    }
                 }
                 else
                 {
                     System.Console.WriteLine("NO ZOOM recognized");
                     InputSimulator.SimulateKeyUp(VirtualKeyCode.ADD);
                     InputSimulator.SimulateKeyUp(VirtualKeyCode.SUBTRACT);
+                    InputSimulator.SimulateKeyUp(VirtualKeyCode.UP);
+                    InputSimulator.SimulateKeyUp(VirtualKeyCode.DOWN);
                 }
             }
             else
@@ -225,6 +300,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                 System.Console.WriteLine("NO gesture - not the same height!!");
                 InputSimulator.SimulateKeyUp(VirtualKeyCode.ADD);
                 InputSimulator.SimulateKeyUp(VirtualKeyCode.SUBTRACT);
+                InputSimulator.SimulateKeyUp(VirtualKeyCode.UP);
+                InputSimulator.SimulateKeyUp(VirtualKeyCode.DOWN);
             }
         }
 
@@ -247,7 +324,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         private void detectHandMoveUp(Skeleton skeleton)
         {
             //TODO:
-            InputSimulator.SimulateKeyUp(VirtualKeyCode.UP);
+            //InputSimulator.SimulateKeyUp(VirtualKeyCode.UP);
         }
 
         //for test purpose

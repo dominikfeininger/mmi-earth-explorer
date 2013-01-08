@@ -255,6 +255,11 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("mannheim", "MANNHEIM"));
                 directions.Add(new SemanticResultValue("new york", "NEW YORK"));
                 directions.Add(new SemanticResultValue("frankfurt", "FRANKFURT"));
+                directions.Add(new SemanticResultValue("earth", "EARTH"));
+                directions.Add(new SemanticResultValue("street", "STREET"));
+                directions.Add(new SemanticResultValue("test", "TEST"));
+
+
                 var gb = new GrammarBuilder { Culture = ri.Culture };
                 gb.Append(directions);
                 var g = new Grammar(gb);
@@ -304,7 +309,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             // Speech utterance confidence below which we treat speech as if it hadn't been heard
-            const double ConfidenceThreshold = 0.3;
+            const double ConfidenceThreshold = 0.1;
 
             //ClearRecognitionHighlights();
 
@@ -352,6 +357,18 @@ namespace Microsoft.mmi.Kinect.Explorer
                     case "NEW YORK":
                         System.Console.WriteLine("NEW YORK");
                         gestureController.goTo("new york");
+                        break;
+                    case "EARTH":
+                        System.Console.WriteLine("Earth");
+                        gestureController.goTo("earth");
+                        break;
+                    case "STREET":
+                        System.Console.WriteLine("street");
+                        gestureController.goTo("street");
+                        break;
+                    case "TEST":
+                        System.Console.WriteLine("test");
+                        gestureController.goTo("test");
                         break;
 
                 }
@@ -490,7 +507,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             // Convert point to depth space.  
             // We are not using depth directly, but we do want the points in our 640x480 output resolution.
-            DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution640x480Fps30);
+            DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution640x480Fps30);       
             return new Point(depthPoint.X, depthPoint.Y);
         }
 
