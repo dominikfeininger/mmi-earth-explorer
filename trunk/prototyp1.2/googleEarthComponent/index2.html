@@ -27,6 +27,9 @@
 		 ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
 		 ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS , true);
 		 ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_TREES, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+		
 		 
  		var navcontrol = ge.getNavigationControl();
 		//navcontrol.setVisibility(ge.VISIBILITY_SHOW);
@@ -51,7 +54,13 @@
 
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
-		alert(position.getAltitude());
+		//alert(position.getAltitude());
+	  //alert(position.getTilt());
+	  
+		var camera = position;
+		
+		camera.setTilt(position.getTilt() +15.0);
+	  ge.getView().setAbstractView(camera); 
 	  
 	  /*
 		var navcontrol = ge.getNavigationControl();
@@ -122,7 +131,34 @@
 
 	}
 	
+	function horizont(){
 	
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(90.0);
+		ge.getView().setAbstractView(camera);
+	}
+	function vogel(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(0.0);
+		ge.getView().setAbstractView(camera);
+	}
+	
+	function hoch(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(position.getTilt() +15.0);
+		ge.getView().setAbstractView(camera);
+	}
+
+	function kippen(){
+
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(position.getTilt() -15.0);
+		ge.getView().setAbstractView(camera); 
+	  }	
 	function streetAutomatic(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		if(position.getAltitude()< 50){
@@ -166,6 +202,19 @@
 
 		// Update the view in Google Earth.
 		ge.getView().setAbstractView(lookAt);
+	}
+	
+	function lookAtMadrid(){
+		// Get the current view.
+		var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);		
+		// Set new latitude and longitude values.
+		camera.setLatitude(40.416846);
+		camera.setLongitude(-3.703906);
+		camera.setAltitude(8500);
+		camera.setTilt(0);
+		
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);
 	}
 	function lookAtFrankfurt(){
 		// Get the current view.
@@ -253,7 +302,7 @@
 <body><!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
 	
 	<!--contains container for google earth-->
-   <div id="map3d" style="height: 600; width: 900;"></div>
+   <div id="map3d" style="height: 100%; width: 100%;"></div>
 
 </body>
 </html>

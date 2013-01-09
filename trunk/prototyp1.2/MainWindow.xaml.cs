@@ -1,9 +1,4 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
-
+﻿
 namespace Microsoft.mmi.Kinect.Explorer
 {
     using System;
@@ -50,7 +45,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// <summary>
         /// Brush used to draw skeleton center point
         /// </summary>
-        private readonly Brush centerPointBrush = Brushes.Blue;
+        private readonly Brush centerPointBrush = Brushes.Green;
 
         /// <summary>
         /// Brush used for drawing joints that are currently tracked
@@ -60,12 +55,12 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// <summary>
         /// Brush used for drawing joints that are currently inferred
         /// </summary>        
-        private readonly Brush inferredJointBrush = Brushes.Yellow;
+        private readonly Brush inferredJointBrush = Brushes.Green;
 
         /// <summary>
         /// Pen used for drawing bones that are currently tracked
         /// </summary>
-        private readonly Pen trackedBonePen = new Pen(Brushes.Green, 6);
+        private readonly Pen trackedBonePen = new Pen(Brushes.Yellow, 6);
 
         /// <summary>
         /// Pen used for drawing bones that are currently inferred
@@ -86,18 +81,22 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// Drawing image that we will display
         /// </summary>
         private DrawingImage imageSource;
-   
+
         /// <summary>
         /// Speech recognition engine using audio data from Kinect.
         /// </summary>
         private SpeechRecognitionEngine speechEngine;
-      
+
         // Create a new SpeechRecognitionEngine instance.
         SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("de-DE"));
-        
+
 
         //gesture controller
         SuperController gestureController;
+
+        //Sprachkontrolle
+        Boolean speechEnabled;
+
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -112,7 +111,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             Browser.Navigate(new Uri("E:/Kinect/EarthExplorer/googleEarthComponent/index2.html"));
             //CN
             //Browser.Navigate(new Uri("C:/Users/n00b/Downloads/cs247-prototype/index2.html"));
-            
+
             //from Stanford Project
             //Browser is the container name
             Keyboard.Focus(Browser);
@@ -137,13 +136,11 @@ namespace Microsoft.mmi.Kinect.Explorer
                     return recognizer;
                 }
             }
-
             return null;
         }
 
 
 
-        //wozu den kram??!?!?!
         /// <summary>
         /// Draws indicators to show which edges are clipping skeleton data
         /// </summary>
@@ -191,7 +188,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// <param name="e">event arguments</param>
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            
+
             // Create the drawing group we'll use for drawing
             this.drawingGroup = new DrawingGroup();
 
@@ -236,12 +233,13 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             if (null == this.sensor)
             {
-                this.statusBarText.Text = Properties.Resources.NoKinectReady;
+
+                // this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
             RecognizerInfo ri = GetKinectRecognizer();
 
             if (null != ri)
-            {             
+            {
                 this.speechEngine = new SpeechRecognitionEngine(ri.Id);
 
                 //Use this code to create grammar programmatically rather than from a grammar file.                
@@ -255,24 +253,41 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("mannheim", "MANNHEIM"));
                 directions.Add(new SemanticResultValue("new york", "NEW YORK"));
                 directions.Add(new SemanticResultValue("frankfurt", "FRANKFURT"));
+                directions.Add(new SemanticResultValue("madrid", "MADRID"));
+
                 directions.Add(new SemanticResultValue("earth", "EARTH"));
                 directions.Add(new SemanticResultValue("street", "STREET"));
+                directions.Add(new SemanticResultValue("horizon", "HORIZONT"));
+                directions.Add(new SemanticResultValue("vogel", "VOGEL"));
+                directions.Add(new SemanticResultValue("hoch", "HOCH"));
+                directions.Add(new SemanticResultValue("kippen", "KIPPEN"));
+                directions.Add(new SemanticResultValue("sprache an", "SPRACHE AN"));
+                directions.Add(new SemanticResultValue("sprache aus", "SPRACHE AUS"));
                 directions.Add(new SemanticResultValue("test", "TEST"));
-
 
                 var gb = new GrammarBuilder { Culture = ri.Culture };
                 gb.Append(directions);
                 var g = new Grammar(gb);
-                
+
                 speechEngine.LoadGrammar(g);
-                
+
                 speechEngine.SpeechRecognized += SpeechRecognized;
                 speechEngine.SpeechRecognitionRejected += SpeechRejected;
 
                 speechEngine.SetInputToAudioStream(
                     sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
                 speechEngine.RecognizeAsync(RecognizeMode.Multiple);
-            }           
+
+                speechEnabled = false;
+
+                this.gestureMove.Text = "Move: No Skeleton found";
+                this.gestureZoom.Text = "Zoom: No Skeleton found";
+                this.speech.Text = "Speech: OFF";
+
+                //this.kinectRuntime.NuiCamera.ElevationAngle = Convert.ToInt32(this.textAngel.Text);
+                this.sensor.ElevationAngle = 11;
+
+            }
         }
 
         /// <summary>
@@ -309,12 +324,37 @@ namespace Microsoft.mmi.Kinect.Explorer
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             // Speech utterance confidence below which we treat speech as if it hadn't been heard
-            const double ConfidenceThreshold = 0.1;
+            const double ConfidenceThreshold = 0.3;
 
             //ClearRecognitionHighlights();
-
+            if (speechEnabled)
+            {
+                this.speech.Text = "Speech: ON";
+            }
+            else
+            {
+                this.speech.Text = "Speech: OFF";
+            }
             if (e.Result.Confidence >= ConfidenceThreshold)
             {
+                switch (e.Result.Semantics.Value.ToString())
+                {
+                    case "SPRACHE AN":
+                        System.Console.WriteLine("Sprache AN");
+                        speechEnabled = true;
+                        break;
+                    case "SPRACHE AUS":
+                        System.Console.WriteLine("Sprache AUS");
+                        speechEnabled = false;
+                        break;
+                }
+            }
+
+            if (e.Result.Confidence >= ConfidenceThreshold && speechEnabled)
+            {
+                
+                this.speech.Text = this.speech.Text + " - " + e.Result.Semantics.Value.ToString();
+
                 switch (e.Result.Semantics.Value.ToString())
                 {
                     case "START":
@@ -350,6 +390,10 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("FRANKFURT");
                         gestureController.goTo("frankfurt");
                         break;
+                    case "MADRID":
+                        System.Console.WriteLine("MADRID");
+                        gestureController.goTo("madrid");
+                        break;
                     case "MANNHEIM":
                         System.Console.WriteLine("MANNHEIM");
                         gestureController.goTo("mannheim");
@@ -366,6 +410,23 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("street");
                         gestureController.goTo("street");
                         break;
+                    case "HORIZONT":
+                        System.Console.WriteLine("horizont");
+                        gestureController.goTo("horizont");
+                        break;
+                    case "VOGEL":
+                        System.Console.WriteLine("vogel");
+                        gestureController.goTo("vogel");
+                        break;
+                    case "HOCH":
+                        System.Console.WriteLine("hoch");
+                        gestureController.goTo("hoch");
+                        break;
+                    case "KIPPEN":
+                        System.Console.WriteLine("kippen");
+                        gestureController.goTo("kippen");
+                        break;
+
                     case "TEST":
                         System.Console.WriteLine("test");
                         gestureController.goTo("test");
@@ -411,6 +472,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                 if (skeletons.Length != 0)
                 {
+                    //Skeleton skel = skeletons[0];
                     foreach (Skeleton skel in skeletons)
                     {
                         RenderClippedEdges(skel, dc);
@@ -418,7 +480,10 @@ namespace Microsoft.mmi.Kinect.Explorer
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             this.DrawBonesAndJoints(skel, dc);
-                            gestureController.processSkeletonFrame(skel);
+
+                            Skeleton correctSkeleton = GetPrimarySkeleton(skeletons);
+
+                            gestureController.processSkeletonFrame(correctSkeleton);
 
                         }
                         else if (skel.TrackingState == SkeletonTrackingState.PositionOnly)
@@ -437,9 +502,27 @@ namespace Microsoft.mmi.Kinect.Explorer
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
 
             }
-
         }
 
+        private static Skeleton GetPrimarySkeleton(IEnumerable<Skeleton> skeletons)
+        {
+            Skeleton primarySkeleton = null;
+            foreach (Skeleton skeleton in skeletons)
+            {
+                if (skeleton.TrackingState != SkeletonTrackingState.Tracked)
+                {
+                    continue;
+                }
+
+                if (primarySkeleton == null)
+                    primarySkeleton = skeleton;
+                else if (primarySkeleton.Position.Z > skeleton.Position.Z)
+                    primarySkeleton = skeleton;
+            }
+            return primarySkeleton;
+        }
+
+        //Skeletzeichnung
         /// <summary>
         /// Draws a skeleton's bones and joints
         /// </summary>
@@ -507,7 +590,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             // Convert point to depth space.  
             // We are not using depth directly, but we do want the points in our 640x480 output resolution.
-            DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution640x480Fps30);       
+            DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution640x480Fps30);
             return new Point(depthPoint.X, depthPoint.Y);
         }
 
@@ -552,8 +635,9 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// </summary>
         /// <param name="sender">object sending the event</param>
         /// <param name="e">event arguments</param>
-        private void CheckBoxSeatedModeChanged(object sender, RoutedEventArgs e)
+        /*private void CheckBoxSeatedModeChanged(object sender, RoutedEventArgs e)
         {
+            /*
             if (null != this.sensor)
             {
                 if (this.checkBoxSeatedMode.IsChecked.GetValueOrDefault())
@@ -567,7 +651,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                     gestureController.setSeatedMode(false);
                 }
             }
-            
-        }
+            */
+        //}
     }
 }
