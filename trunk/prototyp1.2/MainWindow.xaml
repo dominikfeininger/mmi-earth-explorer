@@ -24,22 +24,20 @@
 
         <!-- earth preview -->
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center" Width="1800">
-            <WebBrowser x:Name="Browser" Width="1500" Height="900" HorizontalAlignment="Center" UseLayoutRounding="False" ClipToBounds="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.IsDeferredScrollingEnabled="False" ScrollViewer.CanContentScroll="False" Grid.Row="1" Grid.RowSpan="3" RenderTransformOrigin="0.816,0.481"/>
+            <!--hier änderungen für breitere auflösung-->
+            <WebBrowser x:Name="Browser" Width="1800" Height="900" HorizontalAlignment="Center" UseLayoutRounding="False" ClipToBounds="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.IsDeferredScrollingEnabled="False" ScrollViewer.CanContentScroll="False" Grid.Row="1" Grid.RowSpan="3" RenderTransformOrigin="0.816,0.481"/>
         </Viewbox>
 
         <!--CheckBox Grid.Row="2" Style="{StaticResource SquareCheckBox}" Content="Seated Mode" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 10 10 10" Name="checkBoxSeatedMode" Checked="CheckBoxSeatedModeChanged" Unchecked="CheckBoxSeatedModeChanged"/-->
-        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Margin="270 0 0 0" Height="120" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Margin="270 0 0 0" Height="160" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <Grid Name="layoutGrid2" Height="150">
-                <TextBlock Name="gestureMove" FontSize="20" Foreground="Black" Margin="0,-31,63,85" Height="40" Width="700">'Seated'</TextBlock>
-                <TextBlock Name="gestureZoom" FontSize="20" Foreground="Black" Margin="0,37,30,73" Height="40">'Seated'</TextBlock>
-                <TextBlock Name="speech" FontSize="20" Foreground="Black" Margin="-2,77,30,33" Height="40" >'Seated'</TextBlock>
-               
-            </Grid>
-            
+                <TextBlock Name="gestureMove" FontSize="20" Foreground="Black" Margin="0,0,6,114" Height="35" Width="700">'Seated'</TextBlock>                
+                <TextBlock Name="gestureZoom" FontSize="20" Foreground="Black" Margin="0,36,30,80" Height="35">'Seated'</TextBlock>
+                <!--TextBlock Name="gesturePerspective" FontSize="20" Foreground="Black" Margin="0,71,6,44" Height="35" Width="700">'Seated'</TextBlock-->
+                <TextBlock Name="speech" FontSize="20" Foreground="Black" Margin="0,71,28,44" Height="35" >'Seated'</TextBlock>               
+            </Grid>            
         </StatusBar>
         <!--StatusBar Grid.Row="3" HorizontalAlignment="Stretch" Margin="300 0 0 0" Height="30" Name="statusBar2" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
-            
-
         </StatusBar-->
        
 
