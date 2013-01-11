@@ -244,25 +244,40 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                 //Use this code to create grammar programmatically rather than from a grammar file.                
                 var directions = new Choices();
+
+
+                //basic commands                
                 directions.Add(new SemanticResultValue("los", "START"));
                 directions.Add(new SemanticResultValue("stop", "STOP"));
+                directions.Add(new SemanticResultValue("sprache an", "SPRACHE AN"));
+                directions.Add(new SemanticResultValue("sprache aus", "SPRACHE AUS"));
                 directions.Add(new SemanticResultValue("zoom an", "ZOOMAN"));
                 directions.Add(new SemanticResultValue("zoom aus", "ZOOMAUS"));
                 directions.Add(new SemanticResultValue("bewegung an", "BEWEGUNG AN"));
                 directions.Add(new SemanticResultValue("bewegungs aus", "BEWEGUNG AUS"));
+                directions.Add(new SemanticResultValue("perspektive an", "PERSPEKTIVE AN"));
+                directions.Add(new SemanticResultValue("perspektive aus", "PERSPEKTIVE AUS"));
+                
+                //cities
                 directions.Add(new SemanticResultValue("mannheim", "MANNHEIM"));
                 directions.Add(new SemanticResultValue("new york", "NEW YORK"));
                 directions.Add(new SemanticResultValue("frankfurt", "FRANKFURT"));
                 directions.Add(new SemanticResultValue("madrid", "MADRID"));
-
+                
+                // change mode
                 directions.Add(new SemanticResultValue("earth", "EARTH"));
                 directions.Add(new SemanticResultValue("street", "STREET"));
+                
+                //adapt the perspective
+                directions.Add(new SemanticResultValue("norden", "NORDEN"));
                 directions.Add(new SemanticResultValue("horizon", "HORIZONT"));
                 directions.Add(new SemanticResultValue("vogel", "VOGEL"));
                 directions.Add(new SemanticResultValue("hoch", "HOCH"));
                 directions.Add(new SemanticResultValue("kippen", "KIPPEN"));
-                directions.Add(new SemanticResultValue("sprache an", "SPRACHE AN"));
-                directions.Add(new SemanticResultValue("sprache aus", "SPRACHE AUS"));
+                directions.Add(new SemanticResultValue("rechts", "RECHTS"));
+                directions.Add(new SemanticResultValue("links", "LINKS"));
+                
+                //for development
                 directions.Add(new SemanticResultValue("test", "TEST"));
 
                 var gb = new GrammarBuilder { Culture = ri.Culture };
@@ -278,14 +293,15 @@ namespace Microsoft.mmi.Kinect.Explorer
                     sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
                 speechEngine.RecognizeAsync(RecognizeMode.Multiple);
 
-                speechEnabled = false;
+                speechEnabled = true;
 
                 this.gestureMove.Text = "Move: No Skeleton found";
                 this.gestureZoom.Text = "Zoom: No Skeleton found";
-                this.speech.Text = "Speech: OFF";
-
-                //this.kinectRuntime.NuiCamera.ElevationAngle = Convert.ToInt32(this.textAngel.Text);
-                this.sensor.ElevationAngle = 11;
+                //this.gesturePerspective.Text = "Perspective: OFF";
+                this.speech.Text = "Speech: ON";
+               
+                //nui winkel
+                this.sensor.ElevationAngle = 19;
 
             }
         }
@@ -386,6 +402,14 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("BEWEGUNG AUS");
                         gestureController.moveRecognition(false);
                         break;
+                    case "PERSPEKTIVE AN":
+                        System.Console.WriteLine("PERSPEKTIVE AN");
+                        //gestureController.perspectiveRecognition(true);
+                        break;
+                    case "PERSPEKTIVE AUS":
+                        System.Console.WriteLine("PERSPEKTIVE AUS");
+                        //gestureController.perspectiveRecognition(false);
+                        break;
                     case "FRANKFURT":
                         System.Console.WriteLine("FRANKFURT");
                         gestureController.goTo("frankfurt");
@@ -425,6 +449,18 @@ namespace Microsoft.mmi.Kinect.Explorer
                     case "KIPPEN":
                         System.Console.WriteLine("kippen");
                         gestureController.goTo("kippen");
+                        break;
+                    //case "RECHTS":
+                    //    System.Console.WriteLine("rechts");
+                    //    gestureController.goTo("rechts");
+                    //    break;
+                    //case "LINKS":
+                    //    System.Console.WriteLine("links");
+                    //    gestureController.goTo("links");
+                    //    break;
+                    case "NORDEN":
+                        System.Console.WriteLine("norden");
+                        gestureController.goTo("norden");
                         break;
 
                     case "TEST":

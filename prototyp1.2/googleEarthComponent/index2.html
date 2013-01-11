@@ -52,15 +52,15 @@
 	  // - You want to create the ViewerOptions 
       // - Set the options on any AbstractView 
 
-		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		//var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
 		//alert(position.getAltitude());
 	  //alert(position.getTilt());
 	  
-		var camera = position;
+		//var camera = position;
 		
-		camera.setTilt(position.getTilt() +15.0);
-	  ge.getView().setAbstractView(camera); 
+	//	camera.setTilt(position.getTilt() +15.0);
+	  //ge.getView().setAbstractView(camera); 
 	  
 	  /*
 		var navcontrol = ge.getNavigationControl();
@@ -159,6 +159,21 @@
 		camera.setTilt(position.getTilt() -15.0);
 		ge.getView().setAbstractView(camera); 
 	  }	
+	  function rechts(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.Heading(position.Heading() +15.0);
+		ge.getView().setAbstractView(camera);
+	}
+
+	function links(){
+
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.Heading(position.Heading() -15.0);
+		ge.getView().setAbstractView(camera); 
+	  }	
+	 
 	function streetAutomatic(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		if(position.getAltitude()< 50){
