@@ -290,8 +290,9 @@ FirstPersonCam.prototype.updateOrientation = function(dt) {
 
   // Based on dt and input press, update turn angle.
   if (turnLeft || turnRight) {  
-    var turnSpeed = 15.0 * turn_speed; // radians/sec
-    if (turnLeft)
+    //var turnSpeed = 15.0 * turn_speed; // radians/sec - original Roy
+    var turnSpeed = 45.0 * turn_speed; // radians/sec
+	if (turnLeft)
       turnSpeed *= -1.0;
     me.headingAngle += turnSpeed * dt * Math.PI / 180.0;
   }

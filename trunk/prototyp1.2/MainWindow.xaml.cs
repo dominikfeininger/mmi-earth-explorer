@@ -60,7 +60,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// <summary>
         /// Pen used for drawing bones that are currently tracked
         /// </summary>
-        private readonly Pen trackedBonePen = new Pen(Brushes.Yellow, 6);
+        private readonly Pen trackedBonePen = new Pen(Brushes.White, 6);
 
         /// <summary>
         /// Pen used for drawing bones that are currently inferred
@@ -88,7 +88,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         private SpeechRecognitionEngine speechEngine;
 
         // Create a new SpeechRecognitionEngine instance.
-        SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("de-DE"));
+        SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
 
 
         //gesture controller
@@ -131,7 +131,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 string value;
                 recognizer.AdditionalInfo.TryGetValue("Kinect", out value);
-                if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) && "de-DE".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
+                if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) && "en-US".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     return recognizer;
                 }
@@ -236,8 +236,10 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                 // this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
-            RecognizerInfo ri = GetKinectRecognizer();
 
+            //Speechrecognizer
+            RecognizerInfo ri = GetKinectRecognizer();
+            
             if (null != ri)
             {
                 this.speechEngine = new SpeechRecognitionEngine(ri.Id);
@@ -245,38 +247,38 @@ namespace Microsoft.mmi.Kinect.Explorer
                 //Use this code to create grammar programmatically rather than from a grammar file.                
                 var directions = new Choices();
 
-
                 //basic commands                
-                directions.Add(new SemanticResultValue("los", "START"));
+                directions.Add(new SemanticResultValue("start", "START"));
                 directions.Add(new SemanticResultValue("stop", "STOP"));
-                directions.Add(new SemanticResultValue("sprache an", "SPRACHE AN"));
-                directions.Add(new SemanticResultValue("sprache aus", "SPRACHE AUS"));
-                directions.Add(new SemanticResultValue("zoom an", "ZOOMAN"));
-                directions.Add(new SemanticResultValue("zoom aus", "ZOOMAUS"));
-                directions.Add(new SemanticResultValue("bewegung an", "BEWEGUNG AN"));
-                directions.Add(new SemanticResultValue("bewegungs aus", "BEWEGUNG AUS"));
-                directions.Add(new SemanticResultValue("perspektive an", "PERSPEKTIVE AN"));
-                directions.Add(new SemanticResultValue("perspektive aus", "PERSPEKTIVE AUS"));
-                
+                directions.Add(new SemanticResultValue("speech on", "SPRACHE AN"));
+                directions.Add(new SemanticResultValue("speech off", "SPRACHE AUS"));
+                directions.Add(new SemanticResultValue("zoom on", "ZOOM AN"));
+                directions.Add(new SemanticResultValue("zoom off", "ZOOM AUS"));
+                directions.Add(new SemanticResultValue("move on", "BEWEGUNG AN"));
+                directions.Add(new SemanticResultValue("move off", "BEWEGUNG AUS"));
+                directions.Add(new SemanticResultValue("perspective on", "PERSPEKTIVE ON"));
+                directions.Add(new SemanticResultValue("perspective off", "PERSPEKTIVE OFF"));
+
+          
                 //cities
                 directions.Add(new SemanticResultValue("mannheim", "MANNHEIM"));
                 directions.Add(new SemanticResultValue("new york", "NEW YORK"));
                 directions.Add(new SemanticResultValue("frankfurt", "FRANKFURT"));
                 directions.Add(new SemanticResultValue("madrid", "MADRID"));
-                
+
                 // change mode
                 directions.Add(new SemanticResultValue("earth", "EARTH"));
                 directions.Add(new SemanticResultValue("street", "STREET"));
-                
+
                 //adapt the perspective
-                directions.Add(new SemanticResultValue("norden", "NORDEN"));
+                directions.Add(new SemanticResultValue("north", "NORDEN"));
                 directions.Add(new SemanticResultValue("horizon", "HORIZONT"));
-                directions.Add(new SemanticResultValue("vogel", "VOGEL"));
-                directions.Add(new SemanticResultValue("hoch", "HOCH"));
-                directions.Add(new SemanticResultValue("kippen", "KIPPEN"));
-                directions.Add(new SemanticResultValue("rechts", "RECHTS"));
-                directions.Add(new SemanticResultValue("links", "LINKS"));
-                
+                directions.Add(new SemanticResultValue("neutral", "VOGEL"));
+                directions.Add(new SemanticResultValue("up", "HOCH"));
+                directions.Add(new SemanticResultValue("down", "RUNTER"));
+                directions.Add(new SemanticResultValue("right", "RIGHT"));
+                directions.Add(new SemanticResultValue("left", "LINKS"));
+
                 //for development
                 directions.Add(new SemanticResultValue("test", "TEST"));
 
@@ -293,17 +295,54 @@ namespace Microsoft.mmi.Kinect.Explorer
                     sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
                 speechEngine.RecognizeAsync(RecognizeMode.Multiple);
 
-                speechEnabled = true;
 
-                this.gestureMove.Text = "Move: No Skeleton found";
-                this.gestureZoom.Text = "Zoom: No Skeleton found";
-                //this.gesturePerspective.Text = "Perspective: OFF";
-                this.speech.Text = "Speech: ON";
-               
-                //nui winkel
-                this.sensor.ElevationAngle = 19;
+
+                speechEnabled = false;
+
+                if (speechEnabled)
+                {
+                    this.speech.Text = "Speech: ON";
+                    this.speech.Foreground = System.Windows.Media.Brushes.Green;
+                }
+                else
+                {
+
+                    this.speech.Text = "Speech: OFF";
+                    this.speech.Foreground = System.Windows.Media.Brushes.Red;
+
+                }
 
             }
+            gestureController.gestureRecognition(false);
+
+           
+            this.PositionBody.Text = "Position: NOT correct";
+            this.PositionBody.Foreground = System.Windows.Media.Brushes.Red;
+            
+            this.gestureMove.Text = "Move: No Skeleton found";
+            this.gestureMove.Foreground = System.Windows.Media.Brushes.Red;
+
+            this.gestureZoom.Text = "Zoom: No Skeleton found";
+            this.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
+
+            this.gesturePerspective.Text = "Perspective: OFF";
+            this.gesturePerspective.Foreground = System.Windows.Media.Brushes.Red;
+
+            this.superman.Visibility = System.Windows.Visibility.Hidden;
+
+            this.left.Visibility = System.Windows.Visibility.Hidden;
+            this.right.Visibility = System.Windows.Visibility.Hidden;
+            this.up.Visibility = System.Windows.Visibility.Hidden;
+            this.down.Visibility = System.Windows.Visibility.Hidden;
+
+            this.zoomIn.Visibility = System.Windows.Visibility.Hidden;
+            this.zoomIn2x.Visibility = System.Windows.Visibility.Hidden;
+            this.zoomOut.Visibility = System.Windows.Visibility.Hidden;
+            this.zoomOut2x.Visibility = System.Windows.Visibility.Hidden;
+            //nui winkel
+            // this.sensor.ElevationAngle = 19;
+
+
         }
 
         /// <summary>
@@ -346,10 +385,13 @@ namespace Microsoft.mmi.Kinect.Explorer
             if (speechEnabled)
             {
                 this.speech.Text = "Speech: ON";
+                this.speech.Foreground = System.Windows.Media.Brushes.Green;
             }
             else
             {
                 this.speech.Text = "Speech: OFF";
+                this.speech.Foreground = System.Windows.Media.Brushes.Red;
+
             }
             if (e.Result.Confidence >= ConfidenceThreshold)
             {
@@ -363,12 +405,19 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("Sprache AUS");
                         speechEnabled = false;
                         break;
+                    case "START":
+                        gestureController.gestureRecognition(true);
+                       
+                        break;
+                    case "STOP":
+                        gestureController.gestureRecognition(false);
+                        break;
                 }
             }
 
             if (e.Result.Confidence >= ConfidenceThreshold && speechEnabled)
             {
-                
+
                 this.speech.Text = this.speech.Text + " - " + e.Result.Semantics.Value.ToString();
 
                 switch (e.Result.Semantics.Value.ToString())
@@ -386,11 +435,11 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("STOP");
                         gestureController.gestureRecognition(false);
                         break;
-                    case "ZOOMAN":
+                    case "ZOOM AN":
                         System.Console.WriteLine("ZOOM AN");
                         gestureController.zoomRecognition(true);
                         break;
-                    case "ZOOMAUS":
+                    case "ZOOM AUS":
                         System.Console.WriteLine("ZOOM AUS");
                         gestureController.zoomRecognition(false);
                         break;
@@ -402,13 +451,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("BEWEGUNG AUS");
                         gestureController.moveRecognition(false);
                         break;
-                    case "PERSPEKTIVE AN":
+                    case "PERSPEKTIVE ON":
                         System.Console.WriteLine("PERSPEKTIVE AN");
-                        //gestureController.perspectiveRecognition(true);
+                        gestureController.perspectiveRecognition(true);
                         break;
-                    case "PERSPEKTIVE AUS":
+                    case "PERSPEKTIVE OFF":
                         System.Console.WriteLine("PERSPEKTIVE AUS");
-                        //gestureController.perspectiveRecognition(false);
+                        gestureController.perspectiveRecognition(false);
                         break;
                     case "FRANKFURT":
                         System.Console.WriteLine("FRANKFURT");
@@ -442,15 +491,15 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("vogel");
                         gestureController.goTo("vogel");
                         break;
-                    case "HOCH":
-                        System.Console.WriteLine("hoch");
-                        gestureController.goTo("hoch");
-                        break;
-                    case "KIPPEN":
-                        System.Console.WriteLine("kippen");
-                        gestureController.goTo("kippen");
-                        break;
-                    //case "RECHTS":
+                    //case "HOCH":
+                    //    System.Console.WriteLine("hoch");
+                    //    gestureController.goTo("hoch");
+                    //    break;
+                    //case "RUNTER":
+                    //    System.Console.WriteLine("runter");
+                    //    gestureController.goTo("runter");
+                    //    break;
+                    //case "RIGHT":
                     //    System.Console.WriteLine("rechts");
                     //    gestureController.goTo("rechts");
                     //    break;
@@ -467,7 +516,6 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("test");
                         gestureController.goTo("test");
                         break;
-
                 }
             }
         }
@@ -504,7 +552,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             using (DrawingContext dc = this.drawingGroup.Open())
             {
                 // Draw a transparent background to set the render size
-                dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
+                dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
 
                 if (skeletons.Length != 0)
                 {
