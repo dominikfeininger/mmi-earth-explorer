@@ -1,0 +1,15 @@
+E:\Kinect\EarthExplorer\bin\Release\EarthExplorer.exe
+E:\Kinect\EarthExplorer\bin\Release\EarthExplorer.pdb
+E:\Kinect\EarthExplorer\bin\Release\InputSimulator.dll
+E:\Kinect\EarthExplorer\bin\Release\InputSimulator.pdb
+E:\Kinect\EarthExplorer\bin\Release\InputSimulator.xml
+E:\Kinect\EarthExplorer\obj\Release\MainWindow.baml
+E:\Kinect\EarthExplorer\obj\Release\MainWindow.g.cs
+E:\Kinect\EarthExplorer\obj\Release\App.g.cs
+E:\Kinect\EarthExplorer\obj\Release\EarthExplorer_MarkupCompile.cache
+E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.g.resources
+E:\Kinect\EarthExplorer\obj\Release\Microsoft.mmi.Kinect.Explorer.Properties.Resources.resources
+E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.csproj.GenerateResource.Cache
+E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.exe
+E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.pdb
+E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.csprojResolveAssemblyReference.cache

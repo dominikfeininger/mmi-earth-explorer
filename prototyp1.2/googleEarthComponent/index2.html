@@ -52,16 +52,7 @@
 	  // - You want to create the ViewerOptions 
       // - Set the options on any AbstractView 
 
-		//var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
-
-		//alert(position.getAltitude());
-	  //alert(position.getTilt());
-	  
-		//var camera = position;
-		
-	//	camera.setTilt(position.getTilt() +15.0);
-	  //ge.getView().setAbstractView(camera); 
-	  
+		superman();
 	  /*
 		var navcontrol = ge.getNavigationControl();
 	  
@@ -114,23 +105,52 @@
 		return position.getAltitude();
 	}
 	
-	function earth(){
-		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+	/*function earth(){
+		//var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
-
+		var camera = position;
 		//alert(position.getAltitude());
 
-		lookAt.setLatitude(position.getLatitude());
-		lookAt.setLongitude(position.getLongitude());
-		lookAt.setRange(300);
-		lookAt.setTilt(0);
+		//camera.setLatitude(position.getLatitude());
+		//camera.setLongitude(position.getLongitude());
+		//camera.setRange(300);
+		camera.setAltitude(5000);
+		camera.setTilt(0);
 		//alert(lookAt.getRange());
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);
+
+	}*/
+	function superman(){
+		//var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		//alert(position.getAltitude());
+
+		//camera.setLatitude(position.getLatitude());
+		//camera.setLongitude(position.getLongitude());
+		//camera.setRange(lookAt.getRange() + 300);
+		//camera.setAltitude(3000);
+		camera.setAltitude(2000);
+		camera.setTilt(0);
+		//alert(lookAt.getRange());
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);
+
+	}
+	function superman2x(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * 6.0);
+
 		// Update the view in Google Earth.
 		ge.getView().setAbstractView(lookAt);
 
 	}
-	
 	function horizont(){
 	
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
@@ -148,30 +168,29 @@
 	function hoch(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var camera = position;
-		camera.setTilt(position.getTilt() +15.0);
+		camera.setTilt(position.getTilt() +5.0);
 		ge.getView().setAbstractView(camera);
 	}
 
-	function kippen(){
+	function runter(){
 
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var camera = position;
-		camera.setTilt(position.getTilt() -15.0);
+		camera.setTilt(position.getTilt() -5.0);
 		ge.getView().setAbstractView(camera); 
 	  }	
 	  function rechts(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
-		var camera = position;
-		camera.Heading(position.Heading() +15.0);
-		ge.getView().setAbstractView(camera);
+		var lookAt = position;
+		lookAt.setHeading(lookAt.getHeading() +20.0);
+		ge.getView().setAbstractView(lookAt); 
 	}
 
 	function links(){
-
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
-		var camera = position;
-		camera.Heading(position.Heading() -15.0);
-		ge.getView().setAbstractView(camera); 
+		var lookAt = position;
+		lookAt.setHeading(lookAt.getHeading() -20.0);
+		ge.getView().setAbstractView(lookAt); 
 	  }	
 	 
 	function streetAutomatic(){
@@ -316,8 +335,9 @@
 </head>
 <body><!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
 	
+	<!--div id="box" style="height: 100px; width:100px; z-index:1; background:#8f8; position:absolute; "></div-->
 	<!--contains container for google earth-->
-   <div id="map3d" style="height: 100%; width: 100%;"></div>
-
+   <div id="map3d" style="height: 100%; width: 100%; "></div>
+	
 </body>
 </html>
