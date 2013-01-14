@@ -50,3 +50,18 @@ E:\Kinect\EarthExplorer\obj\Debug\EarthExplorer_MarkupCompile.cache
 E:\Kinect\EarthExplorer\obj\Debug\EarthExplorer.g.resources
 E:\Kinect\EarthExplorer\obj\Debug\EarthExplorer.exe
 E:\Kinect\EarthExplorer\obj\Debug\EarthExplorer.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\EarthExplorer.exe
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\EarthExplorer.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\EarthExplorer.csprojResolveAssemblyReference.cache
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\MainWindow.baml
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\MainWindow.g.cs
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\App.g.cs
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\EarthExplorer_MarkupCompile.cache
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\EarthExplorer.g.resources
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\Microsoft.mmi.Kinect.Explorer.Properties.Resources.resources
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Debug\EarthExplorer.csproj.GenerateResource.Cache
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Debug\EarthExplorer.exe
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Debug\EarthExplorer.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Debug\InputSimulator.dll
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Debug\InputSimulator.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Debug\InputSimulator.xml

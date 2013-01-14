@@ -72,9 +72,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         internal void perspectiveRecognition(bool mode)
         {
             this.perspectiveActive = mode;
-            this.moveActive = !mode;
-            this.zoomActive = !mode;
-
+           
         }
 
 
@@ -108,30 +106,32 @@ namespace Microsoft.mmi.Kinect.Explorer
             } if (p.Equals("horizont"))
             {
                 window.Browser.InvokeScript("horizont");
-            } if (p.Equals("vogel"))
+            } if (p.Equals("neutral"))
             {
-                window.Browser.InvokeScript("vogel");
-            } if (p.Equals("hoch"))
-            {
-                window.Browser.InvokeScript("hoch");
-            } if (p.Equals("runter"))
-            {
-                window.Browser.InvokeScript("runter");
+               
+                window.Browser.InvokeScript("neutral");
+               // InputSimulator.SimulateKeyDown(VirtualKeyCode.VK_N);
             }
+            //if (p.Equals("hoch"))
+            //{
+            //    window.Browser.InvokeScript("hoch");
+            //} if (p.Equals("runter"))
+            //{
+            //    window.Browser.InvokeScript("runter");
+            //}
             if (p.Equals("norden"))
             {
                 InputSimulator.SimulateKeyDown(VirtualKeyCode.VK_N);
-
             }
-            if (p.Equals("rechts"))
-            {
-                window.Browser.InvokeScript("rechts");
+            //if (p.Equals("rechts"))
+            //{
+            //    window.Browser.InvokeScript("rechts");
 
-            } if (p.Equals("links"))
-            {
-                window.Browser.InvokeScript("links");
+            //} if (p.Equals("links"))
+            //{
+            //    window.Browser.InvokeScript("links");
 
-            }
+            //}
             if (p.Equals("test"))
             {
                 window.Browser.InvokeScript("test");
@@ -203,6 +203,8 @@ namespace Microsoft.mmi.Kinect.Explorer
             /// if (gesturesActive && (zoomActive || moveActive || perspectiveActive))
             if (positionCorrect)
             {
+                checkContinuousState();
+
                 if (zoomActive)
                 {
                     zoomInOut2(wristHandL, wristHandR, spine);
@@ -221,6 +223,39 @@ namespace Microsoft.mmi.Kinect.Explorer
                 }
             }
 
+        }
+
+        private void checkContinuousState()
+        {
+
+            if (!earthMode)
+            {
+                this.window.supermanTag.Text = "StreetView";
+                this.window.superman.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                this.window.supermanTag.Text = "";
+                this.window.superman.Visibility = System.Windows.Visibility.Hidden;
+            }
+
+            double altitude = (double)window.Browser.InvokeScript("getAltitude");
+
+
+            if (altitude < 10)
+            {
+                earthMode = false;
+
+            }
+            else
+            {
+                earthMode = true;
+            }
+
+            if (earthMode && altitude < 50)
+            {
+                window.Browser.InvokeScript("streetAutomatic");
+            }
         }
 
         private bool positionCenter(Joint shoulderLeft, Joint shoulderRight)
@@ -247,8 +282,6 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             if ((leftHand.Position.Y < head.Position.Y) && (rightHand.Position.Y > head.Position.Y))
             {
-                this.window.superman.Visibility = System.Windows.Visibility.Visible;
-
                 System.Console.WriteLine("SUPERMANN");
                 this.window.gestureMove.Text = this.window.gestureMove.Text + " SUPERMANN";
 
@@ -261,10 +294,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 {
                     window.Browser.InvokeScript("superman2x");
                 }
-
             }
-            this.window.superman.Visibility = System.Windows.Visibility.Hidden;
-
         }
 
 
@@ -474,13 +504,8 @@ namespace Microsoft.mmi.Kinect.Explorer
             // System.Console.WriteLine("X TestWert: " + ((wristHandR.Position.X + spine.Position.X) - (wristHandL.Position.X - spine.Position.X)));
             //System.Console.WriteLine("Linkes Handgelenk:" + wristHandL.Position.X + "Rechtes Handgelenk:" + wristHandR.Position.X);
             //System.Console.WriteLine("zoom");
-            double altitude = (double)window.Browser.InvokeScript("getAltitude");
-            String mode = "";
-            if (altitude < 20)
-            {
-                earthMode = false;
-                mode = "";
-            }
+
+
 
             double difference = 0.2;
 
@@ -505,18 +530,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 moveActive = false;
 
-                if (earthMode)
-                {
-                    window.Browser.InvokeScript("streetAutomatic");
-                    mode = "";
-                }
-                else
-                {
-                    mode = "StreetView";
-                }
-
-
-
                 if (differenceHandSpine >= 0.8 && earthMode)
                 {
                     showZoomImg("zoomIn2x");
@@ -527,7 +540,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 {
                     showZoomImg("zoomIn");
                     //System.Console.WriteLine("Zoom - IN");
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN " + mode;
+                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN ";
                     InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
                 }
                 else if (differenceHandSpine < 0.15 && earthMode)
@@ -541,7 +554,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 {
                     showZoomImg("zoomOut");
                     //System.Console.WriteLine("Zoom - OUT");
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT " + mode;
+                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT ";
                     InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
                 }
                 else
@@ -664,12 +677,12 @@ namespace Microsoft.mmi.Kinect.Explorer
                 {
                     // 2.0:Vor  2.4: Mitte   2.7: Hinten
                     //   System.Console.WriteLine(kneeRight.Position.Z - kneeLeft.Position.Z);
-                    if ((kneeRight.Position.Z - kneeLeft.Position.Z) > 0.2)
+                    if ((kneeRight.Position.Z - kneeLeft.Position.Z) > 0.1)
                     {
                         showMoveImg("down");
                         InputSimulator.SimulateKeyDown(VirtualKeyCode.DOWN);
                     }
-                    else if ((kneeRight.Position.Z - kneeLeft.Position.Z) < -0.2)
+                    else if ((kneeRight.Position.Z - kneeLeft.Position.Z) < -0.15)
                     {
                         showMoveImg("up");
                         InputSimulator.SimulateKeyDown(VirtualKeyCode.UP);

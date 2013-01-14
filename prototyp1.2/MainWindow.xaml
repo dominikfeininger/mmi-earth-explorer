@@ -1,6 +1,6 @@
 ﻿<Window x:Class="Microsoft.mmi.Kinect.Explorer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
         Title="Earth Explorer" Height="760" Width="1010" Loaded="WindowLoaded" Closing="WindowClosing"
         BorderThickness="0"
         WindowStyle="ToolWindow"
@@ -37,31 +37,32 @@ Background="Transparent"
         <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Margin="130,0,0,0" Height="130" Name="statusBar" VerticalAlignment="Bottom" Background="Transparent" Foreground="{StaticResource MediumGreyBrush}">
             
             <Grid Name="layoutGrid2" HorizontalAlignment="Stretch" >
-                <TextBlock Name="PositionBody" HorizontalAlignment="Left" FontSize="15" Foreground="Black" Margin="98,0,448,99" Width="300" Height="25" >'Position'</TextBlock>
-                <TextBlock Name="gestureMove" FontSize="15" Foreground="Black" Margin="98,25,448,74" Width="300" Height="25" >'Seated'</TextBlock>
-                <TextBlock Name="gestureZoom" FontSize="15" Foreground="Black" Margin="98,50,448,49" Width="300" Height="25">'Seated'</TextBlock>
-                <TextBlock Name="gesturePerspective" FontSize="15" Foreground="Black" Margin="98,75,448,24" Width="300" Height="25" >'Seated'</TextBlock>
-                <TextBlock Name="speech" FontSize="15" Foreground="Black" Margin="98,100,448,-1" Width="300" Height="25" >'Seated'</TextBlock>
+                <TextBlock Name="PositionBody" FontSize="15" Foreground="Black" Margin="98,0,448,99" Width="300" Height="25" >''</TextBlock>
+                <TextBlock Name="gestureMove" FontSize="15" Foreground="Black" Margin="98,25,448,74" Width="300" Height="25" >''</TextBlock>
+                <TextBlock Name="gestureZoom" FontSize="15" Foreground="Black" Margin="98,50,448,49" Width="300" Height="25">''</TextBlock>
+                <TextBlock Name="gesturePerspective" FontSize="15" Foreground="Black" Margin="98,75,448,24" Width="300" Height="25" >''</TextBlock>
+                <TextBlock Name="speech" FontSize="15" Foreground="Black" Margin="98,100,448,-1" Width="300" Height="25" >''</TextBlock>
                 <!--TextBlock Name="PositionFeet" FontSize="20" Foreground="Black" Margin="369,0,0,114" Width="300" Height="35" >'Position'</TextBlock-->
 
-                <Image Name="left"  Width="150" Source="E:\Kinect\EarthExplorer\Images\left.png"  Margin="496,0,200,0" />
-                <Image Name="right" Width="150" Source="E:\Kinect\EarthExplorer\Images\right.png" Margin="494,0,202,0"/>
-                <Image Name="up" Width="150" Source="E:\Kinect\EarthExplorer\Images\up.png" Margin="496,0,200,0"/>
-                <Image Name="down" Width="150" Source="E:\Kinect\EarthExplorer\Images\down.png" Margin="496,0,200,0"/>
+                <Canvas Name="left"  Width="150" Margin="442,0,254,30" />
+                <Canvas Name="right" Width="150" Margin="442,0,254,30"/>
+                <Canvas Name="up" Width="150" Margin="442,0,254,30"/>
+                <Canvas Name="down" Width="150" Margin="442,0,254,30"/>
 
 
-                <Image Name="superman" Source="E:\Kinect\EarthExplorer\Images\superman.png" Margin="398,0,384,0"/>
-                <Image Name="zoomIn" Width="200" Source="E:\Kinect\EarthExplorer\Images\zoomIn.png" Margin="646,0,0,0"/>
-                <Image Name="zoomIn2x" Width="200" Source="E:\Kinect\EarthExplorer\Images\zoomIn2x.png" Margin="646,0,0,0"/>
-                <Image Name="zoomOut" Width="200"  Source="E:\Kinect\EarthExplorer\Images\zoomOut.png" Margin="646,0,0,0"/>
-                <Image Name="zoomOut2x" Width="200" Source="E:\Kinect\EarthExplorer\Images\zoomOut2x.png" Margin="646,0,0,0"/>
-                
-               
-                <Image Name="icon" Source="E:\Kinect\EarthExplorer\Images\earthexplorer_icon_256x256.png" Margin="0,25,766,24"/>
+                <Canvas Name="superman" Margin="396,0,404,30"/>
+                <Canvas Name="zoomIn" Width="254" Margin="592,0,0,30"/>
+                <Canvas Name="zoomIn2x" Width="254" Margin="592,0,0,30"/>
+                <Canvas Name="zoomOut" Width="254" Margin="592,0,0,30"/>
+                <Canvas Name="zoomOut2x" Width="254" Margin="592,0,0,30"/>
+
+                <Canvas Name="icon" Margin="0,25,766,24"/>
+                <TextBlock x:Name="noKinect" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" Foreground="Red" Margin="494,94,0,0" />
+                <TextBlock x:Name="supermanTag" TextAlignment="Center" FontSize="15" Foreground="White" Margin="378,99,404,0" />
+                <!--Image Name="icon" Source="E:\Kinect\EarthExplorer\Images\earthexplorer_icon_256x256.png" Margin="0,25,766,24"/-->
 
             </Grid>            
-        </StatusBar>
-        
+        </StatusBar>        
       </Grid>
 </Window>
 

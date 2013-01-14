@@ -13,3 +13,18 @@ E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.csproj.GenerateResource.Cache
 E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.exe
 E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.pdb
 E:\Kinect\EarthExplorer\obj\Release\EarthExplorer.csprojResolveAssemblyReference.cache
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\EarthExplorer.exe
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\EarthExplorer.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Release\EarthExplorer.exe
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Release\EarthExplorer.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Release\InputSimulator.dll
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Release\InputSimulator.pdb
+Z:\Macintosh HD\Kinect\EarthExplorer\bin\Release\InputSimulator.xml
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\EarthExplorer.csprojResolveAssemblyReference.cache
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\MainWindow.baml
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\MainWindow.g.cs
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\App.g.cs
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\EarthExplorer_MarkupCompile.cache
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\EarthExplorer.g.resources
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\Microsoft.mmi.Kinect.Explorer.Properties.Resources.resources
+Z:\Macintosh HD\Kinect\EarthExplorer\obj\Release\EarthExplorer.csproj.GenerateResource.Cache

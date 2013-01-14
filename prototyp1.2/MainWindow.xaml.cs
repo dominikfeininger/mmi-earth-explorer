@@ -108,7 +108,11 @@ namespace Microsoft.mmi.Kinect.Explorer
             //Dominik
             //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
             //Roy
+            //nativ
             Browser.Navigate(new Uri("E:/Kinect/EarthExplorer/googleEarthComponent/index2.html"));
+            //VM
+            //Browser.Navigate(new Uri("Z:/Macintosh HD/Kinect/EarthExplorer/googleEarthComponent/index2.html"));
+
             //CN
             //Browser.Navigate(new Uri("C:/Users/n00b/Downloads/cs247-prototype/index2.html"));
 
@@ -221,6 +225,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                 try
                 {
                     this.sensor.Start();
+                    speechconfig(sender, e);
+                 
                 }
                 catch (IOException)
                 {
@@ -231,18 +237,138 @@ namespace Microsoft.mmi.Kinect.Explorer
             //new gesture controller for google earth gestures
             gestureController = new SuperController(this);
 
+            gestureController.gestureRecognition(false);
+
+            initUI(sender, e);
+
             if (null == this.sensor)
             {
-
+                this.noKinect.Text = "! NO KINECT FOUND !";
+                this.zoomIn.Visibility = System.Windows.Visibility.Visible;
+                this.up.Visibility = System.Windows.Visibility.Visible;
                 // this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
+           
+            //nui winkel
+            // this.sensor.ElevationAngle = 19;
+
+        }
+
+        //initUI
+        // Labels and Pictures
+        private void initUI(object sender, RoutedEventArgs e)
+        {
+            this.PositionBody.Text = "Position: NOT correct";
+            this.PositionBody.Foreground = System.Windows.Media.Brushes.Red;
+
+            this.gestureMove.Text = "Move: No Skeleton found";
+            this.gestureMove.Foreground = System.Windows.Media.Brushes.Red;
+
+            this.gestureZoom.Text = "Zoom: No Skeleton found";
+            this.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
+
+            this.gesturePerspective.Text = "Perspective: OFF";
+            this.gesturePerspective.Foreground = System.Windows.Media.Brushes.Red;
+
+            if (speechEnabled)
+            {
+                this.speech.Text = "Speech: ON";
+                this.speech.Foreground = System.Windows.Media.Brushes.Green;
+            }
+            else
+            {
+                this.speech.Text = "Speech: OFF";
+                this.speech.Foreground = System.Windows.Media.Brushes.Red;
+            }
+            this.superman.Visibility = System.Windows.Visibility.Hidden;
+
+            this.left.Visibility = System.Windows.Visibility.Hidden;
+            this.right.Visibility = System.Windows.Visibility.Hidden;
+            this.up.Visibility = System.Windows.Visibility.Hidden;
+            this.down.Visibility = System.Windows.Visibility.Hidden;
+
+            this.zoomIn.Visibility = System.Windows.Visibility.Hidden;
+            this.zoomIn2x.Visibility = System.Windows.Visibility.Hidden;
+            this.zoomOut.Visibility = System.Windows.Visibility.Hidden;
+            this.zoomOut2x.Visibility = System.Windows.Visibility.Hidden;
+
+
+
+            //Icon
+            System.Drawing.Bitmap backgroundBitmap = Properties.Resources.icon;
+            IntPtr hbitmap = backgroundBitmap.GetHbitmap();
+            ImageSource imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.icon.Background = new ImageBrush(imageSource);
+
+            //Superman           
+            backgroundBitmap = Properties.Resources.superman;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.superman.Background = new ImageBrush(imageSource);
+
+            //Direction Arrows            
+            backgroundBitmap = Properties.Resources.up;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.up.Background = new ImageBrush(imageSource);
+
+
+            //Direction Arrows            
+            backgroundBitmap = Properties.Resources.down;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.down.Background = new ImageBrush(imageSource);
+
+            //Direction Arrows            
+            backgroundBitmap = Properties.Resources.left;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.left.Background = new ImageBrush(imageSource);
+
+            //Direction Arrows            
+            backgroundBitmap = Properties.Resources.right;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.right.Background = new ImageBrush(imageSource);
+
+            //Zoom Arrows            
+            backgroundBitmap = Properties.Resources.zoomIn;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.zoomIn.Background = new ImageBrush(imageSource);
+
+            //Zoom Arrows            
+            backgroundBitmap = Properties.Resources.zoomIn2x;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.zoomIn2x.Background = new ImageBrush(imageSource);
+
+            //Zoom Arrows            
+            backgroundBitmap = Properties.Resources.zoomOut;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.zoomOut.Background = new ImageBrush(imageSource);
+
+            //Zoom Arrows            
+            backgroundBitmap = Properties.Resources.zoomOut2x;
+            hbitmap = backgroundBitmap.GetHbitmap();
+            imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
+            this.zoomOut2x.Background = new ImageBrush(imageSource);
+
+        }
+
+        //speechconfig
+        private void speechconfig(object sender, RoutedEventArgs e)
+        {
 
             //Speechrecognizer
             RecognizerInfo ri = GetKinectRecognizer();
-            
+
             if (null != ri)
             {
                 this.speechEngine = new SpeechRecognitionEngine(ri.Id);
+
+                speechEnabled = false;
 
                 //Use this code to create grammar programmatically rather than from a grammar file.                
                 var directions = new Choices();
@@ -252,14 +378,14 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("stop", "STOP"));
                 directions.Add(new SemanticResultValue("speech on", "SPRACHE AN"));
                 directions.Add(new SemanticResultValue("speech off", "SPRACHE AUS"));
-                directions.Add(new SemanticResultValue("zoom on", "ZOOM AN"));
-                directions.Add(new SemanticResultValue("zoom off", "ZOOM AUS"));
-                directions.Add(new SemanticResultValue("move on", "BEWEGUNG AN"));
-                directions.Add(new SemanticResultValue("move off", "BEWEGUNG AUS"));
+                //directions.Add(new SemanticResultValue("zoom on", "ZOOM AN"));
+                //directions.Add(new SemanticResultValue("zoom off", "ZOOM AUS"));
+                //directions.Add(new SemanticResultValue("move on", "BEWEGUNG AN"));
+                //directions.Add(new SemanticResultValue("move off", "BEWEGUNG AUS"));
                 directions.Add(new SemanticResultValue("perspective on", "PERSPEKTIVE ON"));
                 directions.Add(new SemanticResultValue("perspective off", "PERSPEKTIVE OFF"));
 
-          
+
                 //cities
                 directions.Add(new SemanticResultValue("mannheim", "MANNHEIM"));
                 directions.Add(new SemanticResultValue("new york", "NEW YORK"));
@@ -271,13 +397,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("street", "STREET"));
 
                 //adapt the perspective
-                directions.Add(new SemanticResultValue("north", "NORDEN"));
+                directions.Add(new SemanticResultValue("northern", "NORDEN"));
                 directions.Add(new SemanticResultValue("horizon", "HORIZONT"));
-                directions.Add(new SemanticResultValue("neutral", "VOGEL"));
-                directions.Add(new SemanticResultValue("up", "HOCH"));
-                directions.Add(new SemanticResultValue("down", "RUNTER"));
-                directions.Add(new SemanticResultValue("right", "RIGHT"));
-                directions.Add(new SemanticResultValue("left", "LINKS"));
+                directions.Add(new SemanticResultValue("neutral", "NEUTRAL"));
+                //directions.Add(new SemanticResultValue("up", "HOCH"));
+                //directions.Add(new SemanticResultValue("down", "RUNTER"));
+                //directions.Add(new SemanticResultValue("right", "RIGHT"));
+                //directions.Add(new SemanticResultValue("left", "LINKS"));
 
                 //for development
                 directions.Add(new SemanticResultValue("test", "TEST"));
@@ -295,10 +421,6 @@ namespace Microsoft.mmi.Kinect.Explorer
                     sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
                 speechEngine.RecognizeAsync(RecognizeMode.Multiple);
 
-
-
-                speechEnabled = false;
-
                 if (speechEnabled)
                 {
                     this.speech.Text = "Speech: ON";
@@ -306,43 +428,10 @@ namespace Microsoft.mmi.Kinect.Explorer
                 }
                 else
                 {
-
                     this.speech.Text = "Speech: OFF";
                     this.speech.Foreground = System.Windows.Media.Brushes.Red;
-
                 }
-
             }
-            gestureController.gestureRecognition(false);
-
-           
-            this.PositionBody.Text = "Position: NOT correct";
-            this.PositionBody.Foreground = System.Windows.Media.Brushes.Red;
-            
-            this.gestureMove.Text = "Move: No Skeleton found";
-            this.gestureMove.Foreground = System.Windows.Media.Brushes.Red;
-
-            this.gestureZoom.Text = "Zoom: No Skeleton found";
-            this.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
-
-            this.gesturePerspective.Text = "Perspective: OFF";
-            this.gesturePerspective.Foreground = System.Windows.Media.Brushes.Red;
-
-            this.superman.Visibility = System.Windows.Visibility.Hidden;
-
-            this.left.Visibility = System.Windows.Visibility.Hidden;
-            this.right.Visibility = System.Windows.Visibility.Hidden;
-            this.up.Visibility = System.Windows.Visibility.Hidden;
-            this.down.Visibility = System.Windows.Visibility.Hidden;
-
-            this.zoomIn.Visibility = System.Windows.Visibility.Hidden;
-            this.zoomIn2x.Visibility = System.Windows.Visibility.Hidden;
-            this.zoomOut.Visibility = System.Windows.Visibility.Hidden;
-            this.zoomOut2x.Visibility = System.Windows.Visibility.Hidden;
-            //nui winkel
-            // this.sensor.ElevationAngle = 19;
-
-
         }
 
         /// <summary>
@@ -355,11 +444,9 @@ namespace Microsoft.mmi.Kinect.Explorer
             if (null != this.sensor)
             {
                 this.sensor.AudioSource.Stop();
-
                 this.sensor.Stop();
                 this.sensor = null;
             }
-
             if (null != this.speechEngine)
             {
                 this.speechEngine.SpeechRecognized -= SpeechRecognized;
@@ -382,6 +469,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             const double ConfidenceThreshold = 0.3;
 
             //ClearRecognitionHighlights();
+
             if (speechEnabled)
             {
                 this.speech.Text = "Speech: ON";
@@ -392,25 +480,30 @@ namespace Microsoft.mmi.Kinect.Explorer
                 this.speech.Text = "Speech: OFF";
                 this.speech.Foreground = System.Windows.Media.Brushes.Red;
 
+
             }
+
             if (e.Result.Confidence >= ConfidenceThreshold)
             {
                 switch (e.Result.Semantics.Value.ToString())
                 {
                     case "SPRACHE AN":
-                        System.Console.WriteLine("Sprache AN");
                         speechEnabled = true;
+                        this.speech.Text = "Speech: ON";
+                        this.speech.Foreground = System.Windows.Media.Brushes.Green;
                         break;
                     case "SPRACHE AUS":
-                        System.Console.WriteLine("Sprache AUS");
                         speechEnabled = false;
+                        this.speech.Text = "Speech: OFF";
+                        this.speech.Foreground = System.Windows.Media.Brushes.Red;
                         break;
                     case "START":
                         gestureController.gestureRecognition(true);
-                       
+                        gestureController.perspectiveRecognition(false);
                         break;
                     case "STOP":
                         gestureController.gestureRecognition(false);
+                        gestureController.perspectiveRecognition(false);
                         break;
                 }
             }
@@ -422,43 +515,36 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                 switch (e.Result.Semantics.Value.ToString())
                 {
-                    case "START":
-                        System.Console.WriteLine("START");
-                        System.Console.WriteLine("START");
-                        System.Console.WriteLine("START");
-                        gestureController.gestureRecognition(true);
-                        break;
-
-                    case "STOP":
-                        System.Console.WriteLine("STOP");
-                        System.Console.WriteLine("STOP");
-                        System.Console.WriteLine("STOP");
-                        gestureController.gestureRecognition(false);
-                        break;
-                    case "ZOOM AN":
-                        System.Console.WriteLine("ZOOM AN");
-                        gestureController.zoomRecognition(true);
-                        break;
-                    case "ZOOM AUS":
-                        System.Console.WriteLine("ZOOM AUS");
-                        gestureController.zoomRecognition(false);
-                        break;
-                    case "BEWEGUNG AN":
-                        System.Console.WriteLine("BEWEGUNG AN");
-                        gestureController.moveRecognition(true);
-                        break;
-                    case "BEWEGUNG AUS":
-                        System.Console.WriteLine("BEWEGUNG AUS");
-                        gestureController.moveRecognition(false);
-                        break;
+                    //Basics
+                    //case "ZOOM AN":
+                    //    System.Console.WriteLine("ZOOM AN");
+                    //    gestureController.zoomRecognition(true);
+                    //    break;
+                    //case "ZOOM AUS":
+                    //    System.Console.WriteLine("ZOOM AUS");
+                    //    gestureController.zoomRecognition(false);
+                    //    break;
+                    //case "BEWEGUNG AN":
+                    //    System.Console.WriteLine("BEWEGUNG AN");
+                    //    gestureController.moveRecognition(true);
+                    //    break;
+                    //case "BEWEGUNG AUS":
+                    //    System.Console.WriteLine("BEWEGUNG AUS");
+                    //    gestureController.moveRecognition(false);
+                    //    break;
                     case "PERSPEKTIVE ON":
                         System.Console.WriteLine("PERSPEKTIVE AN");
                         gestureController.perspectiveRecognition(true);
+                        gestureController.gestureRecognition(false);
                         break;
                     case "PERSPEKTIVE OFF":
                         System.Console.WriteLine("PERSPEKTIVE AUS");
+                        gestureController.gestureRecognition(true);
                         gestureController.perspectiveRecognition(false);
                         break;
+
+                    //Cities
+
                     case "FRANKFURT":
                         System.Console.WriteLine("FRANKFURT");
                         gestureController.goTo("frankfurt");
@@ -475,9 +561,15 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("NEW YORK");
                         gestureController.goTo("new york");
                         break;
+
+                    //Perspektive
+                    case "NORDEN":
+                        System.Console.WriteLine("norden");
+                        gestureController.goTo("norden");
+                        break;
                     case "EARTH":
                         System.Console.WriteLine("Earth");
-                        gestureController.goTo("earth");
+                        gestureController.goTo("superman");
                         break;
                     case "STREET":
                         System.Console.WriteLine("street");
@@ -487,9 +579,9 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("horizont");
                         gestureController.goTo("horizont");
                         break;
-                    case "VOGEL":
-                        System.Console.WriteLine("vogel");
-                        gestureController.goTo("vogel");
+                    case "NEUTRAL":
+                        System.Console.WriteLine("neutral");
+                        gestureController.goTo("neutral");
                         break;
                     //case "HOCH":
                     //    System.Console.WriteLine("hoch");
@@ -507,10 +599,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                     //    System.Console.WriteLine("links");
                     //    gestureController.goTo("links");
                     //    break;
-                    case "NORDEN":
-                        System.Console.WriteLine("norden");
-                        gestureController.goTo("norden");
-                        break;
+
 
                     case "TEST":
                         System.Console.WriteLine("test");
@@ -581,10 +670,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                         }
                     }
                 }
-
                 // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
-
             }
         }
 
@@ -710,32 +797,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 drawPen = this.trackedBonePen;
             }
-
             drawingContext.DrawLine(drawPen, this.SkeletonPointToScreen(joint0.Position), this.SkeletonPointToScreen(joint1.Position));
         }
-
-        /// <summary>
-        /// Handles the checking or unchecking of the seated mode combo box
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        /*private void CheckBoxSeatedModeChanged(object sender, RoutedEventArgs e)
-        {
-            /*
-            if (null != this.sensor)
-            {
-                if (this.checkBoxSeatedMode.IsChecked.GetValueOrDefault())
-                {
-                    this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated;
-                    gestureController.setSeatedMode(true);
-                }
-                else
-                {
-                    this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
-                    gestureController.setSeatedMode(false);
-                }
-            }
-            */
-        //}
     }
 }
