@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -156,6 +157,48 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="earthexplorer_icon_256x256.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\earthexplorer_icon_256x256.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\earthexplorer_icon_256x256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\up.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\superman.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\up.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\zoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\zoomIn2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\zoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\zoomOut2x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

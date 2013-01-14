@@ -52,7 +52,7 @@
 	  // - You want to create the ViewerOptions 
       // - Set the options on any AbstractView 
 
-		superman();
+		
 	  /*
 		var navcontrol = ge.getNavigationControl();
 	  
@@ -105,23 +105,7 @@
 		return position.getAltitude();
 	}
 	
-	/*function earth(){
-		//var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-		
-		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
-		var camera = position;
-		//alert(position.getAltitude());
 
-		//camera.setLatitude(position.getLatitude());
-		//camera.setLongitude(position.getLongitude());
-		//camera.setRange(300);
-		camera.setAltitude(5000);
-		camera.setTilt(0);
-		//alert(lookAt.getRange());
-		// Update the view in Google Earth.
-		ge.getView().setAbstractView(camera);
-
-	}*/
 	function superman(){
 		//var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		
@@ -146,7 +130,7 @@
 
 		// Zoom out to twice the current range.
 		lookAt.setRange(lookAt.getRange() * 6.0);
-
+		lookAt.setTilt(0);
 		// Update the view in Google Earth.
 		ge.getView().setAbstractView(lookAt);
 
@@ -158,7 +142,7 @@
 		camera.setTilt(90.0);
 		ge.getView().setAbstractView(camera);
 	}
-	function vogel(){
+	function neutral(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var camera = position;
 		camera.setTilt(0.0);
@@ -182,14 +166,14 @@
 	  function rechts(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var lookAt = position;
-		lookAt.setHeading(lookAt.getHeading() +20.0);
+		lookAt.setHeading(lookAt.getHeading() +10.0);
 		ge.getView().setAbstractView(lookAt); 
 	}
 
 	function links(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var lookAt = position;
-		lookAt.setHeading(lookAt.getHeading() -20.0);
+		lookAt.setHeading(lookAt.getHeading() -10.0);
 		ge.getView().setAbstractView(lookAt); 
 	  }	
 	 
