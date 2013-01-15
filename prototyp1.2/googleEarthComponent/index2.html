@@ -13,12 +13,17 @@
 
 	 //init function for earth
      function init() {
+		document.documentElement.style.overflow = 'hidden';
+		document.body.scroll = "no";
+	
+		document.documentElement.style.backgroundColor = "black";
 		google.earth.createInstance('map3d', initCB, failureCB);
      }
 
      
      function initCB(instance) {
 
+	 
 		 /* Basic initialization as per the Google Earth API documentation */
 		 ge = instance;	
 		 
@@ -321,7 +326,7 @@
 	
 	<!--div id="box" style="height: 100px; width:100px; z-index:1; background:#8f8; position:absolute; "></div-->
 	<!--contains container for google earth-->
-   <div id="map3d" style="height: 100%; width: 100%; "></div>
+   <div id="map3d" style="height: 100%; width: 100%; background-color:Black; "></div>
 	
 </body>
 </html>
