@@ -225,8 +225,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                 try
                 {
                     this.sensor.Start();
-                    //speechconfig(sender, e);
-                    speechconfigMod(sender, e);
+                    speechconfig(sender, e);
+                    //speechconfigMod(sender, e);
 
                 }
                 catch (IOException)
@@ -249,6 +249,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 this.up.Visibility = System.Windows.Visibility.Visible;
                 // this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
+            
 
             //nui winkel
             // this.sensor.ElevationAngle = 19;
@@ -258,21 +259,25 @@ namespace Microsoft.mmi.Kinect.Explorer
         private void kinectUp_Click(object sender, RoutedEventArgs e)
         {
 
-            if (this.sensor != null)
+            System.Console.WriteLine("angle "+ this.sensor.ElevationAngle);
+
+            if (this.sensor != null && this.sensor.ElevationAngle < 26)
             {
-                this.sensor.ElevationAngle = this.sensor.ElevationAngle + 1;
+
+                this.sensor.ElevationAngle +=2;
             }
-                System.Console.WriteLine("kinect hoch");
-            
+            System.Console.WriteLine("kinect hoch");
+
         }
 
         private void kinectDown_Click(object sender, RoutedEventArgs e)
         {
-            if (this.sensor != null)
+           System.Console.WriteLine("angle "+ this.sensor.ElevationAngle);
+            if (this.sensor != null && this.sensor.ElevationAngle > -26)
             {
-                this.sensor.ElevationAngle = this.sensor.ElevationAngle - 1;
+                this.sensor.ElevationAngle -= 2;
 
-            } 
+            }
             System.Console.WriteLine("kinect runter");
         }
 
@@ -380,7 +385,8 @@ namespace Microsoft.mmi.Kinect.Explorer
         }
 
 
-        //speechconfig
+        //speechconfig TEST
+        /*
         private void speechconfigMod(object sender, RoutedEventArgs e)
         {
 
@@ -390,8 +396,8 @@ namespace Microsoft.mmi.Kinect.Explorer
             if (null != ri)
             {
                 this.speechEngine = new SpeechRecognitionEngine(ri.Id);
-
-                speechEnabled = false;
+                
+                speechEnabled = true;
 
                 //Use this code to create grammar programmatically rather than from a grammar file.                
                 //Choices directions = new Choices();
@@ -452,13 +458,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                 // Build a Grammar object from the GrammarBuilder.
                 Grammar kinectControl = new Grammar(control);
 
-                /* var gb = new GrammarBuilder { Culture = ri.Culture };
-                 gb.Append(directions);
-                 var g = new Grammar(gb);
-                 */
+                // var gb = new GrammarBuilder { Culture = ri.Culture };
+                 //gb.Append(directions);
+                 //var g = new Grammar(gb);
+                 
 
-                //speechEngine.LoadGrammar(g);
-                speechEngine.LoadGrammarAsync(kinectControl);
+                speechEngine.LoadGrammar(kinectControl);
+                //speechEngine.LoadGrammarAsync(kinectControl);
 
                 speechEngine.SpeechRecognized += SpeechRecognizedMod;
                 speechEngine.SpeechRecognitionRejected += SpeechRejected;
@@ -478,9 +484,10 @@ namespace Microsoft.mmi.Kinect.Explorer
                     this.speech.Text = "Speech: OFF";
                     this.speech.Foreground = System.Windows.Media.Brushes.Red;
                 }
+                System.Console.WriteLine("sprache?");
             }
         }
-
+        */
         //speechconfig
         private void speechconfig(object sender, RoutedEventArgs e)
         {
@@ -500,14 +507,14 @@ namespace Microsoft.mmi.Kinect.Explorer
                 //basic commands                
                 directions.Add(new SemanticResultValue("start", "START"));
                 directions.Add(new SemanticResultValue("stop", "STOP"));
-                directions.Add(new SemanticResultValue("speech on", "SPRACHE AN"));
-                directions.Add(new SemanticResultValue("speech off", "SPRACHE AUS"));
+                directions.Add(new SemanticResultValue("speech on", "SPEECH ON"));
+                directions.Add(new SemanticResultValue("speech off", "SPEECH OFF"));
                 //directions.Add(new SemanticResultValue("zoom on", "ZOOM AN"));
                 //directions.Add(new SemanticResultValue("zoom off", "ZOOM AUS"));
                 //directions.Add(new SemanticResultValue("move on", "BEWEGUNG AN"));
                 //directions.Add(new SemanticResultValue("move off", "BEWEGUNG AUS"));
-                directions.Add(new SemanticResultValue("perspective on", "PERSPEKTIVE ON"));
-                directions.Add(new SemanticResultValue("perspective off", "PERSPEKTIVE OFF"));
+                directions.Add(new SemanticResultValue("perspective on", "PERSPECTIVE ON"));
+                directions.Add(new SemanticResultValue("perspective off", "PERSPECTIVE OFF"));
 
 
                 //cities
@@ -517,12 +524,12 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("madrid", "MADRID"));
 
                 // change mode
-                directions.Add(new SemanticResultValue("earth", "EARTH"));
-                directions.Add(new SemanticResultValue("street", "STREET"));
+                directions.Add(new SemanticResultValue("earthview", "EARTH"));
+                directions.Add(new SemanticResultValue("streetview", "STREET"));
 
                 //adapt the perspective
-                directions.Add(new SemanticResultValue("northern", "NORDEN"));
-                directions.Add(new SemanticResultValue("horizon", "HORIZONT"));
+                directions.Add(new SemanticResultValue("northern", "NORTHERN"));
+                directions.Add(new SemanticResultValue("horizon", "HORIZON"));
                 directions.Add(new SemanticResultValue("neutral", "NEUTRAL"));
                 //directions.Add(new SemanticResultValue("up", "HOCH"));
                 //directions.Add(new SemanticResultValue("down", "RUNTER"));
@@ -530,7 +537,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 //directions.Add(new SemanticResultValue("left", "LINKS"));
 
                 //for development
-                directions.Add(new SemanticResultValue("test", "TEST"));
+               // directions.Add(new SemanticResultValue("test", "TEST"));
 
                 var gb = new GrammarBuilder { Culture = ri.Culture };
                 gb.Append(directions);
@@ -580,8 +587,8 @@ namespace Microsoft.mmi.Kinect.Explorer
         }
 
 
-        //speech       
-
+        //speech  test     
+        /*
         /// <summary>
         /// Handler for recognized speech events.
         /// </summary>
@@ -602,7 +609,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
 
             // Speech utterance confidence below which we treat speech as if it hadn't been heard
-            const double ConfidenceThreshold = 0.3;
+            const double ConfidenceThreshold = 0.0;
             String recognized;
             //ClearRecognitionHighlights();
 
@@ -655,75 +662,79 @@ namespace Microsoft.mmi.Kinect.Explorer
                 }
 
             }
-            else if (e.Result.Semantics["cities"].Confidence >= ConfidenceThreshold)
+            if (speechEnabled)
             {
-
-                recognized = (e.Result.Semantics["cities"].Value.ToString());
-
-                switch (recognized)
+                if (e.Result.Semantics["cities"].Confidence >= ConfidenceThreshold)
                 {
 
-                    //Cities
+                    recognized = (e.Result.Semantics["cities"].Value.ToString());
 
-                    case "FRANKFURT":
-                        System.Console.WriteLine("FRANKFURT");
-                        gestureController.goTo("frankfurt");
-                        break;
-                    case "MADRID":
-                        System.Console.WriteLine("MADRID");
-                        gestureController.goTo("madrid");
-                        break;
-                    case "MANNHEIM":
-                        System.Console.WriteLine("MANNHEIM");
-                        gestureController.goTo("mannheim");
-                        break;
-                    case "NEW YORK":
-                        System.Console.WriteLine("NEW YORK");
-                        gestureController.goTo("new york");
-                        break;
+                    switch (recognized)
+                    {
 
+                        //Cities
+
+                        case "FRANKFURT":
+                            System.Console.WriteLine("FRANKFURT");
+                            gestureController.goTo("frankfurt");
+                            break;
+                        case "MADRID":
+                            System.Console.WriteLine("MADRID");
+                            gestureController.goTo("madrid");
+                            break;
+                        case "MANNHEIM":
+                            System.Console.WriteLine("MANNHEIM");
+                            gestureController.goTo("mannheim");
+                            break;
+                        case "NEW YORK":
+                            System.Console.WriteLine("NEW YORK");
+                            gestureController.goTo("new york");
+                            break;
+
+                    }
                 }
-            }
-            else if (e.Result.Semantics["mode"].Confidence >= ConfidenceThreshold)
-            {
-
-                recognized = (e.Result.Semantics["mode"].Value.ToString());
-
-                switch (recognized)
+                else if (e.Result.Semantics["mode"].Confidence >= ConfidenceThreshold)
                 {
-                    case "EARTH":
-                        System.Console.WriteLine("Earth");
-                        gestureController.goTo("superman");
-                        break;
-                    case "STREET":
-                        System.Console.WriteLine("street");
-                        gestureController.goTo("street");
-                        break;
+
+                    recognized = (e.Result.Semantics["mode"].Value.ToString());
+
+                    switch (recognized)
+                    {
+                        case "EARTH":
+                            System.Console.WriteLine("Earth");
+                            gestureController.goTo("earth");
+                            break;
+                        case "STREET":
+                            System.Console.WriteLine("street");
+                            gestureController.goTo("street");
+                            break;
+                    }
                 }
-            }
-            else if (e.Result.Semantics["view"].Confidence >= ConfidenceThreshold)
-            {
-                recognized = (e.Result.Semantics["view"].Value.ToString());
-
-                switch (recognized)
+                else if (e.Result.Semantics["view"].Confidence >= ConfidenceThreshold)
                 {
-                    //Perspektive
-                    case "NORDEN":
-                        System.Console.WriteLine("norden");
-                        gestureController.goTo("norden");
-                        break;
-                    case "HORIZONT":
-                        System.Console.WriteLine("horizont");
-                        gestureController.goTo("horizont");
-                        break;
-                    case "NEUTRAL":
-                        System.Console.WriteLine("neutral");
-                        gestureController.goTo("neutral");
-                        break;
+                    recognized = (e.Result.Semantics["view"].Value.ToString());
+
+                    switch (recognized)
+                    {
+                        //Perspektive
+                        case "NORDEN":
+                            System.Console.WriteLine("norden");
+                            gestureController.goTo("norden");
+                            break;
+                        case "HORIZONT":
+                            System.Console.WriteLine("horizont");
+                            gestureController.goTo("horizont");
+                            break;
+                        case "NEUTRAL":
+                            System.Console.WriteLine("neutral");
+                            gestureController.goTo("neutral");
+                            break;
+                    }
                 }
             }
         }
-
+        */
+         
         /// <summary>
         /// Handler for recognized speech events.
         /// </summary>
@@ -736,15 +747,6 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             //ClearRecognitionHighlights();
 
-
-            Console.WriteLine("Speech recognized:  " + e.Result.Text);
-            Console.WriteLine();
-            Console.WriteLine("Semantic results:");
-            Console.WriteLine("basics: " + e.Result.Semantics["basics"].Value);
-            Console.WriteLine("state: " + e.Result.Semantics["state"].Value);
-            Console.WriteLine("cities: " + e.Result.Semantics["cities"].Value);
-            Console.WriteLine("mode: " + e.Result.Semantics["mode"].Value);
-            Console.WriteLine("view: " + e.Result.Semantics["view"].Value);
 
 
             if (speechEnabled)
@@ -764,12 +766,12 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 switch (e.Result.Semantics.Value.ToString())
                 {
-                    case "SPRACHE AN":
+                    case "SPEECH ON":
                         speechEnabled = true;
                         this.speech.Text = "Speech: ON";
                         this.speech.Foreground = System.Windows.Media.Brushes.Green;
                         break;
-                    case "SPRACHE AUS":
+                    case "SPEECH OFF":
                         speechEnabled = false;
                         this.speech.Text = "Speech: OFF";
                         this.speech.Foreground = System.Windows.Media.Brushes.Red;
@@ -809,13 +811,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                     //    System.Console.WriteLine("BEWEGUNG AUS");
                     //    gestureController.moveRecognition(false);
                     //    break;
-                    case "PERSPEKTIVE ON":
-                        System.Console.WriteLine("PERSPEKTIVE AN");
+                    case "PERSPECTIVE ON":
+                        System.Console.WriteLine("PERSPECTIVE ON");
                         gestureController.perspectiveRecognition(true);
                         gestureController.gestureRecognition(false);
                         break;
-                    case "PERSPEKTIVE OFF":
-                        System.Console.WriteLine("PERSPEKTIVE AUS");
+                    case "PERSPECTIVE OFF":
+                        System.Console.WriteLine("PERSPECTIVE OFF");
                         gestureController.gestureRecognition(true);
                         gestureController.perspectiveRecognition(false);
                         break;
@@ -840,19 +842,19 @@ namespace Microsoft.mmi.Kinect.Explorer
                         break;
 
                     //Perspektive
-                    case "NORDEN":
+                    case "NORTHERN":
                         System.Console.WriteLine("norden");
                         gestureController.goTo("norden");
                         break;
                     case "EARTH":
                         System.Console.WriteLine("Earth");
-                        gestureController.goTo("superman");
+                        gestureController.goTo("earth");
                         break;
                     case "STREET":
                         System.Console.WriteLine("street");
                         gestureController.goTo("street");
                         break;
-                    case "HORIZONT":
+                    case "HORIZON":
                         System.Console.WriteLine("horizont");
                         gestureController.goTo("horizont");
                         break;

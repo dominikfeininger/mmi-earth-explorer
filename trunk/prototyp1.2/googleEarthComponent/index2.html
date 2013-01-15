@@ -157,7 +157,7 @@
 	function hoch(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var camera = position;
-		camera.setTilt(position.getTilt() +5.0);
+		camera.setTilt(position.getTilt() +15.0);
 		ge.getView().setAbstractView(camera);
 	}
 
@@ -165,20 +165,20 @@
 
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var camera = position;
-		camera.setTilt(position.getTilt() -5.0);
+		camera.setTilt(position.getTilt() -15.0);
 		ge.getView().setAbstractView(camera); 
 	  }	
 	  function rechts(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var lookAt = position;
-		lookAt.setHeading(lookAt.getHeading() +10.0);
+		lookAt.setHeading(lookAt.getHeading() +20.0);
 		ge.getView().setAbstractView(lookAt); 
 	}
 
 	function links(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		var lookAt = position;
-		lookAt.setHeading(lookAt.getHeading() -10.0);
+		lookAt.setHeading(lookAt.getHeading() -20.0);
 		ge.getView().setAbstractView(lookAt); 
 	  }	
 	 

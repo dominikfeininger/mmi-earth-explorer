@@ -96,9 +96,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                 window.Browser.InvokeScript("lookAtNewYork");
             }
             if (p.Equals("earth"))
-            {
-                window.Browser.InvokeScript("superman");
-
+            {                
+                window.Browser.InvokeScript("superman");            
             }
             if (p.Equals("street"))
             {
@@ -135,8 +134,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             if (p.Equals("test"))
             {
                 window.Browser.InvokeScript("test");
-
-
             }
         }
 
