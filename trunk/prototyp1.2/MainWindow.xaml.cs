@@ -105,17 +105,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             InitializeComponent();
             //Make sure to change this path to your index2.html file
-            //Dominik
-            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
-            //Roy
-            //nativ
-            Browser.Navigate(new Uri("E:/Kinect/EarthExplorer/googleEarthComponent/index2.html"));
-            //VM
-            //Browser.Navigate(new Uri("Z:/Macintosh HD/Kinect/EarthExplorer/googleEarthComponent/index2.html"));
-
-            //CN
-            //Browser.Navigate(new Uri("C:/Users/n00b/Downloads/cs247-prototype/index2.html"));
-
+            Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
             //from Stanford Project
             //Browser is the container name
             Keyboard.Focus(Browser);
