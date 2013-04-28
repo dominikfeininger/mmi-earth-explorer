@@ -104,14 +104,21 @@ namespace Microsoft.mmi.Kinect.Explorer
         public MainWindow()
         {
             InitializeComponent();
-            //Make sure to change this path to your index2.html file
-            Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
-            //from Stanford Project
+
+            //for local file usage
+            //Make sure to change this path to YOUR index2.html file
+            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
+            //Browser.Navigate(new Uri("C:/User/d.feininger/EarthExplorer/googleEarthComponent/index2.html"));
+
+            Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/index.html"));
+
             //Browser is the container name
             Keyboard.Focus(Browser);
         }
 
-        //Speech!!
+        /// <title>
+        /// Speech!!
+        /// </title>
         /// <summary>
         /// Gets the metadata for the speech recognizer (acoustic model) most suitable to
         /// process audio from Kinect device.
@@ -239,11 +246,6 @@ namespace Microsoft.mmi.Kinect.Explorer
                 this.up.Visibility = System.Windows.Visibility.Visible;
                 // this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
-            
-
-            //nui winkel
-            // this.sensor.ElevationAngle = 19;
-
         }
 
         private void kinectUp_Click(object sender, RoutedEventArgs e)
@@ -256,7 +258,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                 this.sensor.ElevationAngle +=2;
             }
-            System.Console.WriteLine("kinect hoch");
+            System.Console.WriteLine("kinect up");
 
         }
 
@@ -268,11 +270,16 @@ namespace Microsoft.mmi.Kinect.Explorer
                 this.sensor.ElevationAngle -= 2;
 
             }
-            System.Console.WriteLine("kinect runter");
+            System.Console.WriteLine("kinect down");
         }
 
-        //initUI
-        // Labels and Pictures
+
+        /// <Title>
+        /// Labels and Pictures
+        /// </Title>
+        /// <summary>
+        /// initialize UI 
+        /// </summary>
         private void initUI(object sender, RoutedEventArgs e)
         {
             this.PositionBody.Text = "Position: NOT correct";
@@ -309,8 +316,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             this.zoomOut.Visibility = System.Windows.Visibility.Hidden;
             this.zoomOut2x.Visibility = System.Windows.Visibility.Hidden;
 
-
-
             //Icon
             System.Drawing.Bitmap backgroundBitmap = Properties.Resources.icon;
             IntPtr hbitmap = backgroundBitmap.GetHbitmap();
@@ -328,7 +333,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             hbitmap = backgroundBitmap.GetHbitmap();
             imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
             this.up.Background = new ImageBrush(imageSource);
-
 
             //Direction Arrows            
             backgroundBitmap = Properties.Resources.down;
@@ -375,9 +379,9 @@ namespace Microsoft.mmi.Kinect.Explorer
         }
 
 
-        //speechconfig TEST
+        // <speechconfig TEST>
         /*
-        private void speechconfigMod(object sender, RoutedEventArgs e)
+        private void speechconfigTest(object sender, RoutedEventArgs e)
         {
 
             //Speechrecognizer
@@ -478,10 +482,9 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
         */
-        //speechconfig
+        // </speechconfig TEST>
         private void speechconfig(object sender, RoutedEventArgs e)
         {
-
             //Speechrecognizer
             RecognizerInfo ri = GetKinectRecognizer();
 
@@ -577,16 +580,11 @@ namespace Microsoft.mmi.Kinect.Explorer
         }
 
 
-        //speech  test     
+
+        // <speechconfig TEST>
         /*
-        /// <summary>
-        /// Handler for recognized speech events.
-        /// </summary>
-        /// <param name="sender">object sending the event.</param>
-        /// <param name="e">event arguments.</param>
         private void SpeechRecognizedMod(object sender, SpeechRecognizedEventArgs e)
         {
-
             if (speechEnabled)
             {
                 this.speech.Text = "Speech: ON";
@@ -724,7 +722,9 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
         */
-         
+        // </speechconfig TEST> 
+
+
         /// <summary>
         /// Handler for recognized speech events.
         /// </summary>
@@ -735,10 +735,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             // Speech utterance confidence below which we treat speech as if it hadn't been heard
             const double ConfidenceThreshold = 0.3;
 
-            //ClearRecognitionHighlights();
-
-
-
             if (speechEnabled)
             {
                 this.speech.Text = "Speech: ON";
@@ -748,8 +744,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 this.speech.Text = "Speech: OFF";
                 this.speech.Foreground = System.Windows.Media.Brushes.Red;
-
-
             }
 
             if (e.Result.Confidence >= ConfidenceThreshold)
@@ -779,7 +773,6 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             if (e.Result.Confidence >= ConfidenceThreshold && speechEnabled)
             {
-
                 this.speech.Text = this.speech.Text + " - " + e.Result.Semantics.Value.ToString();
 
                 switch (e.Result.Semantics.Value.ToString())
@@ -801,6 +794,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                     //    System.Console.WriteLine("BEWEGUNG AUS");
                     //    gestureController.moveRecognition(false);
                     //    break;
+                    /*
                     case "PERSPECTIVE ON":
                         System.Console.WriteLine("PERSPECTIVE ON");
                         gestureController.perspectiveRecognition(true);
@@ -811,7 +805,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                         gestureController.gestureRecognition(true);
                         gestureController.perspectiveRecognition(false);
                         break;
-
+                    */
                     //Cities
 
                     case "FRANKFURT":
@@ -852,6 +846,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                         System.Console.WriteLine("neutral");
                         gestureController.goTo("neutral");
                         break;
+
                     //case "HOCH":
                     //    System.Console.WriteLine("hoch");
                     //    gestureController.goTo("hoch");
@@ -869,11 +864,12 @@ namespace Microsoft.mmi.Kinect.Explorer
                     //    gestureController.goTo("links");
                     //    break;
 
-
+                    /*
                     case "TEST":
                         System.Console.WriteLine("test");
                         gestureController.goTo("test");
                         break;
+                     */
                 }
             }
         }
@@ -885,7 +881,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// <param name="e">event arguments.</param>
         private void SpeechRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
-            //ClearRecognitionHighlights();
+
         }
 
         /// <summary>
@@ -944,6 +940,11 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
 
+        /// <summary>
+        /// for just one, the first skeleton
+        /// </summary>
+        /// <param name="skeletons"></param>
+        /// <returns></returns>
         private static Skeleton GetPrimarySkeleton(IEnumerable<Skeleton> skeletons)
         {
             Skeleton primarySkeleton = null;
@@ -962,7 +963,9 @@ namespace Microsoft.mmi.Kinect.Explorer
             return primarySkeleton;
         }
 
-        //Skeletzeichnung
+        /// <title>
+        /// Skeletzeichnung
+        /// </title>
         /// <summary>
         /// Draws a skeleton's bones and joints
         /// </summary>
@@ -1068,9 +1071,5 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
             drawingContext.DrawLine(drawPen, this.SkeletonPointToScreen(joint0.Position), this.SkeletonPointToScreen(joint1.Position));
         }
-
-
-
-
     }
 }

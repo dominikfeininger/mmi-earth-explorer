@@ -69,3 +69,8 @@ F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\Microsoft.mmi.Kinect.Explore
 F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.csproj.GenerateResource.Cache
 F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.exe
 F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.pdb
+F:\VisualStudio12\KinectDev\EarthExplorer\bin\Debug\EarthExplorer.exe.manifest
+F:\VisualStudio12\KinectDev\EarthExplorer\bin\Debug\EarthExplorer.application
+F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.TrustInfo.xml
+F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.exe.manifest
+F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.application

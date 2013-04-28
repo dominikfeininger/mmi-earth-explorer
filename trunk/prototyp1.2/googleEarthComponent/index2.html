@@ -1,6 +1,9 @@
-
+<!doctype html>
+<!-- saved from url=(0014)about:internet -->
 <html>
+<!-- saved from url=(0016)http://localhost -->
 <head>
+	<!-- saved from url=(0014)about:internet -->
    <title>Earth Explorer</title>
 
    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -53,56 +56,6 @@
 		alert("Google Earth ist nicht Installiert, bitte installieren Sie das Google Earth Plugin!");
      }
 	
-	function test(){
-	  // - You want to create the ViewerOptions 
-      // - Set the options on any AbstractView 
-
-		
-	  /*
-		var navcontrol = ge.getNavigationControl();
-	  
-		//In the case of Street View, you might do: 
-		 var camera = ge.createCamera('');
-		 camera.setLatitude(50.110852);
-		camera.setLongitude(8.681954);
-		camera.setAltitude(5);
-		 //set some camera attributes, including a very low altitude and a 
-		//location where streetview exists 
-		 var viewerOptions = ge.createViewerOptions(''); 
-		 camera.setViewerOptions(viewerOptions); 
-		 viewerOptions.setOption(ge.OPTION_STREET_VIEW, ge.OPTION_STATE_ENABLED) ;
-		 //ge.getNavigationControl().streetViewEnabled(true);
-		 //viewerOptions.setOption(ge.OPTION_STREET_VIEW, ge.OPTION_STATE_ENABLED) ;
-		 				camera.setTilt(90.0);
-
-		 ge.getView().setAbstractView(camera); 
-*/
-		//var response = navcontrol.getStreetViewEnabled(); // default=false
-			       // alert(response);
-
-		// response: true -> enabled; false -> disabled
-		//if (!response) {
-		   // to enable street view mode
-		  // navcontrol.setStreetViewEnabled(true);
-		   //alert(navcontrol.getStreetViewEnabled());
-		//}
-		
-		//ge.getPlugin().streetViewEnabled(true). 
-			
-		// Create a new LookAt.
-		//var lookAt = ge.createLookAt('');
-
-		// Set the position values.
-		//lookAt.setLatitude(50.110922);
-		//lookAt.setLongitude(8.682127);
-		//lookAt.setRange(100000);
-		//lookAt.setOption((ge.OPTION_STREET_VIEW, ge.OPTION_STATE_ENABLED) );
-
-		// Update the view in Google Earth.
-		//ge.getView().setAbstractView(lookAt);
-			
-	
-	}
 	
 	function getAltitude(){
 		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
@@ -322,8 +275,8 @@
    </script>
 
 </head>
-<body><!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
-	
+<body>
+	<!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
 	<!--div id="box" style="height: 100px; width:100px; z-index:1; background:#8f8; position:absolute; "></div-->
 	<!--contains container for google earth-->
    <div id="map3d" style="height: 100%; width: 100%; background-color:Black; "></div>
