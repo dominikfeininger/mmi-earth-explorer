@@ -154,7 +154,6 @@ namespace Microsoft.mmi.Kinect.Explorer
             Joint FootRight = skeleton.Joints[JointType.FootRight];
 
 
-
             if (moveActive)
             {
                 this.window.gestureMove.Text = "Move: ON";
