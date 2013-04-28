@@ -1,0 +1,285 @@
+<!doctype html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<!-- saved from url=(0016)http://localhost -->
+<head>
+	<!-- saved from url=(0014)about:internet -->
+   <title>Earth Explorer</title>
+
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   <script type="text/javascript">
+   
+     var ge;
+
+	 //loads the javascript from google
+     google.load("earth", "1");
+
+	 //init function for earth
+     function init() {
+		document.documentElement.style.overflow = 'hidden';
+		document.body.scroll = "no";
+	
+		document.documentElement.style.backgroundColor = "black";
+		google.earth.createInstance('map3d', initCB, failureCB);
+     }
+
+     
+     function initCB(instance) {
+
+	 
+		 /* Basic initialization as per the Google Earth API documentation */
+		 ge = instance;	
+		 
+		 // Specific instance of the Google Earth (you can have more than one)
+		 ge.getWindow().setVisibility(true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS , true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_TREES, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+		
+		 
+ 		var navcontrol = ge.getNavigationControl();
+		//navcontrol.setVisibility(ge.VISIBILITY_SHOW);
+
+		navcontrol.setStreetViewEnabled(true);
+		//alert(navcontrol.getStreetViewEnabled());
+		
+		var options = ge.getOptions(); 
+		
+		//alert(options.getAutoGroundLevelViewEnabled());
+		options.setAutoGroundLevelViewEnabled(true);
+		   
+     }
+
+     function failureCB(errorCode) {
+		alert("Google Earth ist nicht Installiert, bitte installieren Sie das Google Earth Plugin!");
+     }
+	
+	
+	function getAltitude(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		return position.getAltitude();
+	}
+	
+
+	function superman(){
+		//var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		//alert(position.getAltitude());
+
+		//camera.setLatitude(position.getLatitude());
+		//camera.setLongitude(position.getLongitude());
+		//camera.setRange(lookAt.getRange() + 300);
+		//camera.setAltitude(3000);
+		camera.setAltitude(2000);
+		camera.setTilt(0);
+		//alert(lookAt.getRange());
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);
+
+	}
+	function superman2x(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * 6.0);
+		lookAt.setTilt(0);
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+
+	}
+	function horizont(){
+	
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(90.0);
+		ge.getView().setAbstractView(camera);
+	}
+	function neutral(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(0.0);
+		ge.getView().setAbstractView(camera);
+	}
+	
+	function hoch(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(position.getTilt() +15.0);
+		ge.getView().setAbstractView(camera);
+	}
+
+	function runter(){
+
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		camera.setTilt(position.getTilt() -15.0);
+		ge.getView().setAbstractView(camera); 
+	  }	
+	  function rechts(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var lookAt = position;
+		lookAt.setHeading(lookAt.getHeading() +20.0);
+		ge.getView().setAbstractView(lookAt); 
+	}
+
+	function links(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var lookAt = position;
+		lookAt.setHeading(lookAt.getHeading() -20.0);
+		ge.getView().setAbstractView(lookAt); 
+	  }	
+	 
+	function streetAutomatic(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		if(position.getAltitude()< 50){
+			var camera = position;
+			//var camera = ge.createCamera('');
+			//camera.setLatitude(position.getLatitude());
+			//camera.setLongitude(position.getLongitude());
+			//camera.setAltitude(position.getAltitude());
+			var viewerOptions = ge.createViewerOptions(''); 
+			camera.setViewerOptions(viewerOptions); 
+			viewerOptions.setOption(ge.OPTION_STREET_VIEW, ge.OPTION_STATE_ENABLED) ;
+			camera.setTilt(90.0);
+			ge.getView().setAbstractView(camera); 
+		}
+	}
+	
+	function street(){
+		var position = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+		var camera = position;
+		//var camera = ge.createCamera('');
+		//camera.setLatitude(position.getLatitude());
+		//camera.setLongitude(position.getLongitude());
+		camera.setAltitude(2.5);
+		camera.setTilt(90.0);
+
+		var viewerOptions = ge.createViewerOptions(''); 
+		camera.setViewerOptions(viewerOptions); 
+		viewerOptions.setOption(ge.OPTION_STREET_VIEW, ge.OPTION_STATE_ENABLED) ;
+		ge.getView().setAbstractView(camera); 
+	
+	}
+
+	function lookAt(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Set new latitude and longitude values.
+		lookAt.setLatitude(50.637);
+		lookAt.setLongitude(8.4056);
+		lookAt.setRange(5000);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	
+	function lookAtMadrid(){
+		// Get the current view.
+		var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);		
+		// Set new latitude and longitude values.
+		camera.setLatitude(40.416846);
+		camera.setLongitude(-3.703906);
+		camera.setAltitude(8500);
+		camera.setTilt(0);
+		
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);
+	}
+	function lookAtFrankfurt(){
+		// Get the current view.
+		var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);		
+		// Set new latitude and longitude values.
+		camera.setLatitude(50.110922);
+		camera.setLongitude(8.682127);
+		camera.setAltitude(8500);
+		camera.setTilt(0);
+		
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);
+	}
+	function lookAtMannheim(){
+		// Get the current view.
+		var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);		
+		// Set new latitude and longitude values.
+		camera.setLatitude(49.484439);
+		camera.setLongitude(8.462735);
+		camera.setAltitude(8500);
+		camera.setTilt(0);
+		
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);		
+	}
+	
+	function lookAtNewYork(){
+		// Get the current view.
+		var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);		
+		// Set new latitude and longitude values.
+		camera.setLatitude(40.714353);
+		camera.setLongitude(-74.005973);
+		camera.setAltitude(8500);
+		camera.setTilt(0);
+		
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);			
+	}
+	function zoomIn1(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() / 2.0);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomIn2(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() / 4.0);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomOut1(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * 2.5);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	function zoomOut2(){
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * 4.0);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	 // Calls specified once all HTML, requested APIs are loaded (google)
+     google.setOnLoadCallback(init); 
+
+   </script>
+
+</head>
+<body>
+	<!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
+	<!--div id="box" style="height: 100px; width:100px; z-index:1; background:#8f8; position:absolute; "></div-->
+	<!--contains container for google earth-->
+   <div id="map3d" style="height: 100%; width: 100%; background-color:Black; "></div>
+	
+</body>
+</html>
