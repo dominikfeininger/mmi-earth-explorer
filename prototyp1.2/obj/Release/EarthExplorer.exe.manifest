@@ -53,14 +53,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EarthExplorer.exe" size="1335808">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EarthExplorer.exe" size="1332224">
       <assemblyIdentity name="EarthExplorer" version="0.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>T31+EpBHWoXxOVhqLCnMUnnqm7So6gvLBEn/KOzq4Nw=</dsig:DigestValue>
+        <dsig:DigestValue>srrliTrF8snfMshvLIhvPp/86TxjAzrF4RTUNGYDRmI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
