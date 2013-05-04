@@ -1,0 +1,90 @@
+
+<html>
+<head>
+   <title>Earth Explorer</title>
+
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAuPsJpk3MBtDpJ4G8cqBnjRRaGTYH6UMl8mADNa0YKuWNNa8VNxQCzVBXTx2DYyXGsTOxpWhvIG7Djw" type="text/javascript"></script>
+
+   <script type="text/javascript">
+   
+     //Google Earth
+     var ge;
+	 //street
+	 var myPano;
+	 //loads the javascript from google
+     google.load("earth", "1");
+
+	 //init function for earth
+     function init() {
+        //Google Earth
+		google.earth.createInstance('map3d', initCB, failureCB);
+		
+		//maps old
+	  myPano = new GStreetviewPanorama(document.getElementById("pano"));
+      /*fenwayPark = new GLatLng(42.345573,-71.098326);
+      myPOV = {yaw:370.64659986187695,pitch:-20};
+      myPano.setLocationAndPOV(fenwayPark, myPOV);
+      GEvent.addListener(myPano, "error", handleNoFlash)*/
+	  
+	  ny = new GLatLng(40.714353,-74.005973);
+	  berlin = new GLatLng(52.521457,13.411775);
+      myPOV = {yaw:20,pitch:0};
+      myPano.setLocationAndPOV(ny, myPOV);
+      GEvent.addListener(myPano, "error", handleNoFlash)
+	  
+     }
+
+	 //maps old
+	 function handleNoFlash(errorCode) {
+      if (errorCode == 603) {
+        alert("Error: Flash doesn't appear to be supported by your browser");
+        return;
+      }
+    }  
+	 function lookAtNewYork(){
+		// Get the current view.
+		var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);		
+		// Set new latitude and longitude values.
+		camera.setLatitude(40.714353);
+		camera.setLongitude(-74.005973);
+		camera.setAltitude(8500);
+		camera.setTilt(0);
+		
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(camera);			
+	}
+	 //google earth
+     function initCB(instance) {
+		 /* Basic initialization as per the Google Earth API documentation */
+		 ge = instance;	
+		 
+		 // Specific instance of the Google Earth (you can have more than one)
+		 ge.getWindow().setVisibility(true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS , true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_TREES, true);
+		 ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+     }
+
+     //Google Earth
+     function failureCB(errorCode) {
+		alert("Google Earth ist nicht Installiert, bitte installieren Sie das Google Earth Plugin!");
+     }
+	 //google earth
+	 // Calls specified once all HTML, requested APIs are loaded (google)
+     google.setOnLoadCallback(init); 
+
+   </script>
+
+</head>
+<body><!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
+	
+	<!--contains container for google earth-->
+
+    <div id="pano" style="height: 100%; width: 100%; background-color:Black; "></div>
+    <!--<div id="pano" style="height: 400px; width: 800px;"></div>-->
+
+</body>
+</html>
