@@ -2,7 +2,7 @@
 <Window x:Class="Microsoft.mmi.Kinect.Explorer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
-        Title="Earth Explorer" Height="760" Width="1010" Loaded="WindowLoaded" Closing="WindowClosing" 
+        Title="Earth Explorer" Height="760" Width="1030" Loaded="WindowLoaded" Closing="WindowClosing" 
         BorderThickness="0"
         WindowStyle="SingleBorderWindow"
         Topmost="False"
