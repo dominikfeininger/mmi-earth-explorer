@@ -8,6 +8,7 @@ using System.Windows;
 
 
 
+
 namespace Microsoft.mmi.Kinect.Explorer
 {
     //contains all gestrues
@@ -36,8 +37,17 @@ namespace Microsoft.mmi.Kinect.Explorer
         private bool perspectiveActive = false;
         private bool positionCorrect = false;
 
+        private int CurrentSkeletonFrame = 0;
+        //30frames per second
+        private static int totalFrames = 120;//4sec
+        //saves the skeletons
+        private Skeleton[] SkeletonFrames = new Skeleton[totalFrames+1];
+        //frame interval
+        private int frameInterval = 2;
+
 
         private bool earthMode = true;
+        private int frameCounter;
 
         public SuperController(MainWindow win)
         {
@@ -54,7 +64,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             //this.perspectiveActive = !mode;
         }
 
-
+        
         internal void zoomRecognition(bool mode)
         {
             this.zoomActive = mode;
@@ -137,6 +147,65 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
 
+        //TODO:
+        private void saveToSkeletonFrames(Skeleton skeleton)
+        {
+            //kSystem.Console.WriteLine("skeleton.Joints.Count: " + skeleton.Joints.Count);
+            if (this.frameCounter % frameInterval == 0)
+            {
+                System.Console.WriteLine("this.CurrentSkeletonFrame: " + this.CurrentSkeletonFrame);
+                this.SkeletonFrames[this.CurrentSkeletonFrame] = skeleton;
+
+                if (this.CurrentSkeletonFrame == totalFrames)
+                {
+                    System.Console.WriteLine("totalFrames reached");
+                    this.CurrentSkeletonFrame = 0;
+                }
+                else
+                {
+                    System.Console.WriteLine("totalFrames NOT reached");
+                    this.CurrentSkeletonFrame++;
+                }
+            }
+            this.frameCounter++;
+        }
+
+        //TODO:wird doppelt aufgerufen
+        private void detectZoomByFrame(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
+        {
+            if (this.CurrentSkeletonFrame >= 2)
+            {
+                Skeleton skeleton1 = this.SkeletonFrames[this.CurrentSkeletonFrame - 1];
+                Skeleton skeleton2 = this.SkeletonFrames[this.CurrentSkeletonFrame - 2];
+
+                Joint skeleton1_wristHandR = skeleton1.Joints[JointType.WristRight];
+                Joint skeleton1_wristHandL = skeleton1.Joints[JointType.WristLeft];
+
+                Joint skeleton2_wristHandR = skeleton2.Joints[JointType.WristRight];
+                Joint skeleton2_wristHandL = skeleton2.Joints[JointType.WristLeft];
+                
+                //System.Console.WriteLine("current_wristHandL.Position.X: " + current_wristHandL.Position.X);
+
+                if (current_wristHandR.Position.X > skeleton2_wristHandR.Position.X)
+                //if((skeleton1_wristHandR.Position.X > skeleton2_wristHandR.Position.X) && (current_wristHandR.Position.X > skeleton1_wristHandR.Position.X))
+                //if((skeleton1_wristHandL.Position.X > skeleton2_wristHandL.Position.X) && (current_wristHandL.Position.X > skeleton1_wristHandL.Position.X))
+                {
+                    System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
+                }
+
+
+                //x = rechts/ links
+                //y = hoch/ runter
+                //z = vor/ zurück
+
+                /*
+                System.Console.WriteLine("skeleton1_wristHandL.Position.X: " + skeleton1_wristHandL.Position.X);
+                System.Console.WriteLine("skeleton2_wristHandL.Position.X: " + skeleton2_wristHandL.Position.X);
+                System.Console.WriteLine("current_wristHandL.Position.X: " + current_wristHandL.Position.X);
+                 */
+            }
+        }
+        
         internal void processSkeletonFrame(Skeleton skeleton)
         {
 
@@ -199,7 +268,10 @@ namespace Microsoft.mmi.Kinect.Explorer
             /// if (gesturesActive && (zoomActive || moveActive || perspectiveActive))
             if (positionCorrect)
             {
-                checkContinuousState();
+                saveToSkeletonFrames(skeleton);
+                detectZoomByFrame(wristHandR, wristHandL, head);
+                //TODO:
+                //checkContinuousState();
 
                 if (zoomActive)
                 {
@@ -207,9 +279,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                 }
                 if (moveActive)
                 {
+                    //saveToSkeletonFrames(skeleton.Joints);
+
                     moveTheMap(head, shoulderLeft, shoulderRight, spine, wristHandL, wristHandR);
-                    detectStepForward(FootLeft, FootRight, KneeLeft, KneeRight);
-                    detectSupermanGeture(head, wristHandR, wristHandL);
+                    
+                    //TODO:
+                    //detectStepForward(FootLeft, FootRight, KneeLeft, KneeRight);
+                    //detectSupermanGeture(head, wristHandR, wristHandL);
                 }
 
                 if (perspectiveActive)

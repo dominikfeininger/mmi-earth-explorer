@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\
+F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\
 Microsoft.mmi.Kinect.Explorer
 none
 false
 DEBUG;TRACE
-F:\VisualStudio12\KinectDev\EarthExplorer\App.xaml
+F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\App.xaml
 11151548125
 
 6-2113058584
-17-1279224871
+17-2008549730
 MainWindow.xaml;
 
 False

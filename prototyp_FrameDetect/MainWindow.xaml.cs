@@ -11,6 +11,7 @@ namespace Microsoft.mmi.Kinect.Explorer
     using Microsoft.Speech.AudioFormat;
     using System.Windows.Documents;
     using System.Collections.Generic;
+    //using System.Drawing;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -97,10 +98,92 @@ namespace Microsoft.mmi.Kinect.Explorer
         //Sprachkontrolle
         Boolean speechEnabled;
 
+        //frame rate detection code +++++++
+        //#########################################
+
+        /*
+        void SaveFrame(ImageFrame frame)
+     {
+     var filePath = frame.Timestamp.ToString() + ".bmp";
+ 
+     using (var bitmap = new Bitmap(frame.Image.Width, frame.Image.Height, PixelFormat.Format32bppRgb))
+     {
+        var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+ 
+        var data = bitmap.LockBits(rect, ImageLockMode.ReadWrite, bitmap.PixelFormat);
+        Marshal.Copy(frame.Image.Bits, 0, data.Scan0, frame.Image.Bits.Length);
+        bitmap.UnlockBits(data);
+ 
+        using (var stream = new FileStream(filePath, FileMode.Create))
+            bitmap.Save(stream, ImageFormat.Bmp);
+        }
+    }
+         */
+
+                //frame rate detection code orig
+        //#########################################
+
+
+        //don't forget the 'using Microsoft.Kinect;' directive!
+        //KinectSensor sensor = null;
+        /*
+            public MainWindow()
+            {
+                this.InitializeComponent();
+                //this.Loaded += MainWindow_Loaded;
+                Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/index.html"));
+
+                //Browser is the container name
+                Keyboard.Focus(Browser);
+            }
+
+            private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                   // sensor = KinectSensor.KinectSensors.FirstOrDefault();
+                        //note: we do not listen for changes, either the sensor is plugged-in and online, or it is not.
+                    if (sensor == null)
+                    {
+                        this.Title = "No Kinect found";
+                        return;
+                    }
+                    sensor.SkeletonFrameReady += sensor_SkeletonFrameReady;
+                    sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
+                    sensor.SkeletonStream.Enable();
+                    sensor.Start();
+                }
+                catch { this.Title = "Error =/"; }
+            }
+
+            protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+            {
+                if (sensor == null)
+                    return;
+                sensor.Stop();
+                sensor.Dispose();
+                base.OnClosing(e);
+            }
+
+            private void sensor_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+            {
+                SkeletonFrame frame = e.OpenSkeletonFrame();
+                if (frame == null)
+                    return;
+                Skeleton[] skeletons = new Skeleton[frame.SkeletonArrayLength];
+                frame.CopySkeletonDataTo(skeletons);
+                frame.Dispose();
+                //now you can do some magic with the Skeleton[] 'skeletons'
+                //the Intellisense documentation on all members is pretty good!
+            }
+        */
+        //#########################################
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
+       
+        //TODO:
         public MainWindow()
         {
             InitializeComponent();
@@ -115,6 +198,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             //Browser is the container name
             Keyboard.Focus(Browser);
         }
+        
 
         /// <title>
         /// Speech!!
@@ -892,6 +976,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         private void SensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
+            //System.Console.WriteLine("SensorSkeletonFrameReady");
             Skeleton[] skeletons = new Skeleton[0];
 
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
