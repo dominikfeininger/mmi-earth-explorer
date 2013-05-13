@@ -2,7 +2,7 @@
 <!-- saved from url=(0014)about:internet -->
 <html>
 <!-- saved from url=(0016)http://localhost -->
-<head>
+<head runat="server">
 	<!-- saved from url=(0014)about:internet -->
    <title>Earth Explorer</title>
 
@@ -270,6 +270,33 @@
 		// Update the view in Google Earth.
 		ge.getView().setAbstractView(lookAt);
 	}
+	
+	function zoomOutByValue(zoomValue){
+		//zoomValue=4;
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() * zoomValue);
+		//document.getElementById('zoomValue')[0].value);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	
+	function zoomInByValue(zoomValue){
+		//zoomValue=4;
+		// Get the current view.
+		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+		// Zoom out to twice the current range.
+		lookAt.setRange(lookAt.getRange() / zoomValue);
+		//document.getElementById('zoomValue')[0].value);
+
+		// Update the view in Google Earth.
+		ge.getView().setAbstractView(lookAt);
+	}
+	
 	 // Calls specified once all HTML, requested APIs are loaded (google)
      google.setOnLoadCallback(init); 
 
@@ -277,10 +304,12 @@
 
 </head>
 <body>
-	<!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> -->
+	<!-- onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);"> 
+	runat="server"-->
 	<!--div id="box" style="height: 100px; width:100px; z-index:1; background:#8f8; position:absolute; "></div-->
 	<!--contains container for google earth-->
    <div id="map3d" style="height: 100%; width: 100%; background-color:Black; "></div>
+   <input type="hidden" name="zoomValue" id="zoomValue" value="123" runat="server">
 	
 </body>
 </html>
