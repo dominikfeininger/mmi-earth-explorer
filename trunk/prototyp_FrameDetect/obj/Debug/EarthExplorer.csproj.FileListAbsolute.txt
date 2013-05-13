@@ -77,8 +77,6 @@ F:\VisualStudio12\KinectDev\EarthExplorer\obj\Debug\EarthExplorer.application
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\bin\Debug\EarthExplorer.exe.config
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.exe
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.pdb
-F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\bin\Debug\EarthExplorer.exe.manifest
-F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\bin\Debug\EarthExplorer.application
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\bin\Debug\EarthExplorer.exe
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\bin\Debug\EarthExplorer.pdb
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\bin\Debug\InputSimulator.dll
@@ -92,6 +90,3 @@ F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer_Ma
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.g.resources
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\Microsoft.mmi.Kinect.Explorer.Properties.Resources.resources
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.csproj.GenerateResource.Cache
-F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.TrustInfo.xml
-F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.exe.manifest
-F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.application

@@ -7,8 +7,6 @@ using WindowsInput;
 using System.Windows;
 
 
-
-
 namespace Microsoft.mmi.Kinect.Explorer
 {
     //contains all gestrues
@@ -37,17 +35,20 @@ namespace Microsoft.mmi.Kinect.Explorer
         private bool perspectiveActive = false;
         private bool positionCorrect = false;
 
+        //attributes for frame detection
         private int CurrentSkeletonFrame = 0;
         //30frames per second
         private static int totalFrames = 120;//4sec
         //saves the skeletons
-        private Skeleton[] SkeletonFrames = new Skeleton[totalFrames+1];
+        private Skeleton[] SkeletonFrames = new Skeleton[totalFrames + 1];
         //frame interval
-        private int frameInterval = 2;
-
+        private static int frameInterval = 3;
+        private static float minMovementFrame = 0.01F;
+        private static float minMovementTotal = 0.03F;
+        //just for calc.
+        private int frameCounter;
 
         private bool earthMode = true;
-        private int frameCounter;
 
         public SuperController(MainWindow win)
         {
@@ -64,7 +65,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             //this.perspectiveActive = !mode;
         }
 
-        
+
         internal void zoomRecognition(bool mode)
         {
             this.zoomActive = mode;
@@ -82,7 +83,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         internal void perspectiveRecognition(bool mode)
         {
             this.perspectiveActive = mode;
-           
+
         }
 
 
@@ -106,8 +107,8 @@ namespace Microsoft.mmi.Kinect.Explorer
                 window.Browser.InvokeScript("lookAtNewYork");
             }
             if (p.Equals("earth"))
-            {                
-                window.Browser.InvokeScript("superman");            
+            {
+                window.Browser.InvokeScript("superman");
             }
             if (p.Equals("street"))
             {
@@ -117,9 +118,9 @@ namespace Microsoft.mmi.Kinect.Explorer
                 window.Browser.InvokeScript("horizont");
             } if (p.Equals("neutral"))
             {
-               
+
                 window.Browser.InvokeScript("neutral");
-               // InputSimulator.SimulateKeyDown(VirtualKeyCode.VK_N);
+                // InputSimulator.SimulateKeyDown(VirtualKeyCode.VK_N);
             }
             //if (p.Equals("hoch"))
             //{
@@ -147,65 +148,248 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
 
+
         //TODO:
         private void saveToSkeletonFrames(Skeleton skeleton)
         {
             //kSystem.Console.WriteLine("skeleton.Joints.Count: " + skeleton.Joints.Count);
-            if (this.frameCounter % frameInterval == 0)
-            {
-                System.Console.WriteLine("this.CurrentSkeletonFrame: " + this.CurrentSkeletonFrame);
-                this.SkeletonFrames[this.CurrentSkeletonFrame] = skeleton;
+            //System.Console.WriteLine("this.CurrentSkeletonFrame: " + this.CurrentSkeletonFrame);
+            this.SkeletonFrames[this.CurrentSkeletonFrame] = skeleton;
 
-                if (this.CurrentSkeletonFrame == totalFrames)
+            //System.Console.WriteLine("CurrentSkeletonFrame:" + CurrentSkeletonFrame);
+            if (this.CurrentSkeletonFrame == totalFrames)
+            {
+                //System.Console.WriteLine("totalFrames reached");
+                this.CurrentSkeletonFrame = 0;
+            }
+            else
+            {
+                //System.Console.WriteLine("totalFrames NOT reached");
+                this.CurrentSkeletonFrame++;
+            }
+        }
+
+        private bool handsZAxle(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
+        {
+            float zAxlehands = 0.43F;
+            /*System.Console.WriteLine("current_wristHandR.Position.Z: " + current_wristHandR.Position.Z);
+            System.Console.WriteLine("current_wristHandL.Position.Z: " + current_wristHandL.Position.Z);
+            System.Console.WriteLine("current_head.Position.Z: " + current_head.Position.Z);
+            */
+            if (((current_wristHandL.Position.Z + zAxlehands) < current_head.Position.Z) && ((current_wristHandL.Position.Z + zAxlehands) < current_head.Position.Z))
+            {
+               // System.Console.WriteLine("Hand Poisiton Ok for ZOOM");
+                this.zoomActive = true;
+                return true;
+            }
+            else
+            {
+                this.zoomActive = false;
+                return false;
+            }
+
+
+        }
+
+        //TODO:doppelt aufgerudfen, da zoomin und zoom out gleiche methode callt!!!!!!!!!!!!!11
+        private bool[] detectHandMovementZoom(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
+        {
+            bool handLeftFast = false;
+            bool handRightFast = false;
+
+            bool[] handMovement = new bool[5];
+            handMovement[0] = false;
+            handMovement[1] = false;
+            handMovement[2] = false;
+            handMovement[3] = false;
+
+            //for accesleration
+            handMovement[4] = false;
+
+            if (handsZAxle(current_wristHandR, current_wristHandL, current_head))
+            {
+                if (zoomActive)
                 {
-                    System.Console.WriteLine("totalFrames reached");
-                    this.CurrentSkeletonFrame = 0;
+                    this.window.gestureZoom.Text = "Zoom: ON";
+                    this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Green;
+
                 }
                 else
                 {
-                    System.Console.WriteLine("totalFrames NOT reached");
-                    this.CurrentSkeletonFrame++;
-                }
-            }
-            this.frameCounter++;
-        }
+                    this.window.gestureZoom.Text = "Zoom: OFF";
+                    this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
 
-        //TODO:wird doppelt aufgerufen
-        private void detectZoomByFrame(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
-        {
-            if (this.CurrentSkeletonFrame >= 2)
-            {
-                Skeleton skeleton1 = this.SkeletonFrames[this.CurrentSkeletonFrame - 1];
-                Skeleton skeleton2 = this.SkeletonFrames[this.CurrentSkeletonFrame - 2];
+                }
+
+                //2 und 3 , da current auf -1 gespeichert ist
+                Skeleton skeleton1 = this.SkeletonFrames[this.CurrentSkeletonFrame - 2];
+                Skeleton skeleton2 = this.SkeletonFrames[this.CurrentSkeletonFrame - 3];
 
                 Joint skeleton1_wristHandR = skeleton1.Joints[JointType.WristRight];
                 Joint skeleton1_wristHandL = skeleton1.Joints[JointType.WristLeft];
 
                 Joint skeleton2_wristHandR = skeleton2.Joints[JointType.WristRight];
                 Joint skeleton2_wristHandL = skeleton2.Joints[JointType.WristLeft];
-                
-                //System.Console.WriteLine("current_wristHandL.Position.X: " + current_wristHandL.Position.X);
 
-                if (current_wristHandR.Position.X > skeleton2_wristHandR.Position.X)
-                //if((skeleton1_wristHandR.Position.X > skeleton2_wristHandR.Position.X) && (current_wristHandR.Position.X > skeleton1_wristHandR.Position.X))
-                //if((skeleton1_wristHandL.Position.X > skeleton2_wristHandL.Position.X) && (current_wristHandL.Position.X > skeleton1_wristHandL.Position.X))
+                /*
+                System.Console.WriteLine("  current_wristHandR.Position.X: " + current_wristHandR.Position.X);
+                System.Console.WriteLine("skeleton1_wristHandR.Position.X: " + skeleton1_wristHandR.Position.X);
+                System.Console.WriteLine("skeleton2_wristHandR.Position.X: " + skeleton2_wristHandR.Position.X);
+                */
+
+                //rechte Hand
+                if (((skeleton1_wristHandR.Position.X - minMovementFrame) > skeleton2_wristHandR.Position.X) && ((current_wristHandR.Position.X - minMovementFrame) > skeleton1_wristHandR.Position.X))
                 {
-                    System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
+                    handMovement[1] = true;
+                    //System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
+                    
+                    //acceleration
+                    if ((current_wristHandR.Position.X-minMovementTotal)>skeleton2_wristHandR.Position.X)
+                    {
+                        handRightFast = true;
+                    }
+                }
+                else
+                {
+                    handMovement[1] = false;
+                }
+                //linke hand
+
+                if (((skeleton1_wristHandL.Position.X + minMovementFrame) < skeleton2_wristHandL.Position.X) && ((current_wristHandL.Position.X + minMovementFrame) < skeleton1_wristHandL.Position.X))
+                {
+                    handMovement[0] = true;
+                    //System.Console.WriteLine("linke Hand bewegt sich nach Aussen");
+                    
+                    //acceleration
+                    if ((current_wristHandL.Position.X + minMovementTotal) < skeleton2_wristHandL.Position.X)
+                    {
+                        handLeftFast = true;
+                    }
+
+                }
+                else
+                {
+                    handMovement[0] = false;
                 }
 
+                //rechte Hand
+                if (((skeleton1_wristHandR.Position.X + minMovementFrame) < skeleton2_wristHandR.Position.X) && ((current_wristHandR.Position.X + minMovementFrame) < skeleton1_wristHandR.Position.X))
+                {
+                    handMovement[3] = true;
+                    //System.Console.WriteLine("rechte Hand bewegt sich nach INNEN");
+
+                    //acceleration
+                    if ((current_wristHandR.Position.X + minMovementTotal) < skeleton2_wristHandR.Position.X)
+                    {
+                        handRightFast = true;
+                    }
+                }
+                else
+                {
+                    handMovement[3] = false;
+                }
+                //linke hand
+
+                if (((skeleton1_wristHandL.Position.X - minMovementFrame) > skeleton2_wristHandL.Position.X) && ((current_wristHandL.Position.X - minMovementFrame) > skeleton1_wristHandL.Position.X))
+                {
+                    handMovement[2] = true;
+                    //System.Console.WriteLine("linke Hand bewegt sich nach INNEN");
+
+                    //acceleration
+                    if ((current_wristHandL.Position.X - minMovementTotal) > skeleton2_wristHandL.Position.X)
+                    {
+                        handLeftFast = true;
+                    }
+                }
+                else
+                {
+                    handMovement[2] = false;
+                }
+            }
+            if (handLeftFast && handRightFast)
+            {
+                handMovement[4] = true;
+            }
+
+            //[links nach aussen, rechts nach aussen, links nach innen, rechts nach innen]
+            return handMovement;
+        }
+
+
+        //TODO: 2fach zoom
+        private void detectZoomINByFrame(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
+        {
+
+            //TODO: erzeugt abweichungen am beginn des arrays --> ring
+            if (this.CurrentSkeletonFrame >= 3)
+            {
+
+                bool[] handMovement = detectHandMovementZoom(current_wristHandR, current_wristHandL, current_head);
+
+                if (handMovement[1] && handMovement[0])
+                {
+
+                    if (handMovement[4])//zoom double
+                    {
+                        // System.Console.WriteLine("Zoom - OUT TWICE");
+                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " INx2";
+                        window.Browser.InvokeScript("zoomInByValue", new string[] { "3" });
+                    }
+                    else if (!handMovement[4])//zoom single
+                    {
+                        //System.Console.WriteLine("Zoom - OUT");
+                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN ";
+                        InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
+                    }
+                    else
+                    {
+                        //System.Console.WriteLine("NO ZOOM recognized");
+                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " NO";
+                        stopGestures();
+                    }
+
+                }
+            }
+        }
+
+        private void detectZoomOUTByFrame(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
+        {
+
+            //TODO: erzeugt abweichungen am beginn des arrays --> ring
+            if (this.CurrentSkeletonFrame >= 3)
+            {
+                bool[] handMovement = detectHandMovementZoom(current_wristHandR, current_wristHandL, current_head);
+                if (handMovement[3] && handMovement[2])
+                {
+
+                    if (handMovement[4])//zoom double
+                    {
+                        // System.Console.WriteLine("Zoom - OUT TWICE");
+                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUTx2";
+                        window.Browser.InvokeScript("zoomOutByValue", new string[] { "3" });
+                    }
+                    else if (!handMovement[4])//zoom single
+                    {
+                        //System.Console.WriteLine("Zoom - OUT");
+                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT ";
+                        InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                    }
+                    else
+                    {
+                        //System.Console.WriteLine("NO ZOOM recognized");
+                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " NO";
+                        stopGestures();
+                    }
+
+                }
 
                 //x = rechts/ links
                 //y = hoch/ runter
                 //z = vor/ zurück
 
-                /*
-                System.Console.WriteLine("skeleton1_wristHandL.Position.X: " + skeleton1_wristHandL.Position.X);
-                System.Console.WriteLine("skeleton2_wristHandL.Position.X: " + skeleton2_wristHandL.Position.X);
-                System.Console.WriteLine("current_wristHandL.Position.X: " + current_wristHandL.Position.X);
-                 */
             }
         }
-        
+
         internal void processSkeletonFrame(Skeleton skeleton)
         {
 
@@ -264,37 +448,43 @@ namespace Microsoft.mmi.Kinect.Explorer
             //positionCorrect = footDistanceCorrect(FootLeft, FootRight) && positionCenter(shoulderLeft, shoulderRight);
             positionCorrect = positionCenter(shoulderLeft, shoulderRight);
             //gestureRecognition(footDistanceCorrect(FootLeft, FootRight) && positionCenter(shoulderLeft, shoulderRight));
+            //System.Console.WriteLine("frameCounter:" + frameCounter);
+            // if (gesturesActive && (zoomActive || moveActive || perspectiveActive))
 
-            /// if (gesturesActive && (zoomActive || moveActive || perspectiveActive))
             if (positionCorrect)
             {
-                saveToSkeletonFrames(skeleton);
-                detectZoomByFrame(wristHandR, wristHandL, head);
+
+                //saves in interval
+                if (this.frameCounter % frameInterval == 0)
+                {
+                    saveToSkeletonFrames(skeleton);
+                    detectZoomINByFrame(wristHandR, wristHandL, head);
+                    detectZoomOUTByFrame(wristHandR, wristHandL, head);
+                }
                 //TODO:
                 //checkContinuousState();
 
                 if (zoomActive)
                 {
-                    zoomInOut2(wristHandL, wristHandR, spine);
+                    //zoomInOut2(wristHandL, wristHandR, spine);
                 }
                 if (moveActive)
                 {
                     //saveToSkeletonFrames(skeleton.Joints);
 
-                    moveTheMap(head, shoulderLeft, shoulderRight, spine, wristHandL, wristHandR);
-                    
                     //TODO:
+                    //moveTheMap(head, shoulderLeft, shoulderRight, spine, wristHandL, wristHandR);
                     //detectStepForward(FootLeft, FootRight, KneeLeft, KneeRight);
                     //detectSupermanGeture(head, wristHandR, wristHandL);
                 }
 
                 if (perspectiveActive)
                 {
-                    tiltMapPerspective(spine, head, wristHandL, wristHandR, KneeLeft, KneeRight);
-                    rotateMap(wristHandL, wristHandR, KneeLeft, KneeRight);
+                    //tiltMapPerspective(spine, head, wristHandL, wristHandR, KneeLeft, KneeRight);
+                    //rotateMap(wristHandL, wristHandR, KneeLeft, KneeRight);
                 }
             }
-
+            this.frameCounter++;
         }
 
         private void checkContinuousState()
@@ -490,94 +680,89 @@ namespace Microsoft.mmi.Kinect.Explorer
 
 
         //pinch or spread with both hands
-        private void zoomInOut(Joint wristHandL, Joint wristHandR, Joint KneeLeft, Joint KneeRight)
-        {
+        /* private void zoomInOut(Joint wristHandL, Joint wristHandR, Joint KneeLeft, Joint KneeRight)
+         {
 
-            //System.Console.WriteLine("Linkes Handgelenk:"+ wristHandL.Position.X+ "Rechtes Handgelenk:" +wristHandR.Position.X);
-            //System.Console.WriteLine("zoom");
-            double altitude = (double)window.Browser.InvokeScript("getAltitude");
-            String mode = "";
-            if (altitude < 20)
-            {
-                earthMode = false;
-                mode = "";
-            }
+             //System.Console.WriteLine("Linkes Handgelenk:"+ wristHandL.Position.X+ "Rechtes Handgelenk:" +wristHandR.Position.X);
+             //System.Console.WriteLine("zoom");
+             double altitude = (double)window.Browser.InvokeScript("getAltitude");
+             String mode = "";
+             if (altitude < 20)
+             {
+                 earthMode = false;
+                 mode = "";
+             }
 
-            double difference = 0.2;
+             double difference = 0.2;
 
-            bool leftHandWristOutKnee = wristHandL.Position.X < KneeLeft.Position.X;
-            bool rightHandWristOutKnee = wristHandR.Position.X > KneeRight.Position.X;
-            bool handsZoomIn = leftHandWristOutKnee && rightHandWristOutKnee;
-            bool leftHandWristInKnee = wristHandL.Position.X > KneeLeft.Position.X;
-            bool rightHandWristInKnee = wristHandR.Position.X < KneeRight.Position.X;
-            bool handsZoomOut = leftHandWristInKnee && rightHandWristInKnee;
+             bool leftHandWristOutKnee = wristHandL.Position.X < KneeLeft.Position.X;
+             bool rightHandWristOutKnee = wristHandR.Position.X > KneeRight.Position.X;
+             bool handsZoomIn = leftHandWristOutKnee && rightHandWristOutKnee;
+             bool leftHandWristInKnee = wristHandL.Position.X > KneeLeft.Position.X;
+             bool rightHandWristInKnee = wristHandR.Position.X < KneeRight.Position.X;
+             bool handsZoomOut = leftHandWristInKnee && rightHandWristInKnee;
 
-            double differenceBetweenHandsY = wristHandL.Position.Y - wristHandR.Position.Y;
+             double differenceBetweenHandsY = wristHandL.Position.Y - wristHandR.Position.Y;
 
-            if (((handsZoomIn || handsZoomOut) && (differenceBetweenHandsY < difference && differenceBetweenHandsY > -difference)))
-            {
-                // double handCenter = wristHandL.Position.X + wristHandR.Position.X;
-                //double kneeCenter = KneeLeft.Position.X + KneeRight.Position.X;
+             if (((handsZoomIn || handsZoomOut) && (differenceBetweenHandsY < difference && differenceBetweenHandsY > -difference)))
+             {
+                 // double handCenter = wristHandL.Position.X + wristHandR.Position.X;
+                 //double kneeCenter = KneeLeft.Position.X + KneeRight.Position.X;
 
-                double handDistance = wristHandR.Position.X - wristHandL.Position.X;
-                double kneeDistance = KneeRight.Position.X - KneeLeft.Position.X;
+                 double handDistance = wristHandR.Position.X - wristHandL.Position.X;
+                 double kneeDistance = KneeRight.Position.X - KneeLeft.Position.X;
 
-                if (earthMode)
-                {
-                    window.Browser.InvokeScript("streetAutomatic");
-                    mode = "";
-                }
-                else
-                {
-                    mode = "StreetView";
-                }
+                 if (earthMode)
+                 {
+                     window.Browser.InvokeScript("streetAutomatic");
+                     mode = "";
+                 }
+                 else
+                 {
+                     mode = "StreetView";
+                 }
 
-                this.window.speech.Text = this.window.speech.Text;
+                 this.window.speech.Text = this.window.speech.Text;
 
-                if (handDistance >= (kneeDistance * 3.5) && earthMode)
-                {
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " INx2";
-                    window.Browser.InvokeScript("zoomIn2");
-                }
-                else if (handDistance >= (kneeDistance * 3.0))
-                {
-                    //System.Console.WriteLine("Zoom - IN");
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN " + mode;
-                    InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
-                }
-                else if (handDistance < kneeDistance * 0.3 && earthMode)
-                {
-                    // System.Console.WriteLine("Zoom - OUT TWICE");
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUTx2";
-                    window.Browser.InvokeScript("zoomOut2");
-                }
-                else if (handDistance <= kneeDistance * 0.75)
-                {
-                    //System.Console.WriteLine("Zoom - OUT");
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT " + mode;
-                    InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
-                }
-                else
-                {
-                    //System.Console.WriteLine("NO ZOOM recognized");
-                    this.window.gestureZoom.Text = this.window.gestureZoom.Text + " NO";
-                    stopGestures();
-                }
-            }
-            else
-            {
-                //System.Console.WriteLine("NO gesture - not the same height!!");
-                this.window.gestureZoom.Text = this.window.gestureZoom.Text + " NO!!";
-            }
-        }
-
+                 if (handDistance >= (kneeDistance * 3.5) && earthMode)
+                 {
+                     this.window.gestureZoom.Text = this.window.gestureZoom.Text + " INx2";
+                     window.Browser.InvokeScript("zoomIn2");
+                 }
+                 else if (handDistance >= (kneeDistance * 3.0))
+                 {
+                     //System.Console.WriteLine("Zoom - IN");
+                     this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN " + mode;
+                     InputSimulator.SimulateKeyDown(VirtualKeyCode.ADD);
+                 }
+                 else if (handDistance < kneeDistance * 0.3 && earthMode)
+                 {
+                     // System.Console.WriteLine("Zoom - OUT TWICE");
+                     this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUTx2";
+                     window.Browser.InvokeScript("zoomOut2");
+                 }
+                 else if (handDistance <= kneeDistance * 0.75)
+                 {
+                     //System.Console.WriteLine("Zoom - OUT");
+                     this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT " + mode;
+                     InputSimulator.SimulateKeyDown(VirtualKeyCode.SUBTRACT);
+                 }
+                 else
+                 {
+                     //System.Console.WriteLine("NO ZOOM recognized");
+                     this.window.gestureZoom.Text = this.window.gestureZoom.Text + " NO";
+                     stopGestures();
+                 }
+             }
+             else
+             {
+                 //System.Console.WriteLine("NO gesture - not the same height!!");
+                 this.window.gestureZoom.Text = this.window.gestureZoom.Text + " NO!!";
+             }
+         }
+         */
         private void zoomInOut2(Joint wristHandL, Joint wristHandR, Joint spine)
         {
-            // System.Console.WriteLine("X TestWert: " + ((wristHandR.Position.X + spine.Position.X) - (wristHandL.Position.X - spine.Position.X)));
-            //System.Console.WriteLine("Linkes Handgelenk:" + wristHandL.Position.X + "Rechtes Handgelenk:" + wristHandR.Position.X);
-            //System.Console.WriteLine("zoom");
-
-
 
             double difference = 0.2;
 
