@@ -171,14 +171,14 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         private bool handsZAxle(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
         {
-            float zAxlehands = 0.43F;
+            float zAxlehands = 0.45F;
             /*System.Console.WriteLine("current_wristHandR.Position.Z: " + current_wristHandR.Position.Z);
             System.Console.WriteLine("current_wristHandL.Position.Z: " + current_wristHandL.Position.Z);
             System.Console.WriteLine("current_head.Position.Z: " + current_head.Position.Z);
             */
             if (((current_wristHandL.Position.Z + zAxlehands) < current_head.Position.Z) && ((current_wristHandL.Position.Z + zAxlehands) < current_head.Position.Z))
             {
-               // System.Console.WriteLine("Hand Poisiton Ok for ZOOM");
+                // System.Console.WriteLine("Hand Poisiton Ok for ZOOM");
                 this.zoomActive = true;
                 return true;
             }
@@ -202,6 +202,8 @@ namespace Microsoft.mmi.Kinect.Explorer
             handMovement[1] = false;
             handMovement[2] = false;
             handMovement[3] = false;
+
+            //System.Console.WriteLine("minMovementFrame: " + minMovementFrame); 
 
             //for accesleration
             handMovement[4] = false;
@@ -242,9 +244,9 @@ namespace Microsoft.mmi.Kinect.Explorer
                 {
                     handMovement[1] = true;
                     //System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
-                    
+
                     //acceleration
-                    if ((current_wristHandR.Position.X-minMovementTotal)>skeleton2_wristHandR.Position.X)
+                    if ((current_wristHandR.Position.X - minMovementTotal) > skeleton2_wristHandR.Position.X)
                     {
                         handRightFast = true;
                     }
@@ -259,7 +261,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 {
                     handMovement[0] = true;
                     //System.Console.WriteLine("linke Hand bewegt sich nach Aussen");
-                    
+
                     //acceleration
                     if ((current_wristHandL.Position.X + minMovementTotal) < skeleton2_wristHandL.Position.X)
                     {
@@ -329,11 +331,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                 if (handMovement[1] && handMovement[0])
                 {
 
-                    if (handMovement[4])//zoom double
+                    if (false)//handMovement[4])//zoom double
                     {
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         this.window.gestureZoom.Text = this.window.gestureZoom.Text + " INx2";
                         window.Browser.InvokeScript("zoomInByValue", new string[] { "3" });
+
+
                     }
                     else if (!handMovement[4])//zoom single
                     {
@@ -362,7 +366,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 if (handMovement[3] && handMovement[2])
                 {
 
-                    if (handMovement[4])//zoom double
+                    if (false)//handMovement[4])//zoom double
                     {
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUTx2";
@@ -537,6 +541,19 @@ namespace Microsoft.mmi.Kinect.Explorer
             // gestureRecognition(false);
             stopGestures();
             return false;
+        }
+
+        public void handleDebugInput(String value)
+        {
+            System.Console.WriteLine("value_17: " + value);
+            //minMovementFrame= System.Convert.ToSingle(value);
+            if (float.TryParse(value, out minMovementFrame))
+            {
+                System.Console.WriteLine("value_2: " + value);
+            }
+            //System.Console.WriteLine("input was: " +  System.Convert.ToSingle(value));
+            //System.Console.WriteLine("minMovementFrame: " + minMovementFrame.ToString());
+            //System.Console.WriteLine("minMovementFrame: " + minMovementFrame);
         }
 
         //detects superman gesture of one hand from skeleton

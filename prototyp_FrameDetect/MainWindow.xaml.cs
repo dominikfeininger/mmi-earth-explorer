@@ -12,7 +12,7 @@ namespace Microsoft.mmi.Kinect.Explorer
     using System.Windows.Documents;
     using System.Collections.Generic;
     //using System.Windows.Controls;
-    using System.Windows.Forms;
+    //using System.Windows.Forms;
     using mshtml;
     //using System.Drawing;
 
@@ -90,6 +90,8 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// Speech recognition engine using audio data from Kinect.
         /// </summary>
         private SpeechRecognitionEngine speechEngine;
+
+        private static String debugInputMessage;
 
         // Create a new SpeechRecognitionEngine instance.
         SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
@@ -293,8 +295,18 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             }
             System.Console.WriteLine("kinect down");
+  
         }
 
+        void tb_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                System.Console.WriteLine("moveSpeed Textfield");
+                System.Console.WriteLine("moveSpeed Textfield: " + debugInputMessage);
+                gestureController.handleDebugInput(debugInputMessage);
+            }
+        }
 
         /// <Title>
         /// Labels and Pictures
@@ -306,6 +318,10 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             this.PositionBody.Text = "Position: NOT correct";
             this.PositionBody.Foreground = System.Windows.Media.Brushes.Red;
+
+            debugInputMessage = moveSpeed.Text;
+            moveSpeed.KeyDown += new KeyEventHandler(tb_KeyDown);
+            System.Console.WriteLine("moveSpeed Textfield: "+debugInputMessage);
 
             this.gestureMove.Text = "Move: No Skeleton found";
             this.gestureMove.Foreground = System.Windows.Media.Brushes.Red;
@@ -398,6 +414,11 @@ namespace Microsoft.mmi.Kinect.Explorer
             imageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromWidthAndHeight(backgroundBitmap.Width, backgroundBitmap.Height));
             this.zoomOut2x.Background = new ImageBrush(imageSource);
 
+        }
+
+        private void OnKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
 
