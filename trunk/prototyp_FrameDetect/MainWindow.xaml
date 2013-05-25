@@ -76,6 +76,10 @@
                 <TextBlock Name="speech" FontSize="15" Foreground="Black" Margin="120,100,448,-1" Width="300" Height="25" >''</TextBlock>
                 <!--TextBlock Name="PositionFeet" FontSize="20" Foreground="Black" Margin="369,0,0,114" Width="300" Height="35" >'Position'</TextBlock-->
 
+                <TextBox MaxWidth="100" Height="25" Foreground="Black" FontSize="15" x:Name="moveSpeed" Text="moveSpeed" IsReadOnly="False"></TextBox>
+                
+           
+                
                 <Canvas Name="left"  Width="150" Margin="442,0,254,30" />
                 <Canvas Name="right" Width="150" Margin="442,0,254,30"/>
                 <Canvas Name="up" Width="150" Margin="442,0,254,30"/>
