@@ -273,14 +273,14 @@
 	}
 	
 	function zoomOutByValue(zoomValueParam){
-		
-     //alert(zoomValueParam.arguments[0]);
+		alert("zoomOutByValue");
+
 		//zoomValue=4;
 		// Get the current view.
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
 		// Zoom out to twice the current range.
-		lookAt.setRange(lookAt.getRange() * zoomValueParam.arguments[0]);
+		lookAt.setRange(lookAt.getRange() * zoomOutByValue);
 		//document.getElementById('zoomValue')[0].value);
 
 		// Update the view in Google Earth.
@@ -288,14 +288,14 @@
 	}
 	
 	function zoomInByValue(zoomValueParam){
-		
-     //alert(zoomValueParam.arguments[0]);
+		alert("zoomInByValue");
+
 		//zoomValue=4;
 		// Get the current view.
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
 		// Zoom out to twice the current range.
-		lookAt.setRange(lookAt.getRange() / zoomValueParam.arguments[0]);
+		lookAt.setRange(lookAt.getRange() / zoomInByValue);
 		//document.getElementById('zoomValue')[0].value);
 
 		// Update the view in Google Earth.
