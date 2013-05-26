@@ -302,9 +302,25 @@ namespace Microsoft.mmi.Kinect.Explorer
         {
             if (e.Key == Key.Enter)
             {
-                System.Console.WriteLine("moveSpeed Textfield");
-                System.Console.WriteLine("moveSpeed Textfield: " + debugInputMessage);
-                gestureController.handleDebugInput(debugInputMessage);
+                try
+                {
+                    //gestureController.minMovementFrame = float.Parse(moveSpeed.Text);
+                    //this.minMovementFrame = float.Parse(window.frameInterval.Text);
+                    gestureController.zoomspeed = float.Parse(zoomSpeed.Text); 
+                    System.Console.WriteLine("zoomspeed " + float.Parse(zoomSpeed.Text));
+                    //this.minMovementFrame = float.Parse(window.distanceZ.Text);
+                    //gestureController.tollerance = float.Parse(tollerance.Text);
+
+                }
+                catch (Exception exc)
+                {
+                    System.Console.WriteLine("e" + exc);
+                }
+            
+                //System.Console.WriteLine("moveSpeed Textfield");
+                debugInputMessage = moveSpeed.Text;
+                //System.Console.WriteLine("tb_KeyDown moveSpeed debugInputMessage: " + debugInputMessage.ToString());
+                //gestureController.handleDebugInput(debugInputMessage);
             }
         }
 
@@ -319,9 +335,13 @@ namespace Microsoft.mmi.Kinect.Explorer
             this.PositionBody.Text = "Position: NOT correct";
             this.PositionBody.Foreground = System.Windows.Media.Brushes.Red;
 
-            debugInputMessage = moveSpeed.Text;
             moveSpeed.KeyDown += new KeyEventHandler(tb_KeyDown);
-            System.Console.WriteLine("moveSpeed Textfield: "+debugInputMessage);
+            frameInterval.KeyDown += new KeyEventHandler(tb_KeyDown);
+            zoomSpeed.KeyDown += new KeyEventHandler(tb_KeyDown);
+            distanceZ.KeyDown += new KeyEventHandler(tb_KeyDown);
+            tollerance.KeyDown += new KeyEventHandler(tb_KeyDown);
+            
+            //System.Console.WriteLine("moveSpeed debugInputMessage: " + debugInputMessage);
 
             this.gestureMove.Text = "Move: No Skeleton found";
             this.gestureMove.Foreground = System.Windows.Media.Brushes.Red;

@@ -42,11 +42,27 @@ namespace Microsoft.mmi.Kinect.Explorer
         //saves the skeletons
         private Skeleton[] SkeletonFrames = new Skeleton[totalFrames + 1];
         //frame interval
-        private static int frameInterval = 3;
-        private static float minMovementFrame = 0.01F;
-        private static float minMovementTotal = 0.03F;
+        private int frameInterval = 3;
+        public float minMovementFrame = 0.01F;
+        public float minMovementTotal = 0.03F;
+        public float tollerance = 0.01F;
+        //calc from screensize and distance
+        private float proportion;
+        public float zoomspeed = 3;
+        private float screen_dpi;
+        //in cm
+        private float distanceZ_user_sensor = 200;
+        private float screensize;
         //just for calc.
         private int frameCounter;
+
+        /*
+moveSpeed
+frameInterval
+minMovementTotal
+distanceZ
+tollerance
+*/
 
         private bool earthMode = true;
 
@@ -331,13 +347,14 @@ namespace Microsoft.mmi.Kinect.Explorer
                 if (handMovement[1] && handMovement[0])
                 {
 
-                    if (false)//handMovement[4])//zoom double
+                    if (true)//handMovement[4])//zoom double
                     {
                         // System.Console.WriteLine("Zoom - OUT TWICE");
-                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " INx2";
-                        window.Browser.InvokeScript("zoomInByValue", new string[] { "3" });
+                        //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN with speed: ...";
+                        //window.Browser.InvokeScript("zoomInByValue",zoomspeed.ToString());
 
-
+                        //means zoomsped
+                        window.Browser.InvokeScript("zoomInByValue", zoomspeed.ToString());
                     }
                     else if (!handMovement[4])//zoom single
                     {
@@ -366,11 +383,14 @@ namespace Microsoft.mmi.Kinect.Explorer
                 if (handMovement[3] && handMovement[2])
                 {
 
-                    if (false)//handMovement[4])//zoom double
+                    if (true)//handMovement[4])//zoom double
                     {
                         // System.Console.WriteLine("Zoom - OUT TWICE");
-                        this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUTx2";
-                        window.Browser.InvokeScript("zoomOutByValue", new string[] { "3" });
+                        //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT with speed: ...";
+                        //window.Browser.InvokeScript("zoomOutByValue", new string[] { zoomspeed.ToString() });
+                        window.Browser.InvokeScript("zoomOutByValue", zoomspeed.ToString());
+                        //window.Browser.InvokeScript("zoomOut2");
+                        //System.Console.WriteLine("window.Browser.InvokeScript(zoomOut2);");
                     }
                     else if (!handMovement[4])//zoom single
                     {
@@ -394,8 +414,11 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
 
+        //gets called once a frame
         internal void processSkeletonFrame(Skeleton skeleton)
         {
+            //System.Console.WriteLine("window.moveSpeed.Text" + window.moveSpeed.Text);
+           
 
             Joint wristHandR = skeleton.Joints[JointType.WristRight];
             Joint wristHandL = skeleton.Joints[JointType.WristLeft];
@@ -447,6 +470,8 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             }
 
+
+
             // System.Console.WriteLine("spine" + spine.Position.X);
 
             //positionCorrect = footDistanceCorrect(FootLeft, FootRight) && positionCenter(shoulderLeft, shoulderRight);
@@ -457,13 +482,17 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             if (positionCorrect)
             {
+                //TODO:
+                saveToSkeletonFrames(skeleton);
 
                 //saves in interval
+                if (this.frameCounter % frameInterval == 1)
+                {                    
+                    detectZoomOUTByFrame(wristHandR, wristHandL, head);
+                }
                 if (this.frameCounter % frameInterval == 0)
                 {
-                    saveToSkeletonFrames(skeleton);
                     detectZoomINByFrame(wristHandR, wristHandL, head);
-                    detectZoomOUTByFrame(wristHandR, wristHandL, head);
                 }
                 //TODO:
                 //checkContinuousState();
@@ -543,18 +572,56 @@ namespace Microsoft.mmi.Kinect.Explorer
             return false;
         }
 
-        public void handleDebugInput(String value)
+       /* public void handleDebugInput(String value)
         {
-            System.Console.WriteLine("value_17: " + value);
+            //System.Console.WriteLine("handleDebugInput.debugInputMessage: " + value);
+            //System.Console.WriteLine("this.minMovementFrame: " + this.minMovementFrame);
+            //System.Console.WriteLine("window.moveSpeed.Text: " + window.moveSpeed.Text);
+            
+            /*
+            moveSpeed
+            frameInterval
+            minMovementTotal
+            distanceZ
+            tollerance
+            */
+
+        /*
+            try
+            {
+                this.minMovementFrame = float.Parse(window.moveSpeed.Text);
+                //this.minMovementFrame = float.Parse(window.frameInterval.Text);
+                this.zoomspeed = float.Parse(window.zoomSpeed.Text);
+                //this.minMovementFrame = float.Parse(window.distanceZ.Text);
+                this.tollerance = float.Parse(window.tollerance.Text);
+                System.Console.WriteLine("float.Parse(value): " + float.Parse(window.moveSpeed.Text));
+            }
+            catch(Exception e)
+            {
+                System.Console.WriteLine("e" + e);
+            }
+         */
+
             //minMovementFrame= System.Convert.ToSingle(value);
+            
+            //System.Console.WriteLine("float.Parse(value): " + float.Parse(value));
+
+            /*
             if (float.TryParse(value, out minMovementFrame))
             {
-                System.Console.WriteLine("value_2: " + value);
+                System.Console.WriteLine("float.TryParse(value, out minMovementFrame): " + value);
             }
+            else
+            {
+                System.Console.WriteLine("parsing failed");
+            }
+             */
             //System.Console.WriteLine("input was: " +  System.Convert.ToSingle(value));
             //System.Console.WriteLine("minMovementFrame: " + minMovementFrame.ToString());
             //System.Console.WriteLine("minMovementFrame: " + minMovementFrame);
+        /*
         }
+*/
 
         //detects superman gesture of one hand from skeleton
         private void detectSupermanGeture(Joint head, Joint rightHand, Joint leftHand)
