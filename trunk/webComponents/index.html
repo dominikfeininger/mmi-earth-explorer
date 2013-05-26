@@ -280,7 +280,7 @@
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
 		// Zoom out to twice the current range.
-		lookAt.setRange(lookAt.getRange() * zoomOutByValue);
+		lookAt.setRange(lookAt.getRange() * zoomValueParam);
 		//document.getElementById('zoomValue')[0].value);
 
 		// Update the view in Google Earth.
@@ -295,7 +295,7 @@
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
 		// Zoom out to twice the current range.
-		lookAt.setRange(lookAt.getRange() / zoomInByValue);
+		lookAt.setRange(lookAt.getRange() / zoomValueParam);
 		//document.getElementById('zoomValue')[0].value);
 
 		// Update the view in Google Earth.
