@@ -261,6 +261,7 @@
 		ge.getView().setAbstractView(lookAt);
 	}
 	function zoomOut2(){
+		alert("zoomValue");
 		// Get the current view.
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
@@ -271,7 +272,9 @@
 		ge.getView().setAbstractView(lookAt);
 	}
 	
-	function zoomOutByValue(zoomValue){
+	function zoomOutByValue(zoomValueParam){
+		float zoomValue = zoomValueParam.arguments[0];
+		alert(zoomValue);
 		//zoomValue=4;
 		// Get the current view.
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
@@ -284,7 +287,9 @@
 		ge.getView().setAbstractView(lookAt);
 	}
 	
-	function zoomInByValue(zoomValue){
+	function zoomInByValue(zoomValueParam){
+		float zoomValue = zoomValueParam.arguments[0];
+		alert(zoomValue);
 		//zoomValue=4;
 		// Get the current view.
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
