@@ -305,11 +305,13 @@ namespace Microsoft.mmi.Kinect.Explorer
                 try
                 {
                     //gestureController.minMovementFrame = float.Parse(moveSpeed.Text);
-                    //this.minMovementFrame = float.Parse(window.frameInterval.Text);
+                    //gestureController.minMovementFrame = float.Parse(frameInterval.Text);
+                    //gestureController.minMovementFrame = float.Parse(distanceZ.Text);
                     gestureController.zoomspeed = float.Parse(zoomSpeed.Text); 
-                    System.Console.WriteLine("zoomspeed " + float.Parse(zoomSpeed.Text));
-                    //this.minMovementFrame = float.Parse(window.distanceZ.Text);
-                    //gestureController.tollerance = float.Parse(tollerance.Text);
+                    //System.Console.WriteLine("zoomspeed " + float.Parse(zoomSpeed.Text));
+                    gestureController.tollerance = float.Parse(tollerance.Text);
+                    gestureController.frameInterval= int.Parse(frameInterval.Text);
+
 
                 }
                 catch (Exception exc)
@@ -463,10 +465,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("stop", "STOP"));
                 directions.Add(new SemanticResultValue("speech on", "SPEECH ON"));
                 directions.Add(new SemanticResultValue("speech off", "SPEECH OFF"));
-                //directions.Add(new SemanticResultValue("zoom on", "ZOOM AN"));
-                //directions.Add(new SemanticResultValue("zoom off", "ZOOM AUS"));
-                //directions.Add(new SemanticResultValue("move on", "BEWEGUNG AN"));
-                //directions.Add(new SemanticResultValue("move off", "BEWEGUNG AUS"));
+
                 directions.Add(new SemanticResultValue("perspective on", "PERSPECTIVE ON"));
                 directions.Add(new SemanticResultValue("perspective off", "PERSPECTIVE OFF"));
 
@@ -485,10 +484,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 directions.Add(new SemanticResultValue("northern", "NORTHERN"));
                 directions.Add(new SemanticResultValue("horizon", "HORIZON"));
                 directions.Add(new SemanticResultValue("neutral", "NEUTRAL"));
-                //directions.Add(new SemanticResultValue("up", "HOCH"));
-                //directions.Add(new SemanticResultValue("down", "RUNTER"));
-                //directions.Add(new SemanticResultValue("right", "RIGHT"));
-                //directions.Add(new SemanticResultValue("left", "LINKS"));
+
 
                 //for development
                // directions.Add(new SemanticResultValue("test", "TEST"));
@@ -597,35 +593,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                 switch (e.Result.Semantics.Value.ToString())
                 {
-                    //Basics
-                    //case "ZOOM AN":
-                    //    System.Console.WriteLine("ZOOM AN");
-                    //    gestureController.zoomRecognition(true);
-                    //    break;
-                    //case "ZOOM AUS":
-                    //    System.Console.WriteLine("ZOOM AUS");
-                    //    gestureController.zoomRecognition(false);
-                    //    break;
-                    //case "BEWEGUNG AN":
-                    //    System.Console.WriteLine("BEWEGUNG AN");
-                    //    gestureController.moveRecognition(true);
-                    //    break;
-                    //case "BEWEGUNG AUS":
-                    //    System.Console.WriteLine("BEWEGUNG AUS");
-                    //    gestureController.moveRecognition(false);
-                    //    break;
-                    /*
-                    case "PERSPECTIVE ON":
-                        System.Console.WriteLine("PERSPECTIVE ON");
-                        gestureController.perspectiveRecognition(true);
-                        gestureController.gestureRecognition(false);
-                        break;
-                    case "PERSPECTIVE OFF":
-                        System.Console.WriteLine("PERSPECTIVE OFF");
-                        gestureController.gestureRecognition(true);
-                        gestureController.perspectiveRecognition(false);
-                        break;
-                    */
+
                     //Cities
 
                     case "FRANKFURT":
@@ -667,29 +635,6 @@ namespace Microsoft.mmi.Kinect.Explorer
                         gestureController.goTo("neutral");
                         break;
 
-                    //case "HOCH":
-                    //    System.Console.WriteLine("hoch");
-                    //    gestureController.goTo("hoch");
-                    //    break;
-                    //case "RUNTER":
-                    //    System.Console.WriteLine("runter");
-                    //    gestureController.goTo("runter");
-                    //    break;
-                    //case "RIGHT":
-                    //    System.Console.WriteLine("rechts");
-                    //    gestureController.goTo("rechts");
-                    //    break;
-                    //case "LINKS":
-                    //    System.Console.WriteLine("links");
-                    //    gestureController.goTo("links");
-                    //    break;
-
-                    /*
-                    case "TEST":
-                        System.Console.WriteLine("test");
-                        gestureController.goTo("test");
-                        break;
-                     */
                 }
             }
         }

@@ -73,7 +73,7 @@
                 <TextBlock Name="gestureMove" FontSize="15" Foreground="Black" Margin="100,25,448,74" Width="200" Height="25" >''</TextBlock>
                 <TextBlock Name="gestureZoom" FontSize="15" Foreground="Black" Margin="100,50,448,49" Width="200" Height="25">''</TextBlock>
                 <TextBlock x:Name="gesturePerspective" FontSize="15" Foreground="Black" Margin="100,75,448,24" Width="200" Height="25" >''</TextBlock>
-                <TextBlock Name="speech" FontSize="15" Foreground="Black" Margin="100,100,448,-1" Width="200" Height="25" >''</TextBlock>
+                <TextBlock Name="speech" FontSize="15" Foreground="Black" Margin="100,100,448,0" Width="200" Height="25" >''</TextBlock>
                 <!--TextBlock Name="PositionFeet" FontSize="20" Foreground="Black" Margin="369,0,0,114" Width="300" Height="35" >'Position'</TextBlock-->
 
                 <!--left,Top,right, botom-->
@@ -97,7 +97,7 @@
 
                 <Canvas Name="icon" Margin="0,5,746,4"/>
                 <TextBlock x:Name="noKinect" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" Foreground="Red" Margin="494,94,0,0" />
-                <TextBlock x:Name="supermanTag" TextAlignment="Center" FontSize="15" Foreground="White" Margin="378,99,404,0" />
+               <!-- <TextBlock x:Name="supermanTag" TextAlignment="Center" FontSize="15" Foreground="White" Margin="378,99,404,0" />-->
                 <Button x:Name="kinectUp"  Style="{StaticResource MyButtonStyle}" Content="" Margin="1,5,746,65" Click="kinectUp_Click" Background="Transparent" />
                 <Button x:Name="kinectDown" Style="{StaticResource MyButtonStyle}" Content="" Margin="0,65,746,5" Click="kinectDown_Click" Background="Transparent" />               
             </Grid>
