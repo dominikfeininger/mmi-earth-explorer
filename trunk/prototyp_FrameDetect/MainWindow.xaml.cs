@@ -13,7 +13,7 @@ namespace Microsoft.mmi.Kinect.Explorer
     using System.Collections.Generic;
     //using System.Windows.Controls;
     //using System.Windows.Forms;
-    using mshtml;
+    //using mshtml;
     //using System.Drawing;
 
     /// <summary>
