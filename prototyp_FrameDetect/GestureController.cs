@@ -42,27 +42,25 @@ namespace Microsoft.mmi.Kinect.Explorer
         //saves the skeletons
         private Skeleton[] SkeletonFrames = new Skeleton[totalFrames + 1];
         //frame interval
-        public int frameInterval = 3;
-        public float minMovementFrame = 0.01F;
-        public float minMovementTotal = 0.03F;
-        public float tollerance = 0.01F;
+        private int frameInterval = 3;
+        private float minMovementTotal = 0.03F;
         //calc from screensize and distance
-        private float proportion;
-        public float zoomspeed = 3;
-        private float screen_dpi;
+        private float proportion = (distanceZ_user_display / screensize) * screen_dpi;
+        private static float screen_dpi = 10;
         //in cm
-        private float distanceZ_user_sensor = 200;
-        private float screensize;
+        private static float distanceZ_user_display = 310;
+        private static float screensize = 330;
         //just for calc.
         private int frameCounter;
 
-        /*
-        moveSpeed
-        frameInterval
-        minMovementTotal
-        distanceZ
-        tollerance
-        */
+        //params for input test
+        public float distanceX;
+        public float minMovementFrame = 0.01F;
+        public float zoomspeed = 3;
+        public float tolleranceHandsSDiff;
+        public float proportionParam;
+        public float handMovingZTollerance=3;
+
 
         private bool earthMode = true;
 
@@ -168,6 +166,8 @@ namespace Microsoft.mmi.Kinect.Explorer
         //TODO:
         private void saveToSkeletonFrames(Skeleton skeleton)
         {
+            //TODO:
+            proportion = proportion + proportionParam;
             //kSystem.Console.WriteLine("skeleton.Joints.Count: " + skeleton.Joints.Count);
             //System.Console.WriteLine("this.CurrentSkeletonFrame: " + this.CurrentSkeletonFrame);
             this.SkeletonFrames[this.CurrentSkeletonFrame] = skeleton;
@@ -187,7 +187,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         private bool handsZAxle(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
         {
-            float zAxlehands = 0.45F;
+            float zAxlehands = 0.2F;//0.45F;
             /*System.Console.WriteLine("current_wristHandR.Position.Z: " + current_wristHandR.Position.Z);
             System.Console.WriteLine("current_wristHandL.Position.Z: " + current_wristHandL.Position.Z);
             System.Console.WriteLine("current_head.Position.Z: " + current_head.Position.Z);
@@ -202,6 +202,59 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 this.zoomActive = false;
                 return false;
+            }
+
+
+        }
+
+        private bool handsZAxleMove(Joint current_wristHandR, Joint current_wristHandL, Joint skeleton1_wristHandR, Joint skeleton1_wristHandL, Joint skeleton2_wristHandR, Joint skeleton2_wristHandL)
+        {
+            bool rightMoveZForw = false;
+            bool leftMoveZForw = false;
+
+            bool rightMoveZBack = false;
+            bool leftMoveZBack = false;
+
+            //rechte Hand
+            if (((skeleton1_wristHandR.Position.Z + handMovingZTollerance) < skeleton2_wristHandR.Position.Z) && ((current_wristHandR.Position.Z + handMovingZTollerance) < skeleton1_wristHandR.Position.Z))
+            {
+                rightMoveZForw = true;
+                //System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
+
+            }
+
+            //linke hand
+
+            if (((skeleton1_wristHandL.Position.Z + handMovingZTollerance) < skeleton2_wristHandL.Position.Z) && ((current_wristHandL.Position.Z + handMovingZTollerance) < skeleton1_wristHandL.Position.Z))
+            {
+                leftMoveZForw = true;
+                //System.Console.WriteLine("linke Hand bewegt sich nach Aussen");
+
+            }
+            //rechte Hand
+            if (((skeleton1_wristHandR.Position.Z - handMovingZTollerance) < skeleton2_wristHandR.Position.Z) && ((current_wristHandR.Position.Z - handMovingZTollerance) < skeleton1_wristHandR.Position.Z))
+            {
+                rightMoveZBack = true;
+                //System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
+
+            }
+
+            //linke hand
+
+            if (((skeleton1_wristHandL.Position.Z - handMovingZTollerance) < skeleton2_wristHandL.Position.Z) && ((current_wristHandL.Position.Z - handMovingZTollerance) < skeleton1_wristHandL.Position.Z))
+            {
+                leftMoveZBack = true;
+                //System.Console.WriteLine("linke Hand bewegt sich nach Aussen");
+
+            }
+
+            if (leftMoveZForw && rightMoveZForw && rightMoveZBack && leftMoveZBack)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
 
 
@@ -224,104 +277,109 @@ namespace Microsoft.mmi.Kinect.Explorer
             //for accesleration
             handMovement[4] = false;
 
+            //2 und 3 , da current auf -1 gespeichert ist
+            Skeleton skeleton1 = this.SkeletonFrames[this.CurrentSkeletonFrame - 2];
+            Skeleton skeleton2 = this.SkeletonFrames[this.CurrentSkeletonFrame - 3];
+
+            Joint skeleton1_wristHandR = skeleton1.Joints[JointType.WristRight];
+            Joint skeleton1_wristHandL = skeleton1.Joints[JointType.WristLeft];
+
+            Joint skeleton2_wristHandR = skeleton2.Joints[JointType.WristRight];
+            Joint skeleton2_wristHandL = skeleton2.Joints[JointType.WristLeft];
+
             if (handsZAxle(current_wristHandR, current_wristHandL, current_head))
             {
-                if (zoomActive)
+                if (handsZAxleMove(current_wristHandR, current_wristHandL, skeleton1_wristHandR, skeleton1_wristHandL, skeleton2_wristHandR, skeleton2_wristHandL))
                 {
-                    this.window.gestureZoom.Text = "Zoom: ON";
-                    this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Green;
-
-                }
-                else
-                {
-                    this.window.gestureZoom.Text = "Zoom: OFF";
-                    this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
-
-                }
-
-                //2 und 3 , da current auf -1 gespeichert ist
-                Skeleton skeleton1 = this.SkeletonFrames[this.CurrentSkeletonFrame - 2];
-                Skeleton skeleton2 = this.SkeletonFrames[this.CurrentSkeletonFrame - 3];
-
-                Joint skeleton1_wristHandR = skeleton1.Joints[JointType.WristRight];
-                Joint skeleton1_wristHandL = skeleton1.Joints[JointType.WristLeft];
-
-                Joint skeleton2_wristHandR = skeleton2.Joints[JointType.WristRight];
-                Joint skeleton2_wristHandL = skeleton2.Joints[JointType.WristLeft];
-
-                /*
-                System.Console.WriteLine("  current_wristHandR.Position.X: " + current_wristHandR.Position.X);
-                System.Console.WriteLine("skeleton1_wristHandR.Position.X: " + skeleton1_wristHandR.Position.X);
-                System.Console.WriteLine("skeleton2_wristHandR.Position.X: " + skeleton2_wristHandR.Position.X);
-                */
-
-                //rechte Hand
-                if (((skeleton1_wristHandR.Position.X - minMovementFrame) > skeleton2_wristHandR.Position.X) && ((current_wristHandR.Position.X - minMovementFrame) > skeleton1_wristHandR.Position.X))
-                {
-                    handMovement[1] = true;
-                    //System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
-
-                    //acceleration
-                    if ((current_wristHandR.Position.X - minMovementTotal) > skeleton2_wristHandR.Position.X)
+                    if (zoomActive)
                     {
-                        handRightFast = true;
+                        this.window.gestureZoom.Text = "Zoom: ON";
+                        this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Green;
+
                     }
-                }
-                else
-                {
-                    handMovement[1] = false;
-                }
-                //linke hand
-
-                if (((skeleton1_wristHandL.Position.X + minMovementFrame) < skeleton2_wristHandL.Position.X) && ((current_wristHandL.Position.X + minMovementFrame) < skeleton1_wristHandL.Position.X))
-                {
-                    handMovement[0] = true;
-                    //System.Console.WriteLine("linke Hand bewegt sich nach Aussen");
-
-                    //acceleration
-                    if ((current_wristHandL.Position.X + minMovementTotal) < skeleton2_wristHandL.Position.X)
+                    else
                     {
-                        handLeftFast = true;
+                        this.window.gestureZoom.Text = "Zoom: OFF";
+                        this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
+
                     }
 
-                }
-                else
-                {
-                    handMovement[0] = false;
-                }
+                    
 
-                //rechte Hand
-                if (((skeleton1_wristHandR.Position.X + minMovementFrame) < skeleton2_wristHandR.Position.X) && ((current_wristHandR.Position.X + minMovementFrame) < skeleton1_wristHandR.Position.X))
-                {
-                    handMovement[3] = true;
-                    //System.Console.WriteLine("rechte Hand bewegt sich nach INNEN");
+                    /*
+                    System.Console.WriteLine("  current_wristHandR.Position.X: " + current_wristHandR.Position.X);
+                    System.Console.WriteLine("skeleton1_wristHandR.Position.X: " + skeleton1_wristHandR.Position.X);
+                    System.Console.WriteLine("skeleton2_wristHandR.Position.X: " + skeleton2_wristHandR.Position.X);
+                    */
 
-                    //acceleration
-                    if ((current_wristHandR.Position.X + minMovementTotal) < skeleton2_wristHandR.Position.X)
+                    //rechte Hand
+                    if (((skeleton1_wristHandR.Position.X - minMovementFrame) > skeleton2_wristHandR.Position.X) && ((current_wristHandR.Position.X - minMovementFrame) > skeleton1_wristHandR.Position.X))
                     {
-                        handRightFast = true;
+                        handMovement[1] = true;
+                        //System.Console.WriteLine("rechte Hand bewegt sich nach Aussen");
+
+                        //acceleration
+                        if ((current_wristHandR.Position.X - minMovementTotal) > skeleton2_wristHandR.Position.X)
+                        {
+                            handRightFast = true;
+                        }
                     }
-                }
-                else
-                {
-                    handMovement[3] = false;
-                }
-                //linke hand
-
-                if (((skeleton1_wristHandL.Position.X - minMovementFrame) > skeleton2_wristHandL.Position.X) && ((current_wristHandL.Position.X - minMovementFrame) > skeleton1_wristHandL.Position.X))
-                {
-                    handMovement[2] = true;
-                    //System.Console.WriteLine("linke Hand bewegt sich nach INNEN");
-
-                    //acceleration
-                    if ((current_wristHandL.Position.X - minMovementTotal) > skeleton2_wristHandL.Position.X)
+                    else
                     {
-                        handLeftFast = true;
+                        handMovement[1] = false;
                     }
-                }
-                else
-                {
-                    handMovement[2] = false;
+                    //linke hand
+
+                    if (((skeleton1_wristHandL.Position.X + minMovementFrame) < skeleton2_wristHandL.Position.X) && ((current_wristHandL.Position.X + minMovementFrame) < skeleton1_wristHandL.Position.X))
+                    {
+                        handMovement[0] = true;
+                        //System.Console.WriteLine("linke Hand bewegt sich nach Aussen");
+
+                        //acceleration
+                        if ((current_wristHandL.Position.X + minMovementTotal) < skeleton2_wristHandL.Position.X)
+                        {
+                            handLeftFast = true;
+                        }
+
+                    }
+                    else
+                    {
+                        handMovement[0] = false;
+                    }
+
+                    //rechte Hand
+                    if (((skeleton1_wristHandR.Position.X + minMovementFrame) < skeleton2_wristHandR.Position.X) && ((current_wristHandR.Position.X + minMovementFrame) < skeleton1_wristHandR.Position.X))
+                    {
+                        handMovement[3] = true;
+                        //System.Console.WriteLine("rechte Hand bewegt sich nach INNEN");
+
+                        //acceleration
+                        if ((current_wristHandR.Position.X + minMovementTotal) < skeleton2_wristHandR.Position.X)
+                        {
+                            handRightFast = true;
+                        }
+                    }
+                    else
+                    {
+                        handMovement[3] = false;
+                    }
+                    //linke hand
+
+                    if (((skeleton1_wristHandL.Position.X - minMovementFrame) > skeleton2_wristHandL.Position.X) && ((current_wristHandL.Position.X - minMovementFrame) > skeleton1_wristHandL.Position.X))
+                    {
+                        handMovement[2] = true;
+                        //System.Console.WriteLine("linke Hand bewegt sich nach INNEN");
+
+                        //acceleration
+                        if ((current_wristHandL.Position.X - minMovementTotal) > skeleton2_wristHandL.Position.X)
+                        {
+                            handLeftFast = true;
+                        }
+                    }
+                    else
+                    {
+                        handMovement[2] = false;
+                    }
                 }
             }
             if (handLeftFast && handRightFast)

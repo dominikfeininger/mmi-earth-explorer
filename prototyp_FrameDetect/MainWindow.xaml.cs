@@ -91,7 +91,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         /// </summary>
         private SpeechRecognitionEngine speechEngine;
 
-        private static String debugInputMessage;
+        //private static String debugInputMessage;
 
         // Create a new SpeechRecognitionEngine instance.
         SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
@@ -304,15 +304,42 @@ namespace Microsoft.mmi.Kinect.Explorer
             {
                 try
                 {
-                    //gestureController.minMovementFrame = float.Parse(moveSpeed.Text);
-                    //gestureController.minMovementFrame = float.Parse(frameInterval.Text);
-                    //gestureController.minMovementFrame = float.Parse(distanceZ.Text);
-                    gestureController.zoomspeed = float.Parse(zoomSpeed.Text); 
-                    //System.Console.WriteLine("zoomspeed " + float.Parse(zoomSpeed.Text));
-                    gestureController.tollerance = float.Parse(tollerance.Text);
-                    gestureController.frameInterval= int.Parse(frameInterval.Text);
-
-
+                    if (sender.Equals(zoomSpeed))
+                    {
+                        //System.Console.WriteLine("zoomSpeed");
+                        gestureController.zoomspeed = Convert.ToSingle(zoomSpeed.Text);
+                    }
+                    else if (sender.Equals(handMovingZTollerance))
+                    {
+                        gestureController.handMovingZTollerance = Convert.ToSingle(handMovingZTollerance.Text);
+                    }
+                    else if (sender.Equals(distanceX))
+                    {
+                        gestureController.distanceX = Convert.ToSingle(distanceX.Text);
+                    }
+                    else if (sender.Equals(tolleranceHandsSDiff))
+                    {
+                        gestureController.tolleranceHandsSDiff = Convert.ToSingle(tolleranceHandsSDiff.Text);
+                    }
+                    else if (sender.Equals(proportionParam))
+                    {
+                        gestureController.proportionParam = Convert.ToSingle(proportionParam.Text);
+                    }
+                    else if (sender.Equals(minMovementFrame))
+                    {
+                        gestureController.minMovementFrame = float.Parse(minMovementFrame.Text);
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("");
+                        /*
+                        gestureController.handMovingZTollerance = float.Parse(handMovingZTollerance.Text);
+                        gestureController.zoomspeed = float.Parse(zoomSpeed.Text);
+                        gestureController.distanceX = float.Parse(distanceX.Text);
+                        gestureController.tolleranceHandsSDiff = int.Parse(tolleranceHandsSDiff.Text);
+                        gestureController.proportionParam = int.Parse(proportionParam.Text);
+                        */
+                    }
                 }
                 catch (Exception exc)
                 {
@@ -320,7 +347,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                 }
             
                 //System.Console.WriteLine("moveSpeed Textfield");
-                debugInputMessage = moveSpeed.Text;
+                //debugInputMessage = moveSpeed.Text;
                 //System.Console.WriteLine("tb_KeyDown moveSpeed debugInputMessage: " + debugInputMessage.ToString());
                 //gestureController.handleDebugInput(debugInputMessage);
             }
@@ -337,11 +364,12 @@ namespace Microsoft.mmi.Kinect.Explorer
             this.PositionBody.Text = "Position: NOT correct";
             this.PositionBody.Foreground = System.Windows.Media.Brushes.Red;
 
-            moveSpeed.KeyDown += new KeyEventHandler(tb_KeyDown);
-            frameInterval.KeyDown += new KeyEventHandler(tb_KeyDown);
             zoomSpeed.KeyDown += new KeyEventHandler(tb_KeyDown);
-            distanceZ.KeyDown += new KeyEventHandler(tb_KeyDown);
-            tollerance.KeyDown += new KeyEventHandler(tb_KeyDown);
+            minMovementFrame.KeyDown += new KeyEventHandler(tb_KeyDown);
+            proportionParam.KeyDown += new KeyEventHandler(tb_KeyDown);
+            distanceX.KeyDown += new KeyEventHandler(tb_KeyDown);
+            tolleranceHandsSDiff.KeyDown += new KeyEventHandler(tb_KeyDown);
+            handMovingZTollerance.KeyDown += new KeyEventHandler(tb_KeyDown);
             
             //System.Console.WriteLine("moveSpeed debugInputMessage: " + debugInputMessage);
 
