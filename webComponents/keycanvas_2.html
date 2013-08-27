@@ -48,17 +48,17 @@
                 canvas = document.getElementById("canvas");
                 ctx = canvas.getContext("2d");
                 RADIUS = 70;
-                return setInterval(draw, 5);
+                return setInterval(draw, 10);
             }
 
             function zoomOutByValue(zoomValueParam) {
-               if(RADIUS >= 5){
-                  RADIUS = (RADIUS - 5);
+               if(RADIUS >= zoomValueParam){
+                  RADIUS = (RADIUS - zoomValueParam);
                }
             }
 
             function zoomInByValue(zoomValueParam) {
-                RADIUS = (RADIUS + 5);
+                RADIUS = (RADIUS + zoomValueParam);
             }
 
             function draw() {
