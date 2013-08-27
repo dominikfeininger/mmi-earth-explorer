@@ -52,7 +52,9 @@
             }
 
             function zoomOutByValue(zoomValueParam) {
-                RADIUS = (RADIUS - 5);
+               if(RADIUS >= 5){
+                  RADIUS = (RADIUS - 5);
+               }
             }
 
             function zoomInByValue(zoomValueParam) {
