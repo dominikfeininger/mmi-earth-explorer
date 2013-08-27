@@ -71,11 +71,11 @@
             function doKeyDown(evt){
 switch (evt.keyCode) {
 case 109:  /* Minus was pressed */
-RADIUS =- zoomValueParam;
+zoomOutByValue(5);
 
 break;
 case 107:  /* Plus was pressed */
-RADIUS =+ zoomValueParam;
+zoomInByValue(5);
 
 break;
 case 38:  /* Up arrow was pressed */
