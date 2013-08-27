@@ -10,7 +10,7 @@
 <section>
 
 <div>
-<canvas id="canvas" width="970" height="500">
+<canvas id="canvas" width="950" height="550">
 This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 </div>
@@ -24,7 +24,7 @@ var WIDTH = 1000;
 var HEIGHT = 500;
 var x = (WIDTH/2);
 var y = (HEIGHT/2);
-var radius = 50;
+var radius = 70;
 
 function circle(x,y,r) {
 ctx.beginPath();
@@ -47,17 +47,17 @@ ctx.clearRect(0, 0, WIDTH, HEIGHT);
 function init() {
 canvas = document.getElementById("canvas");
 ctx = canvas.getContext("2d");
-return setInterval(draw, 10);
+return setInterval(draw, 5);
 }
 
 function zoomOutByValue(zoomValueParam) {
-    draw_2(radius - 5);
-    radius = radius - 5;
+    draw_2(radius - zoomValueParam);
+    radius = radius - zoomValueParam;
 }
 
 function zoomInByValue(zoomValueParam) {
-    draw_2(radius + 5);
-    radius = radius + 5;
+    draw_2(radius + zoomValueParam);
+    radius = radius + zoomValueParam;
 }
 
 function draw() {
