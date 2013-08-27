@@ -52,11 +52,11 @@
             }
 
             function zoomOutByValue(zoomValueParam) {
-                RADIUS =- zoomValueParam;
+                RADIUS = (RADIUS - 5);
             }
 
             function zoomInByValue(zoomValueParam) {
-                RADIUS =+ zoomValueParam;
+                RADIUS = (RADIUS + 5);
             }
 
             function draw() {
