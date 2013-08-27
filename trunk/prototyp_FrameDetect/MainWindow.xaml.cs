@@ -118,8 +118,8 @@ namespace Microsoft.mmi.Kinect.Explorer
             //Make sure to change this path to YOUR index2.html file
             //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
 
-            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer_FrameDetect/sphere/sculpt.html"));
-            Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/index.html"));
+            Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer_FrameDetect/sphere/keycanvas.html"));
+            //Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/index.html"));
            /*
             WebBrowser wb = new WebBrowser();
             wb = Browser;
