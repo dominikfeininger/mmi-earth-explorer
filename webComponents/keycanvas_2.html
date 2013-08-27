@@ -52,12 +52,12 @@
 
             function zoomOutByValue(zoomValueParam) {
                if(RADIUS >= zoomValueParam){
-                  RADIUS = (RADIUS - dr);
+                  RADIUS = (RADIUS - zoomValueParam);
                }
             }
 
             function zoomInByValue(zoomValueParam) {
-                RADIUS = (RADIUS + dr);
+                RADIUS = (RADIUS + zoomValueParam);
             }
 
             function draw() {
