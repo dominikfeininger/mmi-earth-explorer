@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Canvas Test</title>
+</head>
+<body>
+<section>
+
+<div>
+<canvas id="canvas" width="1500" height="550">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</div>
+
+<script type="text/javascript">
+var canvas;
+var ctx;
+var dx = 5;
+var dy = 5;
+var x = 750;
+var y = 275;
+var WIDTH = 1500;
+var HEIGHT = 550;
+var radius = 50;
+
+function circle(x,y,r) {
+ctx.beginPath();
+ctx.arc(x, y, r, 0, Math.PI*2, true);
+ctx.fill();
+}
+
+function rect(x,y,w,h) {
+ctx.beginPath();
+ctx.rect(x,y,w,h);
+ctx.closePath();
+ctx.fill();
+ctx.stroke();
+}
+
+function clear() {
+ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+function init() {
+canvas = document.getElementById("canvas");
+ctx = canvas.getContext("2d");
+return setInterval(draw, 10);
+}
+
+function doKeyDown(evt){
+switch (evt.keyCode) {
+case 109:  /* Minus was pressed */
+draw_2(radius-5)
+
+break;
+case 107:  /* Plus was pressed */
+draw_2(radius+5)
+
+break;
+case 38:  /* Up arrow was pressed */
+if (y - dy > 0){
+y -= dy;
+}
+break;
+case 40:  /* Down arrow was pressed */
+if (y + dy < HEIGHT){
+y += dy;
+}
+break;
+case 37:  /* Left arrow was pressed */
+if (x - dx > 0){
+x -= dx;
+}
+break;
+case 39:  /* Right arrow was pressed */
+if (x + dx < WIDTH){
+x += dx;
+}
+break;
+}
+}
+
+function draw() {
+clear();
+ctx.fillStyle = "white";
+ctx.strokeStyle = "black";
+rect(0,0,WIDTH,HEIGHT);
+ctx.fillStyle = "purple";
+circle(x, y, radius);
+}
+
+function draw_2(radius) {
+clear();
+ctx.fillStyle = "white";
+ctx.strokeStyle = "black";
+rect(0,0,WIDTH,HEIGHT);
+ctx.fillStyle = "purple";
+circle(x, y, radius);
+}
+
+init();
+window.addEventListener('keydown',doKeyDown,true);
+</script>
+</section>
+</body>
+</html>
