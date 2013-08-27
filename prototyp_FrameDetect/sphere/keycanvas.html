@@ -23,7 +23,7 @@
             var HEIGHT = 500;
             var x = (WIDTH / 2);
             var y = (HEIGHT / 2);
-            var radius = 70;
+            var radius;
 
             function circle(x, y, r) {
                 ctx.beginPath();
@@ -46,29 +46,19 @@
             function init() {
                 canvas = document.getElementById("canvas");
                 ctx = canvas.getContext("2d");
+                radius = 70;
                 return setInterval(draw, 5);
             }
 
             function zoomOutByValue(zoomValueParam) {
-                draw_2(radius - zoomValueParam);
-                radius = radius - zoomValueParam;
+                radius = radius - zoomValueParam.arguments[0];
             }
 
             function zoomInByValue(zoomValueParam) {
-                draw_2(radius + zoomValueParam);
-                radius = radius + zoomValueParam;
+                radius = radius + zoomValueParam.arguments[0];
             }
 
             function draw() {
-                clear();
-                ctx.fillStyle = "white";
-                ctx.strokeStyle = "black";
-                rect(0, 0, WIDTH, HEIGHT);
-                ctx.fillStyle = "purple";
-                circle(x, y, radius);
-            }
-
-            function draw_2(radius) {
                 clear();
                 ctx.fillStyle = "white";
                 ctx.strokeStyle = "black";
