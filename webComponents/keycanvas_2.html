@@ -24,11 +24,11 @@
             var HEIGHT = 550;
             var x = (WIDTH / 2);
             var y = (HEIGHT / 2);
-            var RADIUS=70;
+            var RADIUS;
 
-            function circle(x, y, r) {
+            function circle(x, y) {
                 ctx.beginPath();
-                ctx.arc(x, y, r, 0, Math.PI * 2, true);
+                ctx.arc(x, y, RADIUS, 0, Math.PI * 2, true);
                 ctx.fill();
             }
 
