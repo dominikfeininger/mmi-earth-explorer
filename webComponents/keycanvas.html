@@ -1,0 +1,76 @@
+<!doctype html>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Canvas Test</title>
+</head>
+<body>
+    <section>
+
+        <div>
+            <canvas id="canvas" width="950" height="550">
+                This text is displayed if your browser does not support HTML5 Canvas.
+            </canvas>
+        </div>
+
+        <script type="text/javascript">
+            var canvas;
+            var ctx;
+            var dx = 5;
+            var dy = 5;
+            var WIDTH = 950;
+            var HEIGHT = 550;
+            var x = (WIDTH / 2);
+            var y = (HEIGHT / 2);
+            var radius;
+
+            function circle(x, y, r) {
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2, true);
+                ctx.fill();
+            }
+
+            function rect(x, y, w, h) {
+                ctx.beginPath();
+                ctx.rect(x, y, w, h);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            function clear() {
+                ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            }
+
+            function init() {
+                canvas = document.getElementById("canvas");
+                ctx = canvas.getContext("2d");
+                radius = 70;
+                return setInterval(draw, 5);
+            }
+
+            function zoomOutByValue(zoomValueParam) {
+                radius -= zoomValueParam.arguments[0];
+            }
+
+            function zoomInByValue(zoomValueParam) {
+                radius += zoomValueParam.arguments[0];
+            }
+
+            function draw() {
+                clear();
+                ctx.fillStyle = "white";
+                ctx.strokeStyle = "black";
+                rect(0, 0, WIDTH, HEIGHT);
+                ctx.fillStyle = "purple";
+                circle(x, y, radius);
+            }
+
+            init();
+
+        </script>
+    </section>
+</body>
+</html>
