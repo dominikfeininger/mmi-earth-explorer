@@ -1,0 +1,16 @@
+Ich erinnere mich an folgende Parameter, die  auf das Erleben der Zoom-Geste mittels der Kinect Steuerung Einfluss haben (könnten):
+
+- Entfernung zur Leinwand (diesen Parameter können Sie natürlich nicht in der SW einstellbar machen, die nun folgenden allerdings  schon...)
+
+- Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
+- die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten (Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
+- das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)
+- Verzögerung, mit der der Effekt der Geste einsetzt
+
+Bitte fertigen Sie eine Skizze an, in der Sie die Parameter veranschaulichen und benennen.
+ Diese Namen sollten Sie dann entsprechend in der Software verwenden.  Die Namensfindung ist ihnen überlassen.
+ Die Parameter sollten in einem einfachen Fenster mittels entsprechender Controls einstellbar sein. 
+
+Interessant, wäre es auch, das zu zoomende Objekt austauschbar zu machen und damit zu prüfen,
+ ob unterschiedliche Strukturen, Formen, Objekte auch ein Einfluss auf das Erleben haben. Evlt.
+ ist es anders sich in die Erde zu zoomen als in einem unifarbenen Ball ohne Textur. 

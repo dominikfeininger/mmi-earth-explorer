@@ -222,6 +222,14 @@
   <ItemGroup>
     <None Include="Images\zoomOut2x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="sphere\circle.html" />
+    <Content Include="sphere\cube.html" />
+    <Content Include="sphere\html5test.html" />
+    <Content Include="sphere\keycanvas.html" />
+    <Content Include="sphere\sculpt.html" />
+    <Content Include="sphere\sphere.html" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

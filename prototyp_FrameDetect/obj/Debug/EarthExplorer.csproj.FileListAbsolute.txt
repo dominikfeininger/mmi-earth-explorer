@@ -90,3 +90,4 @@ F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer_Ma
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.g.resources
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\Microsoft.mmi.Kinect.Explorer.Properties.Resources.resources
 F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer.csproj.GenerateResource.Cache
+F:\VisualStudio12\KinectDev\EarthExplorer_FrameDetect\obj\Debug\EarthExplorer_Content.g.cs
