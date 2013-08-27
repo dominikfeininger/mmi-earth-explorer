@@ -10,7 +10,8 @@
     <section>
 
         <div>
-            <canvas id="canvas" width="950" height="550">This text is displayed if your browser does not support HTML5 Canvas.
+            <canvas id="canvas" width="950" height="550">
+                This text is displayed if your browser does not support HTML5 Canvas.
             </canvas>
         </div>
 
@@ -19,8 +20,8 @@
             var ctx;
             var dx = 5;
             var dy = 5;
-            var WIDTH = 1000;
-            var HEIGHT = 500;
+            var WIDTH = 950;
+            var HEIGHT = 550;
             var x = (WIDTH / 2);
             var y = (HEIGHT / 2);
             var radius;
@@ -51,11 +52,11 @@
             }
 
             function zoomOutByValue(zoomValueParam) {
-                radius = radius - zoomValueParam.arguments[0];
+                radius -= zoomValueParam;
             }
 
             function zoomInByValue(zoomValueParam) {
-                radius = radius + zoomValueParam.arguments[0];
+                radius += zoomValueParam;
             }
 
             function draw() {
