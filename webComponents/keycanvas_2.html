@@ -18,8 +18,7 @@
         <script type="text/javascript">
             var canvas;
             var ctx;
-            var dx = 5;
-            var dy = 5;
+            var dr = 5;
             var WIDTH = 950;
             var HEIGHT = 550;
             var x = 475;
@@ -53,12 +52,12 @@
 
             function zoomOutByValue(zoomValueParam) {
                if(RADIUS >= zoomValueParam){
-                  RADIUS = (RADIUS - zoomValueParam);
+                  RADIUS = (RADIUS - dr);
                }
             }
 
             function zoomInByValue(zoomValueParam) {
-                RADIUS = (RADIUS + zoomValueParam);
+                RADIUS = (RADIUS + dr);
             }
 
             function draw() {
@@ -73,14 +72,14 @@
             function doKeyDown(evt){
               switch (evt.keyCode) {
                 case 109:  /* Minus was pressed */
-                  if(RADIUS >= 5){
-                    RADIUS =  (RADIUS-5);
+                  if(RADIUS >= dr){
+                    RADIUS =  (RADIUS-dr);
                   }
                 
                 break;
                 case 107:  /* Plus was pressed */
                  if(RADIUS <= HEIGHT){
-                    RADIUS = (RADIUS + 5);
+                    RADIUS = (RADIUS + dr);
                   }
                 }
               }
