@@ -102,7 +102,22 @@ circle(x, y, radius);
 }
 
 init();
-window.addEventListener('keydown',doKeyDown,true);
+window.addEventListener('keydown', doKeyDown, true);
+
+function zoomOutByValue(zoomValueParam){
+    float zoomValue = zoomValueParam.arguments[0];
+    draw_2(radius-5);
+    radius=radius-5;
+
+}
+	
+function zoomInByValue(zoomValueParam){
+    float zoomValue = zoomValueParam.arguments[0];
+    draw_2(radius+5);
+    radius=radius+5;
+}
+
+    
 </script>
 </section>
 </body>
