@@ -118,7 +118,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             //Make sure to change this path to YOUR index2.html file
             //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer/googleEarthComponent/index2.html"));
 
-
+            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer_FrameDetect/sphere/sculpt.html"));
             Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/index.html"));
            /*
             WebBrowser wb = new WebBrowser();
@@ -312,11 +312,11 @@ namespace Microsoft.mmi.Kinect.Explorer
                     else if (sender.Equals(handMovingZTollerance))
                     {
                         gestureController.handMovingZTollerance = Convert.ToSingle(handMovingZTollerance.Text);
-                    }
+                    }/*
                     else if (sender.Equals(distanceX))
                     {
                         gestureController.distanceX = Convert.ToSingle(distanceX.Text);
-                    }
+                    }*/
                     else if (sender.Equals(tolleranceHandsSDiff))
                     {
                         gestureController.tolleranceHandsSDiff = Convert.ToSingle(tolleranceHandsSDiff.Text);
@@ -367,7 +367,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             zoomSpeed.KeyDown += new KeyEventHandler(tb_KeyDown);
             minMovementFrame.KeyDown += new KeyEventHandler(tb_KeyDown);
             proportionParam.KeyDown += new KeyEventHandler(tb_KeyDown);
-            distanceX.KeyDown += new KeyEventHandler(tb_KeyDown);
+            //distanceX.KeyDown += new KeyEventHandler(tb_KeyDown);
             tolleranceHandsSDiff.KeyDown += new KeyEventHandler(tb_KeyDown);
             handMovingZTollerance.KeyDown += new KeyEventHandler(tb_KeyDown);
             

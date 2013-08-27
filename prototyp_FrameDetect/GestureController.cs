@@ -53,13 +53,19 @@ namespace Microsoft.mmi.Kinect.Explorer
         //just for calc.
         private int frameCounter;
 
-        //params for input test
-        public float distanceX;
-        public float minMovementFrame = 0.01F;
-        public float zoomspeed = 3;
-        public float tolleranceHandsSDiff;
-        public float proportionParam;
-        public float handMovingZTollerance=3;
+        //Entfernung zur Leinwand (diesen Parameter können Sie natürlich nicht in der SW einstellbar machen, die nun folgenden allerdings  schon...)
+        public float distanceX; //to screen
+
+        //params for input 
+        public float minMovementFrame = 0.01F; //minMoveFrame
+        //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
+        public float zoomspeed = 3; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten 
+        //(Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
+        public float tolleranceHandsSDiff; //tollerance
+        //das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)
+        public float proportionParam; //proportionParam
+        public float handMovingZTollerance = 3; //handZTollerance
+        //Verzögerung, mit der der Effekt der Geste einsetzt
 
 
         private bool earthMode = true;
@@ -185,6 +191,7 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
         }
 
+        //aktiviere die Gesten falls die Hände weit genug vor dem Kopf sind
         private bool handsZAxle(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
         {
             float zAxlehands = 0.2F;//0.45F;
@@ -287,10 +294,13 @@ namespace Microsoft.mmi.Kinect.Explorer
             Joint skeleton2_wristHandR = skeleton2.Joints[JointType.WristRight];
             Joint skeleton2_wristHandL = skeleton2.Joints[JointType.WristLeft];
 
+            //check for active
             if (handsZAxle(current_wristHandR, current_wristHandL, current_head))
             {
+                //
                 if (handsZAxleMove(current_wristHandR, current_wristHandL, skeleton1_wristHandR, skeleton1_wristHandL, skeleton2_wristHandR, skeleton2_wristHandL))
                 {
+                    //check for active (double) ???
                     if (zoomActive)
                     {
                         this.window.gestureZoom.Text = "Zoom: ON";
@@ -302,10 +312,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                         this.window.gestureZoom.Text = "Zoom: OFF";
                         this.window.gestureZoom.Foreground = System.Windows.Media.Brushes.Red;
 
-                    }
-
-                    
-
+                    } 
                     /*
                     System.Console.WriteLine("  current_wristHandR.Position.X: " + current_wristHandR.Position.X);
                     System.Console.WriteLine("skeleton1_wristHandR.Position.X: " + skeleton1_wristHandR.Position.X);
