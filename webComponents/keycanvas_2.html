@@ -71,11 +71,15 @@
             function doKeyDown(evt){
               switch (evt.keyCode) {
                 case 109:  /* Minus was pressed */
-                RADIUS =- 5;
+                  if(RADIUS >= 5){
+                    RADIUS =- 5;
+                  }
                 
                 break;
                 case 107:  /* Plus was pressed */
-                RADIUS =+ 5;
+                 if(RADIUS >= HEIGHT){
+                    RADIUS =+ 5;
+                  }
                 }
               }
 
