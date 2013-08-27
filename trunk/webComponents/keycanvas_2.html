@@ -51,14 +51,14 @@
             }
 
             function zoomOutByValue(zoomValueParam) {
-              dr = zoomValueParam;
+              dr = parseInt(zoomValueParam);
                if(RADIUS >= dr){
                   RADIUS = (RADIUS - dr);
                }
             }
 
             function zoomInByValue(zoomValueParam) {
-              dr = zoomValueParam;
+              dr = parseInt(zoomValueParam);
                 RADIUS = (RADIUS + dr);
             }
 
