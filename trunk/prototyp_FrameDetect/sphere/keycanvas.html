@@ -52,11 +52,11 @@ function doKeyDown(evt){
 switch (evt.keyCode) {
 case 109:  /* Minus was pressed */
 draw_2(radius-5)
-
+radius=radius-5
 break;
 case 107:  /* Plus was pressed */
 draw_2(radius+5)
-
+radius=radius+5
 break;
 case 38:  /* Up arrow was pressed */
 if (y - dy > 0){

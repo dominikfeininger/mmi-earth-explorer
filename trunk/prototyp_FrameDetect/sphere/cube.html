@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<!--
+  Created using jsbin.com
+  Source can be edited via http://jsbin.com/okuzaj/14/edit
+-->
+<head>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+  article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+</style>
+
+<style id="jsbin-css">
+
+</style>
+
+<style>
+  div.circle {
+    border: 100px solid red;
+    border-radius: 50%;
+    width: 100px; height: 100px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+</style>
+
+</head>
+<body>
+
+<div class=circle id="cube">
+</div>
+
+  <!--<div style='box-sizing: border-box; border: 100px solid red; border-radius: 50px; width: 100px; height: 100px; box-sizing: border-box; -moz-box-sizing: border-box'>
+  </div>
+-->
+<script>
+
+</script>
+<script src="http://static.jsbin.com/js/render/edit.js"></script>
+<script>jsbinShowEdit({"root":"http://static.jsbin.com","csrf":"20QED29RkWyqUo1faoMbODUT"});</script>
+<script src="http://static.jsbin.com/js/vendor/eventsource.js"></script>
+<script src="http://static.jsbin.com/js/spike.js"></script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1656750-34']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+})();
+</script>
+
+<script  type="text/javascript">
+
+function doKeyDown(evt){
+switch (evt.keyCode) {
+case 109:  /* Minus was pressed */
+//draw_2()
+alert('draw_2');
+break;
+case 107:  /* Plus was pressed */
+//draw_2()
+alert('draw_2');
+break;
+}
+}
+
+function draw_2(){
+alert('draw_2');
+}
+
+//window.addEventListener('keydown',doKeyDown,true);
+var el = document.getElementsByTagName('jsbin-css');
+el.addEventListener("keydown", doKeyDown, false);
+
+</script>
+</body>
+</html>
