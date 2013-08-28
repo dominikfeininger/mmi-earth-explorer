@@ -59,7 +59,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         //params for input 
         public float minMovementFrame = 0.01F; //minMoveFrame
         //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
-        public float zoomspeed = 3; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten 
+        public float zoomspeed = 5; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten 
         //(Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
         public float tolleranceHandsSDiff; //tollerance
         //das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)

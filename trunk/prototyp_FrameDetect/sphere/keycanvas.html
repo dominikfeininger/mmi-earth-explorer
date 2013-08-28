@@ -22,13 +22,13 @@
             var dy = 5;
             var WIDTH = 950;
             var HEIGHT = 550;
-            var x = (WIDTH / 2);
-            var y = (HEIGHT / 2);
-            var radius;
+            var x = 475;
+            var y = 275;
+            var RADIUS;
 
-            function circle(x, y, r) {
+            function circle(x, y) {
                 ctx.beginPath();
-                ctx.arc(x, y, r, 0, Math.PI * 2, true);
+                ctx.arc(x, y, RADIUS, 0, Math.PI * 2, true);
                 ctx.fill();
             }
 
@@ -47,16 +47,16 @@
             function init() {
                 canvas = document.getElementById("canvas");
                 ctx = canvas.getContext("2d");
-                radius = 70;
-                return setInterval(draw, 5);
+                RADIUS = 70;
+                return setInterval(draw, 10);
             }
 
             function zoomOutByValue(zoomValueParam) {
-                radius -= zoomValueParam.arguments[0];
+                RADIUS =- zoomValueParam;
             }
 
             function zoomInByValue(zoomValueParam) {
-                radius += zoomValueParam.arguments[0];
+                RADIUS =+ zoomValueParam;
             }
 
             function draw() {
@@ -65,10 +65,26 @@
                 ctx.strokeStyle = "black";
                 rect(0, 0, WIDTH, HEIGHT);
                 ctx.fillStyle = "purple";
-                circle(x, y, radius);
+                circle(x, y, RADIUS);
             }
+            
+            function doKeyDown(evt){
+              switch (evt.keyCode) {
+                case 109:  /* Minus was pressed */
+                  if(RADIUS >= 5){
+                    RADIUS =- 5;
+                  }
+                
+                break;
+                case 107:  /* Plus was pressed */
+                 if(RADIUS >= HEIGHT){
+                    RADIUS =+ 5;
+                  }
+                }
+              }
 
             init();
+            window.addEventListener('keydown',doKeyDown,true);
 
         </script>
     </section>
