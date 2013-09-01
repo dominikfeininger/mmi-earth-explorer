@@ -84,7 +84,7 @@
                 <TextBox MaxWidth="120" Height="25" Foreground="Black" FontSize="15" x:Name="handMovingZTollerance" Text="handZTollerance" IsReadOnly="False" Margin="320,50,300,0"></TextBox>
                 <!--!!!-->
                 <TextBox MaxWidth="0" Height="0" Foreground="Black" FontSize="15" x:Name="distanceX" Text="distanceX" IsReadOnly="False" Margin="320,100,300,0"></TextBox>
-                <TextBox MaxWidth="120" Height="25" Foreground="Black" FontSize="15" x:Name="tolleranceHandsSDiff" Text="tollerance" IsReadOnly="False" Margin="320,100,300,0"></TextBox>
+                <TextBox MaxWidth="120" Height="25" Foreground="Black" FontSize="15" x:Name="tolleranceHandsSDiff" Text="** ungenutzt **" IsReadOnly="False" Margin="320,100,300,0" TextChanged="tolleranceHandsSDiff_TextChanged"></TextBox>
 
 
                 <Canvas Name="left"  Width="150" Margin="442,0,254,30" />

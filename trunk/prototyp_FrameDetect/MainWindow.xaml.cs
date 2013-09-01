@@ -864,5 +864,10 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
             drawingContext.DrawLine(drawPen, this.SkeletonPointToScreen(joint0.Position), this.SkeletonPointToScreen(joint1.Position));
         }
+
+        private void tolleranceHandsSDiff_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
+        }
     }
 }
