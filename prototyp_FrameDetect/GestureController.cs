@@ -45,7 +45,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         private int frameInterval = 3;
         private float minMovementTotal = 0.03F;
         //calc from screensize and distance
-        private float proportion = (distanceZ_user_display / screensize) * screen_dpi;
+        /*ungenutzt*/private float proportion = (distanceZ_user_display / screensize) * screen_dpi;
         private static float screen_dpi = 10;
         //in cm
         private static float distanceZ_user_display = 310;
@@ -57,16 +57,12 @@ namespace Microsoft.mmi.Kinect.Explorer
         public float distanceX; //to screen
 
         //params for input 
-        public float minMovementFrame = 0.01F; //minMoveFrame
-        //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
-        public float zoomspeed = 5; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten 
-        //(Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
-        public float tolleranceHandsSDiff; //tollerance
-        //das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)
-        public float proportionParam; //proportionParam
-        public float handMovingZTollerance = 3; //handZTollerance
-        //Verzögerung, mit der der Effekt der Geste einsetzt
-
+        public float minMovementFrame = 0.01F; //minMoveFrame  //Verzögerung, mit der der Effekt der Geste einsetzt
+        public float zoomspeed = 5; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten (Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
+        /*ungenutzt*/public float tolleranceHandsSDiff; //tollerance
+        public float proportionParam = 1; //proportionParam //das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)
+        public float handMovingZTollerance = 3; //handZTollerance //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
+        
 
         private bool earthMode = true;
 
@@ -172,8 +168,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         //TODO:
         private void saveToSkeletonFrames(Skeleton skeleton)
         {
-            //TODO:
-            proportion = proportion + proportionParam;
+
             //kSystem.Console.WriteLine("skeleton.Joints.Count: " + skeleton.Joints.Count);
             //System.Console.WriteLine("this.CurrentSkeletonFrame: " + this.CurrentSkeletonFrame);
             this.SkeletonFrames[this.CurrentSkeletonFrame] = skeleton;
@@ -212,6 +207,13 @@ namespace Microsoft.mmi.Kinect.Explorer
             }
 
 
+        }
+
+        private float calcProportion(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
+        {
+            float tmpPropParam = 0;
+            tmpPropParam = (current_wristHandL.Position.X * (-1)) + current_wristHandR.Position.X;
+            return tmpPropParam * proportionParam;
         }
 
         private bool handsZAxleMove(Joint current_wristHandR, Joint current_wristHandL, Joint skeleton1_wristHandR, Joint skeleton1_wristHandL, Joint skeleton2_wristHandR, Joint skeleton2_wristHandL)
@@ -414,6 +416,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                     if (true)//handMovement[4])//zoom double
                     {
+                        zoomspeed *= calcProportion(current_wristHandR, current_wristHandL, current_head);
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN with speed: ...";
                         //window.Browser.InvokeScript("zoomInByValue",zoomspeed.ToString());
@@ -450,6 +453,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                     if (true)//handMovement[4])//zoom double
                     {
+                        zoomspeed *= calcProportion(current_wristHandR, current_wristHandL, current_head);
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT with speed: ...";
                         //window.Browser.InvokeScript("zoomOutByValue", new string[] { zoomspeed.ToString() });
