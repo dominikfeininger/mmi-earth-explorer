@@ -211,6 +211,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         private float calcProportion(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
         {
+            
             float tmpPropParam = 0;
             tmpPropParam = (current_wristHandL.Position.X * (-1)) + current_wristHandR.Position.X;
             return tmpPropParam * proportionParam;
@@ -416,13 +417,18 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                     if (true)//handMovement[4])//zoom double
                     {
-                        zoomspeed *= calcProportion(current_wristHandR, current_wristHandL, current_head);
+                        zoomspeed = (float)calcProportion(current_wristHandR, current_wristHandL, current_head);
+                        //zoomspeed = (float)4;
+
+
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " IN with speed: ...";
                         //window.Browser.InvokeScript("zoomInByValue",zoomspeed.ToString());
 
                         //means zoomsped
-                        window.Browser.InvokeScript("zoomInByValue", zoomspeed.ToString());
+                        String zs = zoomspeed.ToString();
+                        window.Browser.InvokeScript("zoomInByValue",  zs.ToString());
+                        //window.Browser.InvokeScript("zoomIn2");
                     }
                     else if (!handMovement[4])//zoom single
                     {
@@ -453,11 +459,16 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                     if (true)//handMovement[4])//zoom double
                     {
-                        zoomspeed *= calcProportion(current_wristHandR, current_wristHandL, current_head);
+                        zoomspeed = calcProportion(current_wristHandR, current_wristHandL, current_head);
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT with speed: ...";
                         //window.Browser.InvokeScript("zoomOutByValue", new string[] { zoomspeed.ToString() });
-                        window.Browser.InvokeScript("zoomOutByValue", zoomspeed.ToString());
+
+                        //window.Browser.InvokeScript("zoomOut2");
+                        //zoomspeed = (float)4;
+                        String zs = zoomspeed.ToString();
+                        window.Browser.InvokeScript("zoomOutByValue", zs.ToString());// "4");//
+                        
                         //window.Browser.InvokeScript("zoomOut2");
                         //System.Console.WriteLine("window.Browser.InvokeScript(zoomOut2);");
                     }
