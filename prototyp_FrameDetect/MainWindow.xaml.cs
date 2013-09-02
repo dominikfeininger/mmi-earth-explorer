@@ -309,11 +309,11 @@ namespace Microsoft.mmi.Kinect.Explorer
                     else if (sender.Equals(handMovingZTollerance))
                     {
                         gestureController.handMovingZTollerance = Convert.ToSingle(handMovingZTollerance.Text);
-                    }/*
+                    }
                     else if (sender.Equals(distanceX))
                     {
                         gestureController.distanceX = Convert.ToSingle(distanceX.Text);
-                    }*/
+                    }
                     else if (sender.Equals(tolleranceHandsSDiff))
                     {
                         gestureController.tolleranceHandsSDiff = Convert.ToSingle(tolleranceHandsSDiff.Text);
