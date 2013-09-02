@@ -59,7 +59,7 @@
 
             function zoomInByValue(zoomValueParam) {
               dr = parseInt(zoomValueParam);
-              if(RADIUS <= HEIGHT){
+              if(RADIUS <= HEIGHT/2 + 50){
                 RADIUS = (RADIUS + dr);
             }
             }
