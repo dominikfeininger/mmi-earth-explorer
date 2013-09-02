@@ -58,7 +58,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         //params for input 
         public float minMovementFrame = 0.01F; //minMoveFrame  //Verzögerung, mit der der Effekt der Geste einsetzt
-        public float zoomspeed = 5; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten (Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
+        public float zoomspeed = 3; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten (Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
         /*ungenutzt*/public float tolleranceHandsSDiff; //tollerance
         public float proportionParam = 1; //proportionParam //das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)
         public float handMovingZTollerance = 3; //handZTollerance //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
@@ -211,9 +211,11 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         private float calcProportion(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
         {
-            
-            float tmpPropParam = 0;
-            tmpPropParam = (current_wristHandL.Position.X * (-1)) + current_wristHandR.Position.X;
+           
+            float tmpPropParam = 1;//0;
+           float tmpProp = (current_wristHandL.Position.X * (-1)) + current_wristHandR.Position.X;
+           //System.Console.WriteLine("tmpProp" + tmpProp);
+           tmpPropParam = tmpProp / 10 + 1;
             return tmpPropParam * proportionParam;
         }
 
@@ -417,7 +419,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                     if (true)//handMovement[4])//zoom double
                     {
-                        zoomspeed = (float)calcProportion(current_wristHandR, current_wristHandL, current_head);
+                        zoomspeed *= (float)calcProportion(current_wristHandR, current_wristHandL, current_head);
                         //zoomspeed = (float)4;
 
 
@@ -427,7 +429,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                         //means zoomsped
                         String zs = zoomspeed.ToString();
-                        window.Browser.InvokeScript("zoomInByValue",  zs.ToString());
+                        window.Browser.InvokeScript("zoomInByValue", zs);
                         //window.Browser.InvokeScript("zoomIn2");
                     }
                     else if (!handMovement[4])//zoom single
@@ -459,7 +461,7 @@ namespace Microsoft.mmi.Kinect.Explorer
 
                     if (true)//handMovement[4])//zoom double
                     {
-                        zoomspeed = calcProportion(current_wristHandR, current_wristHandL, current_head);
+                        zoomspeed *= calcProportion(current_wristHandR, current_wristHandL, current_head);
                         // System.Console.WriteLine("Zoom - OUT TWICE");
                         //this.window.gestureZoom.Text = this.window.gestureZoom.Text + " OUT with speed: ...";
                         //window.Browser.InvokeScript("zoomOutByValue", new string[] { zoomspeed.ToString() });
@@ -467,7 +469,7 @@ namespace Microsoft.mmi.Kinect.Explorer
                         //window.Browser.InvokeScript("zoomOut2");
                         //zoomspeed = (float)4;
                         String zs = zoomspeed.ToString();
-                        window.Browser.InvokeScript("zoomOutByValue", zs.ToString());// "4");//
+                        window.Browser.InvokeScript("zoomOutByValue", zs);// "4");//
                         
                         //window.Browser.InvokeScript("zoomOut2");
                         //System.Console.WriteLine("window.Browser.InvokeScript(zoomOut2);");
