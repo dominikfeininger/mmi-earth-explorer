@@ -20,7 +20,7 @@
             var ctx;
             var dr = 7;
             var WIDTH = 950;
-            var HEIGHT = 550;
+            var HEIGHT = 580;
             var x = 475;
             var y = 275;
             var RADIUS;
@@ -59,7 +59,9 @@
 
             function zoomInByValue(zoomValueParam) {
               dr = parseInt(zoomValueParam);
+              if(RADIUS <= HEIGHT){
                 RADIUS = (RADIUS + dr);
+            }
             }
 
             function draw() {
