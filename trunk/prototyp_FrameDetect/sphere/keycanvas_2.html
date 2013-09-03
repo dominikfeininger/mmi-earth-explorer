@@ -1,0 +1,97 @@
+<!doctype html>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Canvas Test</title>
+</head>
+<body>
+    <section>
+
+        <div>
+            <canvas id="canvas" width="950" height="550">
+                This text is displayed if your browser does not support HTML5 Canvas.
+            </canvas>
+        </div>
+
+        <script type="text/javascript">
+            var canvas;
+            var ctx;
+            var dr = 7;
+            var WIDTH = 950;
+            var HEIGHT = 580;
+            var x = 475;
+            var y = 275;
+            var RADIUS;
+
+            function circle(x, y) {
+                ctx.beginPath();
+                ctx.arc(x, y, RADIUS, 0, Math.PI * 2, true);
+                ctx.fill();
+            }
+
+            function rect(x, y, w, h) {
+                ctx.beginPath();
+                ctx.rect(x, y, w, h);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            function clear() {
+                ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            }
+
+            function init() {
+                canvas = document.getElementById("canvas");
+                ctx = canvas.getContext("2d");
+                RADIUS = 70;
+                return setInterval(draw, 5);
+            }
+
+            function zoomOutByValue(zoomValueParam) {
+              dr = parseInt(zoomValueParam);
+               if(RADIUS >= dr){
+                  RADIUS = (RADIUS - dr);
+               }
+            }
+
+            function zoomInByValue(zoomValueParam) {
+              dr = parseInt(zoomValueParam);
+              if(RADIUS <= HEIGHT/2 + 50){
+                RADIUS = (RADIUS + dr);
+            }
+            }
+
+            function draw() {
+                clear();
+                ctx.fillStyle = "white";
+              //ctx.strokeStyle = "black";
+              //rect(0, 0, WIDTH, HEIGHT);
+                ctx.fillStyle = "red";
+                circle(x, y, RADIUS);
+            }
+            
+            function doKeyDown(evt){
+              switch (evt.keyCode) {
+                case 109:  /* Minus was pressed */
+                  if(RADIUS >= dr){
+                    RADIUS =  (RADIUS-dr);
+                  }
+                
+                break;
+                case 107:  /* Plus was pressed */
+                 if(RADIUS <= HEIGHT){
+                    RADIUS = (RADIUS + dr);
+                  }
+                }
+              }
+
+            init();
+            window.addEventListener('keydown',doKeyDown,true);
+
+        </script>
+    </section>
+</body>
+</html>
