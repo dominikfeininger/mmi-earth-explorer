@@ -61,7 +61,7 @@ namespace Microsoft.mmi.Kinect.Explorer
         public float zoomspeed = 3; //zoomSpeed //die Geschwindigkeit der Geste im Verhältnis zum entsprechenden Verhalten (Geschwindigkeit) mit der sich das Objekt vergrößert/verkleinert)
         /*ungenutzt*/public float tolleranceHandsSDiff; //tollerance
         public float proportionParam = 1; //proportionParam //das Verhältnis zwischen Gestengröße und Effektgröße (also Vergrößerung/Verkleinerung des Objektes)
-        public float handMovingZTollerance = 3; //handZTollerance //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
+        public float handMovingZTollerance = 0.03F; //handZTollerance //Aktivitätsradius/-feld der Geste (wo beginnt und endet die Geste, in welchem Bereich steuert die Geste die Darstellung)
         
 
         private bool earthMode = true;
@@ -211,12 +211,25 @@ namespace Microsoft.mmi.Kinect.Explorer
 
         private float calcProportion(Joint current_wristHandR, Joint current_wristHandL, Joint current_head)
         {
-           
+           /*
             float tmpPropParam = 1;//0;
            float tmpProp = (current_wristHandL.Position.X * (-1)) + current_wristHandR.Position.X;
            //System.Console.WriteLine("tmpProp" + tmpProp);
            tmpPropParam = tmpProp / 10 + 1;
             return tmpPropParam * proportionParam;
+            * */
+            float tmp = 0;
+            if (current_wristHandR.Position.X > (current_wristHandL.Position.X * (-1)))
+            {
+                tmp = current_wristHandR.Position.X * proportionParam + 1;
+                return tmp ;
+            }
+            else
+            {
+                tmp = (current_wristHandL.Position.X * (-1)) * proportionParam + 1;
+                return tmp ;
+            }
+           
         }
 
         private bool handsZAxleMove(Joint current_wristHandR, Joint current_wristHandL, Joint skeleton1_wristHandR, Joint skeleton1_wristHandL, Joint skeleton2_wristHandR, Joint skeleton2_wristHandL)

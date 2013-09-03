@@ -114,10 +114,12 @@ namespace Microsoft.mmi.Kinect.Explorer
 
             //for local file usage
             //Make sure to change this path to YOUR index2.html file
-            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer_FrameDetect/sphere/html5test.html"));
+            //Browser.Navigate(new Uri("F:/VisualStudio12/KinectDev/EarthExplorer_FrameDetect/sphere/keycanvas_2.html"));
+            
             Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/index.html"));
             //Browser.Navigate(new Uri("https://mmi-earth-explorer.googlecode.com/svn/trunk/webComponents/keycanvas_2.html"));
-           /*
+           
+            /*
             WebBrowser wb = new WebBrowser();
             wb = Browser;
             var jobValue = wb.Document.GetElementById("");
